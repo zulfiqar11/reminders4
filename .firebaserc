@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "reminderauth-f3a38": {
+      "hosting": {
+        "reminders4": [
+          "reminderauth-f3a38"
+        ]
+      }
+    }
+  }
+}

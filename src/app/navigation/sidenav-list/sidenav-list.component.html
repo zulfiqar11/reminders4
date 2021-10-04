@@ -1,0 +1,14 @@
+<mat-nav-list>
+  <a mat-list-item routerLink="/home" (click)="onSideNavClose()">
+    <mat-icon>home</mat-icon> <span class="nav-caption">Home</span>
+  </a>
+  <ng-container *ngIf="user$ | async as user">
+    <a mat-list-item routerLink="/contacts" (click)="onSideNavClose()">
+      <mat-icon>contacts</mat-icon> <span class="nav-caption">Contacts</span>
+    </a>
+    <a mat-list-item routerLink="/reminders" (click)="onSideNavClose()">
+      <mat-icon>notifications</mat-icon>
+      <span class="nav-caption">Reminders</span>
+    </a>
+  </ng-container>
+</mat-nav-list>

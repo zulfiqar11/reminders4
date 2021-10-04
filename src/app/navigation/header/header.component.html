@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+  <div>
+    <button mat-icon-button (click)="onToggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <button mat-button routerLink="/home">My Reminders</button>
+  <span class="example-spacer"></span>
+
+  <button *ngIf="isLoggedOut$ | async" mat-button routerLink="/login">
+    <mat-icon>account_circle</mat-icon> Login
+  </button>
+
+  <ng-container *ngIf="user$ | async as user">
+    <button *ngIf="isLoggedIn$ | async" mat-button [matMenuTriggerFor]="menu">
+      <ng-container *ngIf="pictureUrl$ | async as pic">
+        <img class="user-avatar" [src]="pic" />
+      </ng-container>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button routerLink="/profile" mat-menu-item>Profile</button>
+      <button mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
+  </ng-container>
+</mat-toolbar>

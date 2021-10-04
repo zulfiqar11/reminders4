@@ -1,0 +1,17 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <div
+      mat-card-avatar
+      class="example-header-image"
+      *ngIf="pictureUrl$ | async as pic"
+    >
+      <img mat-card-image [src]="pic" />
+    </div>
+    <mat-card-title *ngIf="userName$ | async as userName">{{
+      userName
+    }}</mat-card-title>
+    <mat-card-subtitle *ngIf="userEmail$ | async as email">{{
+      email
+    }}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
