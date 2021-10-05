@@ -68,7 +68,7 @@
   ></tr>
 </table>
 
-<!-- <form [formGroup]="form" class="example-form">
+<form [formGroup]="form" class="example-form">
   <table class="example-full-width" cellspacing="0">
     <tr>
       <td hidden="true">
@@ -89,18 +89,46 @@
           <input matInput formControlName="lastName" />
         </mat-form-field>
       </td>
+      <td>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="emailAddress" />
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Phone</mat-label>
+          <input matInput formControlName="phoneNumber" />
+        </mat-form-field>
+      </td>
     </tr>
     <tr>
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="emailAddress" />
-      </mat-form-field>
+      <td>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Frequency</mat-label>
+          <input matInput formControlName="frequency" />
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Time</mat-label>
+          <input matInput formControlName="time" />
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Date</mat-label>
+          <input matInput formControlName="date" />
+        </mat-form-field>
+      </td>
     </tr>
     <tr>
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Phone</mat-label>
-        <input matInput formControlName="phoneNumber" />
-      </mat-form-field>
+      <td>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Message</mat-label>
+          <input matInput formControlName="message" />
+        </mat-form-field>
+      </td>
     </tr>
     <tr>
       <button
@@ -108,12 +136,18 @@
         color="primary"
         type="submit"
         (click)="onUpdate()"
-        [disabled]="!enableUpdateState()"
+        [disabled]="!form.valid"
       >
         Update
       </button>
-      <span style="display: inline-block; width: 2px"></span>
-      <button
+    </tr>
+  </table>
+</form>
+
+<!-- <mat-spinner *ngIf="spin"></mat-spinner>  -->
+
+<!-- <span style="display: inline-block; width: 2px"></span> -->
+<!-- <button
         mat-raised-button
         color="primary"
         type="submit"
@@ -122,8 +156,8 @@
       >
         Delete
       </button>
-      <span style="display: inline-block; width: 2px"></span>
-      <button
+      <span style="display: inline-block; width: 2px"></span> -->
+<!-- <button
         mat-raised-button
         color="primary"
         type="submit"
@@ -132,8 +166,8 @@
       >
         Add
       </button>
-      <span style="display: inline-block; width: 2px"></span>
-      <button
+      <span style="display: inline-block; width: 2px"></span> -->
+<!-- <button
         mat-raised-button
         color="primary"
         type="submit"
@@ -141,8 +175,4 @@
         [disabled]="!enableNewState()"
       >
         New
-      </button>
-    </tr>
-  </table>
-</form>
-<mat-spinner *ngIf="spin"></mat-spinner> -->
+      </button> -->
