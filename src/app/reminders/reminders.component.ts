@@ -1,4 +1,7 @@
+import { ReminderService } from './../shared/services/reminder.service';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Reminder } from '../shared/model/reminder';
 
 @Component({
   selector: 'app-reminders',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RemindersComponent implements OnInit {
 
-  constructor() { }
+  remindersList$!: Observable<Reminder[]>;
+  spin = false;
+
+  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'emailAddress'];
+
+  constructor(private reminderService: ReminderService) { }
 
   ngOnInit(): void {
+    this.remindersList$ = this.reminderService.getReminders();
   }
+
+  selectReminder(reminder: Reminder) {
+    // this.populateFormControl(contact);
+  }
+
 
 }

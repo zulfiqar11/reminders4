@@ -19,7 +19,7 @@ import { RemindersComponent } from './reminders/reminders.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryContactService } from './shared/services/InMemoryData/InMemoryContactService';
+import { InMemoryDataService } from './shared/services/InMemoryData/InMemoryDBService';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { PageNotFoundComponent } from './navigation/page-not-found/page-not-found.component';
@@ -46,7 +46,7 @@ import { PageNotFoundComponent } from './navigation/page-not-found/page-not-foun
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryContactService),
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService),
     BrowserAnimationsModule
   ],
   providers: [],

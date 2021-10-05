@@ -35,31 +35,3 @@ export class ContactService {
 
 
 
-  // get(contactId: number): Observable<Contact>
-  // {
-  //   return this.http.get<Contact>(this.url + '/' + contactId);
-  // }
-
-  // private url = 'http://localhost:4200/api/contacts';
-
-  // private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-  // private headers = new HttpHeaders({
-  //   'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-  //   'Access-Control-Allow-Origin':'*',
-  //   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
-  // });
-  // private headers = new HttpHeaders({
-  //   'Access-Control-Allow-Origin':'*',
-  //   'Access-Control-Allow-Headers': 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization',
-  //   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
-  // });
-
-
-      // const url = `${this.url}/${contact.Id}`;
-
-    // return this.http.put<Contact>(url,contact,{ headers: this.headers} );
-    // return this.http.put<Contact>(this.url + '/' + contact.Id,contact, {headers: this.headers});
-    // this.http.put<Contact>(this.url + '/' + contact.Id,contact).subscribe(() => console.log('all done'));
-
-        // return this.http.get<Contact>(this.url + '/' + contactId, {headers: this.headers});
