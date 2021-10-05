@@ -33,29 +33,54 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Syed1',
         phoneNumber: '714-555-1212',
         emailAddress: 'myemailzulfiqar@mydomain.com',
+        frequency: "Once",
         date: "10/4/2021",
         time: "9:10 AM",
         message: "reminder message 1"
       },
       {
         id: 2,
+        firstName: 'Daniya',
+        lastName: 'Syed4',
+        phoneNumber: '714-555-1515',
+        emailAddress: 'myemailDaniya@mydomain.com',
+        frequency: "Daily",
+        time: "8:40 AM",
+        message: "reminder message 4"
+      },
+      {
+        id: 3,
         firstName: 'Sobia',
         lastName: 'Syed2',
         phoneNumber: '714-555-1313',
         emailAddress: 'myemailsobia@mydomain.com',
-        date: "11/4/2021",
+        frequency: "Weekly",
+        weekday: "Tuesday",
         time: "11:10 AM",
         message: "reminder message 2"
       },
       {
-        id: 3,
+        id: 4,
         firstName: 'Lenah',
         lastName: 'Syed3',
         phoneNumber: '714-555-1414',
         emailAddress: 'myemailLenah@mydomain.com',
-        date: "12/4/2021",
+        frequency: "Monthly",
+        day: "14",
         time: "10:40 AM",
         message: "reminder message 3"
+      },
+      {
+        id: 5,
+        firstName: 'Nuha',
+        lastName: 'Syed5',
+        phoneNumber: '714-555-1616',
+        emailAddress: 'myemailNuha@mydomain.com',
+        frequency: "Yearly",
+        month: "October",
+        day: "10",
+        time: "9:40 AM",
+        message: "reminder message 5"
       }
     ];
     return { contacts, reminders };

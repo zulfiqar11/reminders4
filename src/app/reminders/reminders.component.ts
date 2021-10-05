@@ -13,7 +13,7 @@ export class RemindersComponent implements OnInit {
   remindersList$!: Observable<Reminder[]>;
   spin = false;
 
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'emailAddress'];
+  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'emailAddress', 'frequency', 'month',  'day', 'weekday',  'time', 'date','message'];
 
   constructor(private reminderService: ReminderService) { }
 
