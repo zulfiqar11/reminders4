@@ -116,10 +116,17 @@
         </mat-form-field>
       </td>
       <td>
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Date</mat-label>
-          <input matInput formControlName="date" />
-        </mat-form-field>
+        <ng-container *ngIf="form.get('date')">
+          <mat-form-field appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </ng-container>
       </td>
     </tr>
     <tr>
@@ -140,11 +147,10 @@
       >
         Update
       </button>
+      <mat-spinner *ngIf="spin"></mat-spinner>
     </tr>
   </table>
 </form>
-
-<!-- <mat-spinner *ngIf="spin"></mat-spinner>  -->
 
 <!-- <span style="display: inline-block; width: 2px"></span> -->
 <!-- <button

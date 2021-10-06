@@ -23,6 +23,7 @@ import { InMemoryDataService } from './shared/services/InMemoryData/InMemoryDBSe
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { PageNotFoundComponent } from './navigation/page-not-found/page-not-found.component';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -49,7 +50,7 @@ import { PageNotFoundComponent } from './navigation/page-not-found/page-not-foun
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService),
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
