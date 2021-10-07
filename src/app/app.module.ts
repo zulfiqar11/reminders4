@@ -24,6 +24,7 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { PageNotFoundComponent } from './navigation/page-not-found/page-not-found.component';
 import { DatePipe } from '@angular/common';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 
 
@@ -47,6 +48,7 @@ import { DatePipe } from '@angular/common';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgxMaterialTimepickerModule,
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService),
     BrowserAnimationsModule
   ],
