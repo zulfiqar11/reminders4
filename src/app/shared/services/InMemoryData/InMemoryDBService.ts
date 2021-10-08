@@ -72,6 +72,19 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 5,
+        firstName: 'Nadiya',
+        lastName: 'Syed3',
+        phoneNumber: '714-555-1717',
+        emailAddress: 'myemailNadiya@mydomain.com',
+        frequency: "MonthWeekly",
+        week: "Second",
+        weekday: "Thursday",
+        day: "",
+        time: "10:40 AM",
+        message: "reminder message 3"
+      },
+      {
+        id: 6,
         firstName: 'Nuha',
         lastName: 'Syed5',
         phoneNumber: '714-555-1616',

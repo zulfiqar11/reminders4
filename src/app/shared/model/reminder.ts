@@ -6,6 +6,7 @@ export interface Reminder {
   emailAddress: string;
   date?: string | null;
   weekday?: string;
+  week?: string;
   day?: string;
   month?: string;
   frequency?: string;

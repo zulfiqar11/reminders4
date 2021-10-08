@@ -9,6 +9,7 @@ enum FREQUENCY {
   Once = "Once",
   Weekly = "Weekly",
   Monthly = "Monthly",
+  MonthWeekly = "MonthWeekly",
   Yearly = "Yearly"
 };
 
@@ -34,7 +35,7 @@ export class RemindersComponent implements OnInit {
   remindersList$!: Observable<Reminder[]>;
   spin = false;
 
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'emailAddress', 'frequency', 'month',  'day', 'weekday',  'time', 'date','message'];
+  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'emailAddress', 'frequency', 'month',  'day', 'week',  'weekday',  'time', 'date','message'];
 
   form!: FormGroup;
   id = new FormControl("");
@@ -50,6 +51,7 @@ export class RemindersComponent implements OnInit {
   weekday = new FormControl("");
   day = new FormControl("");
   month = new FormControl("");
+  week = new FormControl("");
 
 
   constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe) {
@@ -85,6 +87,7 @@ export class RemindersComponent implements OnInit {
     this.form.removeControl('weekday');
     this.form.removeControl('day');
     this.form.removeControl('month');
+    this.form.removeControl('week');
 
     this.form.patchValue({
       id: reminder.id,
@@ -110,6 +113,13 @@ export class RemindersComponent implements OnInit {
     if (reminder.frequency === FREQUENCY.Monthly) {
       this.form.addControl('day', this.day);
       this.form.patchValue({day: reminder.day});
+    }
+
+    if (reminder.frequency === FREQUENCY.MonthWeekly) {
+      this.form.addControl('week', this.week);
+      this.form.patchValue({week: reminder.week});
+      this.form.addControl('weekday', this.weekday);
+      this.form.patchValue({weekday: reminder.weekday});
     }
 
     if (reminder.frequency === FREQUENCY.Yearly) {
@@ -142,6 +152,9 @@ export class RemindersComponent implements OnInit {
     }
     if (reminder.frequency === FREQUENCY.Monthly) {
       return {...reminder, day: this.form.controls.day.value}
+    }
+    if (reminder.frequency === FREQUENCY.MonthWeekly) {
+      return {...reminder, week: this.form.controls.week.value, weekday: this.form.controls.weekday.value}
     }
     if (reminder.frequency === FREQUENCY.Yearly) {
       return {...reminder, day: this.form.controls.day.value, month: this.form.controls.month.value}

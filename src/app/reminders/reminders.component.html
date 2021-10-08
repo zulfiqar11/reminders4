@@ -35,6 +35,11 @@
     <td mat-cell *matCellDef="let element">{{ element.month }}</td>
   </ng-container>
 
+  <ng-container matColumnDef="week">
+    <th mat-header-cell *matHeaderCellDef>Week</th>
+    <td mat-cell *matCellDef="let element">{{ element.week }}</td>
+  </ng-container>
+
   <ng-container matColumnDef="weekday">
     <th mat-header-cell *matHeaderCellDef>Week Day</th>
     <td mat-cell *matCellDef="let element">{{ element.weekday }}</td>
@@ -111,6 +116,7 @@
             <option value="Daily">Daily</option>
             <option value="Weekly">Weekly</option>
             <option value="Monthly">Monthly</option>
+            <option value="MonthWeekly">MonthWeekly</option>
             <option value="Yearly">Yearly</option>
           </select>
         </mat-form-field>
@@ -137,6 +143,18 @@
               [for]="picker"
             ></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngIf="form.get('week')">
+          <mat-form-field appearance="fill">
+            <mat-label>Week</mat-label>
+            <select formControlName="week" matNativeControl>
+              <option value="First">First</option>
+              <option value="Second">Second</option>
+              <option value="Third">Third</option>
+              <option value="Fourth">Fourth</option>
+            </select>
           </mat-form-field>
         </ng-container>
 
