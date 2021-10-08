@@ -46,6 +46,10 @@ export class RemindersComponent implements OnInit {
 
   ngOnInit(): void {
     this.remindersList$ = this.reminderService.getReminders();
+    this.firstName.disable();
+    this.lastName.disable();
+    this.emailAddress.disable();
+    this.phoneNumber.disable();
 
   }
 
