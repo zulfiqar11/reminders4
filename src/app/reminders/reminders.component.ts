@@ -54,14 +54,13 @@ export class RemindersComponent implements OnInit {
   }
 
   selectReminder(reminder: Reminder) {
-    reminder.date? this.form.addControl('date', this.date) : this.form.removeControl('date');
     this.populateReminderControl(reminder);
-
   }
 
   populateReminderControl(reminder: Reminder) {
-    let date1 =  reminder.date? (new Date(reminder.date? reminder.date: "").toISOString()) : ""
-    date1? this.form.patchValue({date: date1}): "";
+
+    this.form.removeControl('date');
+
     this.form.patchValue({
       id: reminder.id,
       firstName : reminder.firstName,
@@ -71,7 +70,13 @@ export class RemindersComponent implements OnInit {
       frequency: reminder.frequency,
       time: reminder.time,
       message: reminder.message
-    })
+    });
+
+    if (reminder.frequency === 'Once') {
+      this.form.addControl('date', this.date);
+      let date1 =  new Date(reminder.date!).toISOString();
+      this.form.patchValue({date: date1});
+    }
   }
 
   onUpdate() {
@@ -82,18 +87,20 @@ export class RemindersComponent implements OnInit {
   }
 
   populateReminder(): Reminder {
-    let dateValue = this.datePipe.transform(this.form.controls.date.value, 'MM/dd/yyyy')
-
-    return {
+    let reminder: Reminder =  {
       id: this.form.controls.id.value,
       firstName: this.form.controls.firstName.value,
       lastName: this.form.controls.lastName.value,
       emailAddress: this.form.controls.emailAddress.value,
       phoneNumber: this.form.controls.phoneNumber.value,
-      date: (dateValue? dateValue: ""),
       frequency: this.form.controls.frequency.value,
       time: this.form.controls.time.value,
       message: this.form.controls.message.value
     }
+
+    if (reminder.frequency === 'Once') {
+      return {...reminder, date: this.datePipe.transform(this.form.controls.date.value, 'MM/dd/yyyy')}
+    }
+    return reminder;
   }
 }
