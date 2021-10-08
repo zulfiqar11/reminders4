@@ -122,13 +122,6 @@ export class RemindersComponent implements OnInit {
 
   }
 
-  onUpdate() {
-    this.spin = true;
-    let reminder = this.populateReminder();
-    this.reminderService.update(reminder).subscribe(() => this.spin = false);
-    this.remindersList$ = this.reminderService.getReminders();
-  }
-
   populateReminder(): Reminder {
     let reminder: Reminder =  {
       id: this.form.controls.id.value,
@@ -155,4 +148,20 @@ export class RemindersComponent implements OnInit {
     }
     return reminder;
   }
+
+  onUpdate() {
+    this.spin = true;
+    let reminder = this.populateReminder();
+    this.reminderService.update(reminder).subscribe(() => this.spin = false);
+    this.remindersList$ = this.reminderService.getReminders();
+  }
+
+  onDelete() {
+    this.spin = true;
+    let reminder = this.populateReminder();
+    this.reminderService.delete(reminder).subscribe(() => this.spin = false);
+    this.remindersList$ = this.reminderService.getReminders();
+  }
+
+
 }
