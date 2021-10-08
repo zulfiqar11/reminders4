@@ -5,12 +5,31 @@ import { Reminder } from '../shared/model/reminder';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
+enum FREQUENCY {
+  Once = "Once",
+  Weekly = "Weekly",
+  Monthly = "Monthly",
+  Yearly = "Yearly"
+};
+
+enum WEEKDAY {
+  Monday = "Monday",
+  Tuesday = "Tuesday",
+  Wednesday = "Wednesday",
+  Thursday = "Thursday",
+  Friday = "Friday",
+  Saturday = "Saturday",
+  Sunday = "Sunday"
+};
+
 @Component({
   selector: 'app-reminders',
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.css']
 })
+
 export class RemindersComponent implements OnInit {
+
 
   remindersList$!: Observable<Reminder[]>;
   spin = false;
@@ -25,8 +44,12 @@ export class RemindersComponent implements OnInit {
   phoneNumber = new FormControl("", Validators.required);
   frequency = new FormControl("");
   time = new FormControl("");
-  date = new FormControl("");
   message = new FormControl("");
+
+  date = new FormControl("");
+  weekday = new FormControl("");
+  day = new FormControl("");
+  month = new FormControl("");
 
 
   constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe) {
@@ -50,7 +73,6 @@ export class RemindersComponent implements OnInit {
     this.lastName.disable();
     this.emailAddress.disable();
     this.phoneNumber.disable();
-
   }
 
   selectReminder(reminder: Reminder) {
@@ -60,6 +82,9 @@ export class RemindersComponent implements OnInit {
   populateReminderControl(reminder: Reminder) {
 
     this.form.removeControl('date');
+    this.form.removeControl('weekday');
+    this.form.removeControl('day');
+    this.form.removeControl('month');
 
     this.form.patchValue({
       id: reminder.id,
@@ -72,11 +97,29 @@ export class RemindersComponent implements OnInit {
       message: reminder.message
     });
 
-    if (reminder.frequency === 'Once') {
+    if (reminder.frequency === FREQUENCY.Once) {
       this.form.addControl('date', this.date);
-      let date1 =  new Date(reminder.date!).toISOString();
-      this.form.patchValue({date: date1});
+      this.form.patchValue({date: new Date(reminder.date!).toISOString()});
     }
+
+    if (reminder.frequency === FREQUENCY.Weekly) {
+      this.form.addControl('weekday', this.weekday);
+      this.form.patchValue({weekday: reminder.weekday});
+    }
+
+    if (reminder.frequency === FREQUENCY.Monthly) {
+      this.form.addControl('day', this.day);
+      this.form.patchValue({day: reminder.day});
+    }
+
+    if (reminder.frequency === FREQUENCY.Yearly) {
+      this.form.addControl('month', this.month);
+      this.form.patchValue({month: reminder.month});
+
+      this.form.addControl('day', this.day);
+      this.form.patchValue({day: reminder.day});
+    }
+
   }
 
   onUpdate() {
@@ -98,8 +141,17 @@ export class RemindersComponent implements OnInit {
       message: this.form.controls.message.value
     }
 
-    if (reminder.frequency === 'Once') {
+    if (reminder.frequency === FREQUENCY.Once) {
       return {...reminder, date: this.datePipe.transform(this.form.controls.date.value, 'MM/dd/yyyy')}
+    }
+    if (reminder.frequency === FREQUENCY.Weekly) {
+      return {...reminder, weekday: this.form.controls.weekday.value}
+    }
+    if (reminder.frequency === FREQUENCY.Monthly) {
+      return {...reminder, day: this.form.controls.day.value}
+    }
+    if (reminder.frequency === FREQUENCY.Yearly) {
+      return {...reminder, day: this.form.controls.day.value, month: this.form.controls.month.value}
     }
     return reminder;
   }

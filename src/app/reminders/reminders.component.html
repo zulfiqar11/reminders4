@@ -139,6 +139,50 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </ng-container>
+
+        <ng-container *ngIf="form.get('weekday')">
+          <mat-form-field appearance="fill">
+            <mat-label>Weekday</mat-label>
+            <select formControlName="weekday" matNativeControl>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngIf="form.get('month')">
+          <mat-form-field appearance="fill">
+            <mat-label>Month</mat-label>
+            <select formControlName="month" matNativeControl>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngIf="form.get('day')">
+          <mat-form-field appearance="fill">
+            <mat-label>Day</mat-label>
+            <select formControlName="day" matNativeControl>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+            </select>
+          </mat-form-field>
+        </ng-container>
       </td>
     </tr>
     <tr>
