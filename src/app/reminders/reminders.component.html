@@ -111,7 +111,11 @@
       <td>
         <mat-form-field appearance="fill">
           <mat-label>Frequency</mat-label>
-          <select formControlName="frequency" matNativeControl required>
+          <select
+            formControlName="frequency"
+            matNativeControl
+            (change)="selectFrequency($event)"
+          >
             <option value="Once">Once</option>
             <option value="Daily">Daily</option>
             <option value="Weekly">Weekly</option>

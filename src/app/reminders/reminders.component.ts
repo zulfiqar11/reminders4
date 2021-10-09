@@ -31,7 +31,7 @@ enum WEEKDAY {
 
 export class RemindersComponent implements OnInit {
 
-
+  selectedFrequency: string = "";
   remindersList$!: Observable<Reminder[]>;
   spin = false;
 
@@ -83,11 +83,7 @@ export class RemindersComponent implements OnInit {
 
   populateReminderControl(reminder: Reminder) {
 
-    this.form.removeControl('date');
-    this.form.removeControl('weekday');
-    this.form.removeControl('day');
-    this.form.removeControl('month');
-    this.form.removeControl('week');
+    this.removeControls();
 
     this.form.patchValue({
       id: reminder.id,
@@ -174,6 +170,43 @@ export class RemindersComponent implements OnInit {
     let reminder = this.populateReminder();
     this.reminderService.delete(reminder).subscribe(() => this.spin = false);
     this.remindersList$ = this.reminderService.getReminders();
+  }
+
+  removeControls() {
+    this.form.removeControl('date');
+    this.form.removeControl('weekday');
+    this.form.removeControl('day');
+    this.form.removeControl('month');
+    this.form.removeControl('week');
+  }
+
+  selectFrequency(event: Event) {
+    this.selectedFrequency = (event.target as HTMLSelectElement).value;
+
+    this.removeControls();
+
+    if (this.selectedFrequency === FREQUENCY.Once) {
+      this.form.addControl('date', this.date);
+    }
+
+    if (this.selectedFrequency === FREQUENCY.Weekly) {
+      this.form.addControl('weekday', this.weekday);
+    }
+
+    if (this.selectedFrequency === FREQUENCY.Monthly) {
+      this.form.addControl('day', this.day);
+    }
+
+    if (this.selectedFrequency === FREQUENCY.MonthWeekly) {
+      this.form.addControl('week', this.week);
+      this.form.addControl('weekday', this.weekday);
+    }
+
+    if (this.selectedFrequency === FREQUENCY.Yearly) {
+      this.form.addControl('month', this.month);
+      this.form.addControl('day', this.day);
+    }
+
   }
 
 
