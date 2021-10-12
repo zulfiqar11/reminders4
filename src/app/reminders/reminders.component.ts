@@ -57,14 +57,14 @@ export class RemindersComponent implements OnInit {
   constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe) {
     this.form = fb.group(
       {
-        "id": this.id,
-        "firstName": this.firstName,
-        "lastName": this.lastName,
-        "phoneNumber": this.phoneNumber,
-        "emailAddress": this.emailAddress,
-        "frequency": this.frequency,
-        "time": this.time,
-        "message": this.message
+        id: this.id,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        phoneNumber: this.phoneNumber,
+        emailAddress: this.emailAddress,
+        frequency: this.frequency,
+        time: this.time,
+        message: this.message
       }
     )
   }
@@ -111,13 +111,6 @@ export class RemindersComponent implements OnInit {
       this.form.patchValue({day: reminder.day});
     }
 
-    if (reminder.frequency === FREQUENCY.MonthWeekly) {
-      this.form.addControl('week', this.week);
-      this.form.patchValue({week: reminder.week});
-      this.form.addControl('weekday', this.weekday);
-      this.form.patchValue({weekday: reminder.weekday});
-    }
-
     if (reminder.frequency === FREQUENCY.Yearly) {
       this.form.addControl('month', this.month);
       this.form.patchValue({month: reminder.month});
@@ -126,6 +119,12 @@ export class RemindersComponent implements OnInit {
       this.form.patchValue({day: reminder.day});
     }
 
+    if (reminder.frequency === FREQUENCY.MonthWeekly) {
+      this.form.addControl('week', this.week);
+      this.form.patchValue({week: reminder.week});
+      this.form.addControl('weekday', this.weekday);
+      this.form.patchValue({weekday: reminder.weekday});
+    }
   }
 
   populateReminder(): Reminder {
@@ -172,6 +171,47 @@ export class RemindersComponent implements OnInit {
     this.remindersList$ = this.reminderService.getReminders();
   }
 
+  onNew() {
+    this.emptyOutForm();
+    this.removeControls();
+  }
+
+  emptyOutForm() {
+    if (this.form.controls.frequency.value === FREQUENCY.Once) {
+      this.form.controls.date.setValue("");
+    }
+    if (this.form.controls.frequency.value === FREQUENCY.Weekly) {
+      this.form.controls.weekday.setValue("");
+    }
+    if (this.form.controls.frequency.value === FREQUENCY.Monthly) {
+      this.form.controls.day.setValue("");
+    }
+    if (this.form.controls.frequency.value === FREQUENCY.MonthWeekly) {
+      this.form.controls.week.setValue("");
+      this.form.controls.weekday.setValue("");
+    }
+    if (this.form.controls.frequency.value === FREQUENCY.Yearly) {
+      this.form.controls.month.setValue("");
+      this.form.controls.day.setValue("");
+    }
+
+    this.form.controls.id.setValue("");
+    this.form.controls.frequency.setValue("");
+    this.form.controls.time.setValue("");
+    this.form.controls.message.setValue("");
+  }
+
+  onAdd() {
+    this.spin = true;
+    this.reminderService.getReminders().subscribe(reminders => {
+      let reminder = this.populateReminder();
+      let maxId = reminders[reminders.length - 1].id + 1;
+      reminder.id = maxId;
+      this.reminderService.create(reminder).subscribe(() => this.spin = false);
+      this.remindersList$ = this.reminderService.getReminders();
+    })
+  }
+
   removeControls() {
     this.form.removeControl('date');
     this.form.removeControl('weekday');
@@ -206,7 +246,6 @@ export class RemindersComponent implements OnInit {
       this.form.addControl('month', this.month);
       this.form.addControl('day', this.day);
     }
-
   }
 
 
