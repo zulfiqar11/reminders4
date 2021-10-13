@@ -43,9 +43,9 @@ export class RemindersComponent implements OnInit {
   lastName = new FormControl("", Validators.required);
   emailAddress = new FormControl("", Validators.required);
   phoneNumber = new FormControl("", Validators.required);
-  frequency = new FormControl("");
-  time = new FormControl("");
-  message = new FormControl("");
+  frequency = new FormControl("", Validators.required);
+  time = new FormControl("", Validators.required);
+  message = new FormControl("", Validators.required);
 
   date = new FormControl("");
   weekday = new FormControl("");
@@ -53,6 +53,7 @@ export class RemindersComponent implements OnInit {
   month = new FormControl("");
   week = new FormControl("");
 
+  reminderObject!: Reminder;
 
   constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe) {
     this.form = fb.group(
@@ -79,13 +80,14 @@ export class RemindersComponent implements OnInit {
 
   selectReminder(reminder: Reminder) {
     this.populateReminderControl(reminder);
+    this.reminderObject = reminder;
   }
 
   populateReminderControl(reminder: Reminder) {
 
     this.removeControls();
 
-    this.form.patchValue({
+    this.form.setValue({
       id: reminder.id,
       firstName : reminder.firstName,
       lastName : reminder.lastName,
@@ -157,11 +159,24 @@ export class RemindersComponent implements OnInit {
     return reminder;
   }
 
-  onUpdate() {
-    this.spin = true;
-    let reminder = this.populateReminder();
-    this.reminderService.update(reminder).subscribe(() => this.spin = false);
-    this.remindersList$ = this.reminderService.getReminders();
+  onSave() {
+
+    if (this.reminderObject.id === 0) {
+
+      this.spin = true;
+      this.reminderService.getReminders().subscribe(reminders => {
+        let reminder = this.populateReminder();
+        reminder.id = reminders[reminders.length - 1].id + 1;
+        this.reminderService.create(reminder).subscribe(() => this.spin = false);
+        this.remindersList$ = this.reminderService.getReminders();
+      })
+    }
+    else {
+      this.spin = true;
+      let reminder = this.populateReminder();
+      this.reminderService.update(reminder).subscribe(() => this.spin = false);
+      this.remindersList$ = this.reminderService.getReminders();
+    }
   }
 
   onDelete() {
@@ -174,6 +189,7 @@ export class RemindersComponent implements OnInit {
   onNew() {
     this.emptyOutForm();
     this.removeControls();
+    this.reminderObject.id = 0;
   }
 
   emptyOutForm() {
@@ -199,17 +215,6 @@ export class RemindersComponent implements OnInit {
     this.form.controls.frequency.setValue("");
     this.form.controls.time.setValue("");
     this.form.controls.message.setValue("");
-  }
-
-  onAdd() {
-    this.spin = true;
-    this.reminderService.getReminders().subscribe(reminders => {
-      let reminder = this.populateReminder();
-      let maxId = reminders[reminders.length - 1].id + 1;
-      reminder.id = maxId;
-      this.reminderService.create(reminder).subscribe(() => this.spin = false);
-      this.remindersList$ = this.reminderService.getReminders();
-    })
   }
 
   removeControls() {

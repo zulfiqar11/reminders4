@@ -212,10 +212,10 @@
         mat-raised-button
         color="primary"
         type="submit"
-        (click)="onUpdate()"
+        (click)="onSave()"
         [disabled]="!form.valid"
       >
-        Update
+        Save
       </button>
       <mat-spinner *ngIf="spin"></mat-spinner>
       <span style="display: inline-block; width: 2px"></span>
@@ -238,37 +238,6 @@
       >
         New
       </button>
-      <span style="display: inline-block; width: 2px"></span>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onAdd()"
-        [disabled]="!form.valid"
-      >
-        Add
-      </button>
     </tr>
   </table>
 </form>
-
-<!-- {{ form.get("date")! }} -->
-<!-- <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onAdd()"
-        [disabled]="!enableAddState()"
-      >
-        Add
-      </button>
-      <span style="display: inline-block; width: 2px"></span> -->
-<!-- <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onNew()"
-        [disabled]="!enableNewState()"
-      >
-        New
-      </button> -->
