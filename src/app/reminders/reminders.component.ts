@@ -57,7 +57,8 @@ export class RemindersComponent implements OnInit {
   month = new FormControl("");
   week = new FormControl("");
 
-  reminderObject!: Reminder;
+  reminderSelected = false;
+  newState = false;
 
   constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe, private contactService: ContactService) {
     this.form = fb.group(
@@ -86,7 +87,7 @@ export class RemindersComponent implements OnInit {
   selectReminder(reminder: Reminder) {
     this.form.removeControl('contactsList');
     this.populateReminderControl(reminder);
-    this.reminderObject = reminder;
+    this.reminderSelected = true;
   }
 
   populateReminderControl(reminder: Reminder) {
@@ -162,16 +163,22 @@ export class RemindersComponent implements OnInit {
     if (reminder.frequency === FREQUENCY.Yearly) {
       return {...reminder, day: this.form.controls.day.value, month: this.form.controls.month.value}
     }
+
+    if (!this.reminderSelected ||this.newState) {
+      reminder.id = 0;
+    }
+
     return reminder;
   }
 
   onSave() {
 
-    if (this.reminderObject.id === 0) {
+    let reminder = this.populateReminder();
+
+    if (reminder.id === 0) {
 
       this.spin = true;
       this.reminderService.getReminders().subscribe(reminders => {
-        let reminder = this.populateReminder();
         reminder.id = reminders[reminders.length - 1].id + 1;
         this.reminderService.create(reminder).subscribe(() => this.spin = false);
         this.remindersList$ = this.reminderService.getReminders();
@@ -179,7 +186,6 @@ export class RemindersComponent implements OnInit {
     }
     else {
       this.spin = true;
-      let reminder = this.populateReminder();
       this.reminderService.update(reminder).subscribe(() => this.spin = false);
       this.remindersList$ = this.reminderService.getReminders();
     }
@@ -196,7 +202,7 @@ export class RemindersComponent implements OnInit {
     this.form.addControl('contactsList', this.contactsList);
     this.emptyOutForm();
     this.removeControls();
-    this.reminderObject.id = 0;
+    this.newState = true;
   }
 
   emptyOutForm() {
