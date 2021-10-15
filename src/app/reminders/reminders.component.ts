@@ -1,9 +1,11 @@
+import { ContactService } from './../shared/services/contact.service';
 import { ReminderService } from './../shared/services/reminder.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Reminder } from '../shared/model/reminder';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { map } from 'rxjs/operators';
 
 enum FREQUENCY {
   Once = "Once",
@@ -47,6 +49,8 @@ export class RemindersComponent implements OnInit {
   time = new FormControl("", Validators.required);
   message = new FormControl("", Validators.required);
 
+  contactsList = new FormControl("");
+
   date = new FormControl("");
   weekday = new FormControl("");
   day = new FormControl("");
@@ -55,7 +59,7 @@ export class RemindersComponent implements OnInit {
 
   reminderObject!: Reminder;
 
-  constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe) {
+  constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe, private contactService: ContactService) {
     this.form = fb.group(
       {
         id: this.id,
@@ -64,6 +68,7 @@ export class RemindersComponent implements OnInit {
         phoneNumber: this.phoneNumber,
         emailAddress: this.emailAddress,
         frequency: this.frequency,
+        contactsList: this.contactsList,
         time: this.time,
         message: this.message
       }
@@ -87,7 +92,7 @@ export class RemindersComponent implements OnInit {
 
     this.removeControls();
 
-    this.form.setValue({
+    this.form.patchValue({
       id: reminder.id,
       firstName : reminder.firstName,
       lastName : reminder.lastName,
@@ -218,11 +223,27 @@ export class RemindersComponent implements OnInit {
   }
 
   removeControls() {
+
+    // this.form.removeControl('contactsList');
     this.form.removeControl('date');
     this.form.removeControl('weekday');
     this.form.removeControl('day');
     this.form.removeControl('month');
     this.form.removeControl('week');
+  }
+
+  selectContact(event: Event) {
+    let contactId = +(event.target as HTMLSelectElement).value;
+    let contacts$ = this.contactService.getContacts().pipe(
+      map(contacts => contacts.filter(contact => contact.id === contactId))
+      ).subscribe(contacts => {
+        this.form.patchValue({
+          firstName : contacts[0].firstName,
+          lastName : contacts[0].lastName,
+          emailAddress : contacts[0].emailAddress,
+          phoneNumber : contacts[0].phoneNumber
+        });
+    });
   }
 
   selectFrequency(event: Event) {
