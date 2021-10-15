@@ -75,7 +75,7 @@
 
 <form [formGroup]="form" class="example-form">
   <table class="example-full-width" cellspacing="0">
-    <tr>
+    <tr *ngIf="form.get('contactsList')">
       <td>
         <mat-form-field appearance="fill">
           <mat-label>Contacts List</mat-label>

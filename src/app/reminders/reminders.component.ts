@@ -84,6 +84,7 @@ export class RemindersComponent implements OnInit {
   }
 
   selectReminder(reminder: Reminder) {
+    this.form.removeControl('contactsList');
     this.populateReminderControl(reminder);
     this.reminderObject = reminder;
   }
@@ -192,6 +193,7 @@ export class RemindersComponent implements OnInit {
   }
 
   onNew() {
+    this.form.addControl('contactsList', this.contactsList);
     this.emptyOutForm();
     this.removeControls();
     this.reminderObject.id = 0;
@@ -217,6 +219,14 @@ export class RemindersComponent implements OnInit {
     }
 
     this.form.controls.id.setValue("");
+
+    this.form.controls.firstName.setValue("");
+    this.form.controls.lastName.setValue("");
+    this.form.controls.emailAddress.setValue("");
+    this.form.controls.phoneNumber.setValue("");
+
+    this.form.controls.contactsList.setValue("");
+
     this.form.controls.frequency.setValue("");
     this.form.controls.time.setValue("");
     this.form.controls.message.setValue("");
@@ -224,7 +234,6 @@ export class RemindersComponent implements OnInit {
 
   removeControls() {
 
-    // this.form.removeControl('contactsList');
     this.form.removeControl('date');
     this.form.removeControl('weekday');
     this.form.removeControl('day');
