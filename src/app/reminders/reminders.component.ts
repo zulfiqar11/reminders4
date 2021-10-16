@@ -80,40 +80,7 @@ export class RemindersComponent implements OnInit {
     {value: 'December', viewValue: 'December'}
   ];
 
-  // TODO: make this programmatic by counter. may be on ngOnInit or constructor
-  days = [
-    {value: '1', viewValue: '1'},
-    {value: '2', viewValue: '2'},
-    {value: '3', viewValue: '3'},
-    {value: '4', viewValue: '4'},
-    {value: '5', viewValue: '5'},
-    {value: '6', viewValue: '6'},
-    {value: '7', viewValue: '7'},
-    {value: '8', viewValue: '8'},
-    {value: '9', viewValue: '9'},
-    {value: '10', viewValue: '10'},
-    {value: '11', viewValue: '11'},
-    {value: '12', viewValue: '12'},
-    {value: '13', viewValue: '13'},
-    {value: '14', viewValue: '14'},
-    {value: '15', viewValue: '15'},
-    {value: '16', viewValue: '16'},
-    {value: '17', viewValue: '17'},
-    {value: '18', viewValue: '18'},
-    {value: '19', viewValue: '19'},
-    {value: '20', viewValue: '20'},
-    {value: '21', viewValue: '21'},
-    {value: '22', viewValue: '22'},
-    {value: '23', viewValue: '23'},
-    {value: '24', viewValue: '24'},
-    {value: '25', viewValue: '25'},
-    {value: '26', viewValue: '26'},
-    {value: '27', viewValue: '27'},
-    {value: '28', viewValue: '28'},
-    {value: '29', viewValue: '29'},
-    {value: '30', viewValue: '30'},
-    {value: '31', viewValue: '31'}
-  ]
+  days =  [] as any;
 
   form!: FormGroup;
   id = new FormControl("");
@@ -150,6 +117,9 @@ export class RemindersComponent implements OnInit {
         message: this.message
       }
     )
+
+
+
   }
 
   ngOnInit(): void {
@@ -158,6 +128,14 @@ export class RemindersComponent implements OnInit {
     this.lastName.disable();
     this.emailAddress.disable();
     this.phoneNumber.disable();
+
+    for (let i = 1; i < 32; i++) {
+      let newDay = {
+         value: i.toString(),
+         viewValue: i.toString()
+      };
+      this.days.push(newDay);
+    }
   }
 
   selectReminder(reminder: Reminder) {
