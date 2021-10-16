@@ -84,6 +84,7 @@
             formControlName="contactsList"
             (change)="selectContact($event)"
           >
+            <!-- TODO: convert load these from the compononet side. -->
             <option value="1">Zulfiqar Syed | 714-555-1212</option>
             <option value="2">Sobia Syed | 714-555-1313</option>
             <option value="3">Lenah Syed | 714-555-1414</option>
@@ -132,12 +133,9 @@
             matNativeControl
             (change)="selectFrequency($event)"
           >
-            <option value="Once">Once</option>
-            <option value="Daily">Daily</option>
-            <option value="Weekly">Weekly</option>
-            <option value="Monthly">Monthly</option>
-            <option value="MonthWeekly">MonthWeekly</option>
-            <option value="Yearly">Yearly</option>
+            <option *ngFor="let freq of frequencies" [value]="freq.value">
+              {{ freq.viewValue }}
+            </option>
           </select>
         </mat-form-field>
       </td>
@@ -169,48 +167,39 @@
         <mat-form-field appearance="fill" *ngIf="form.get('week')">
           <mat-label>Week</mat-label>
           <select formControlName="week" matNativeControl>
-            <option value="First">First</option>
-            <option value="Second">Second</option>
-            <option value="Third">Third</option>
-            <option value="Fourth">Fourth</option>
+            <option *ngFor="let theWeek of weeks" [value]="theWeek.value">
+              {{ theWeek.viewValue }}
+            </option>
           </select>
         </mat-form-field>
 
         <mat-form-field appearance="fill" *ngIf="form.get('weekday')">
           <mat-label>Weekday</mat-label>
           <select formControlName="weekday" matNativeControl>
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-            <option value="Friday">Friday</option>
-            <option value="Saturday">Saturday</option>
-            <option value="Sunday">Sunday</option>
+            <option
+              *ngFor="let theWeekday of weekdays"
+              [value]="theWeekday.value"
+            >
+              {{ theWeekday.viewValue }}
+            </option>
           </select>
         </mat-form-field>
 
         <mat-form-field appearance="fill" *ngIf="form.get('month')">
           <mat-label>Month</mat-label>
           <select formControlName="month" matNativeControl>
-            <option value="August">August</option>
-            <option value="September">September</option>
-            <option value="October">October</option>
-            <option value="November">November</option>
-            <option value="December">December</option>
+            <option *ngFor="let theMonth of months" [value]="theMonth.value">
+              {{ theMonth.viewValue }}
+            </option>
           </select>
         </mat-form-field>
 
         <mat-form-field appearance="fill" *ngIf="form.get('day')">
           <mat-label>Day</mat-label>
           <select formControlName="day" matNativeControl>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
+            <option *ngFor="let theDay of days" [value]="theDay.value">
+              {{ theDay.viewValue }}
+            </option>
           </select>
         </mat-form-field>
       </td>
