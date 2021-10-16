@@ -224,6 +224,10 @@ export class RemindersComponent implements OnInit {
       message: this.form.controls.message.value
     }
 
+    if (!this.reminderSelected ||this.newState) {
+      reminder.id = 0;
+    }
+
     if (reminder.frequency === FREQUENCY.Once) {
       return {...reminder, date: this.datePipe.transform(this.form.controls.date.value, 'MM/dd/yyyy')}
     }
@@ -240,10 +244,6 @@ export class RemindersComponent implements OnInit {
       return {...reminder, day: this.form.controls.day.value, month: this.form.controls.month.value}
     }
 
-    if (!this.reminderSelected ||this.newState) {
-      reminder.id = 0;
-    }
-
     return reminder;
   }
 
@@ -254,7 +254,6 @@ export class RemindersComponent implements OnInit {
     let reminder = this.populateReminder();
 
     if (reminder.id === 0) {
-      // TODO: there is bug here with reminder id not being saved.
       this.spin = true;
       this.reminderService.getReminders().subscribe(reminders => {
         reminder.id = reminders[reminders.length - 1].id + 1;
