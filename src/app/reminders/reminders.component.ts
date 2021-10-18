@@ -82,6 +82,8 @@ export class RemindersComponent implements OnInit {
 
   days =  [] as any;
 
+  contacts = [] as any;
+
   form!: FormGroup;
   id = new FormControl("");
   firstName = new FormControl("", Validators.required);
@@ -124,6 +126,17 @@ export class RemindersComponent implements OnInit {
 
   ngOnInit(): void {
     this.remindersList$ = this.reminderService.getReminders();
+
+    this.contactService.getContacts()
+      .subscribe(contacts => {
+        contacts.forEach(contact => {
+          let newContact = {
+            value: contact.id.toString(),
+            viewValue: contact.firstName + " " + contact.lastName + " | " + contact.phoneNumber
+          }
+          this.contacts.push(newContact);
+        })
+      })
 
     for (let i = 1; i < 32; i++) {
       let newDay = {

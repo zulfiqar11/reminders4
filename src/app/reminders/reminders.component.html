@@ -84,10 +84,9 @@
             formControlName="contactsList"
             (change)="selectContact($event)"
           >
-            <!-- TODO: convert load these from the compononet side. -->
-            <option value="1">Zulfiqar Syed | 714-555-1212</option>
-            <option value="2">Sobia Syed | 714-555-1313</option>
-            <option value="3">Lenah Syed | 714-555-1414</option>
+            <option *ngFor="let contact of contacts" [value]="contact.value">
+              {{ contact.viewValue }}
+            </option>
           </select>
         </mat-form-field>
       </td>
@@ -151,8 +150,8 @@
           <ngx-material-timepicker #default></ngx-material-timepicker>
         </mat-form-field>
       </td>
-      <td>
-        <ng-container *ngIf="form.get('date')">
+      <td *ngIf="form.get('date')">
+        <ng-container>
           <mat-form-field appearance="fill">
             <mat-label>Date</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="date" />
@@ -163,8 +162,9 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </ng-container>
-
-        <mat-form-field appearance="fill" *ngIf="form.get('week')">
+      </td>
+      <td *ngIf="form.get('week')">
+        <mat-form-field appearance="fill">
           <mat-label>Week</mat-label>
           <select formControlName="week" matNativeControl>
             <option *ngFor="let theWeek of weeks" [value]="theWeek.value">
@@ -172,8 +172,9 @@
             </option>
           </select>
         </mat-form-field>
-
-        <mat-form-field appearance="fill" *ngIf="form.get('weekday')">
+      </td>
+      <td *ngIf="form.get('weekday')">
+        <mat-form-field appearance="fill">
           <mat-label>Weekday</mat-label>
           <select formControlName="weekday" matNativeControl>
             <option
@@ -184,8 +185,9 @@
             </option>
           </select>
         </mat-form-field>
-
-        <mat-form-field appearance="fill" *ngIf="form.get('month')">
+      </td>
+      <td *ngIf="form.get('month')">
+        <mat-form-field appearance="fill">
           <mat-label>Month</mat-label>
           <select formControlName="month" matNativeControl>
             <option *ngFor="let theMonth of months" [value]="theMonth.value">
@@ -193,8 +195,9 @@
             </option>
           </select>
         </mat-form-field>
-
-        <mat-form-field appearance="fill" *ngIf="form.get('day')">
+      </td>
+      <td *ngIf="form.get('day')">
+        <mat-form-field appearance="fill">
           <mat-label>Day</mat-label>
           <select formControlName="day" matNativeControl>
             <option *ngFor="let theDay of days" [value]="theDay.value">
