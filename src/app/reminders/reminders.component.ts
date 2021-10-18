@@ -124,10 +124,6 @@ export class RemindersComponent implements OnInit {
 
   ngOnInit(): void {
     this.remindersList$ = this.reminderService.getReminders();
-    this.firstName.disable();
-    this.lastName.disable();
-    this.emailAddress.disable();
-    this.phoneNumber.disable();
 
     for (let i = 1; i < 32; i++) {
       let newDay = {
@@ -227,8 +223,6 @@ export class RemindersComponent implements OnInit {
 
   onSave() {
 
-    // TODO: the record is being saved even through contaqct is blank.
-
     let reminder = this.populateReminder();
 
     if (reminder.id === 0) {
@@ -261,6 +255,20 @@ export class RemindersComponent implements OnInit {
   }
 
   emptyOutForm() {
+
+    this.form.controls.id.setValue("");
+
+    this.form.controls.firstName.setValue("");
+    this.form.controls.lastName.setValue("");
+    this.form.controls.emailAddress.setValue("");
+    this.form.controls.phoneNumber.setValue("");
+
+    this.form.controls.contactsList.setValue("");
+
+    this.form.controls.frequency.setValue("");
+    this.form.controls.time.setValue("");
+    this.form.controls.message.setValue("");
+
     if (this.form.controls.frequency.value === FREQUENCY.Once) {
       this.form.controls.date.setValue("");
     }
@@ -279,18 +287,6 @@ export class RemindersComponent implements OnInit {
       this.form.controls.day.setValue("");
     }
 
-    this.form.controls.id.setValue("");
-
-    this.form.controls.firstName.setValue("");
-    this.form.controls.lastName.setValue("");
-    this.form.controls.emailAddress.setValue("");
-    this.form.controls.phoneNumber.setValue("");
-
-    this.form.controls.contactsList.setValue("");
-
-    this.form.controls.frequency.setValue("");
-    this.form.controls.time.setValue("");
-    this.form.controls.message.setValue("");
   }
 
   removeControls() {
