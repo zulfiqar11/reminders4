@@ -372,7 +372,7 @@ export class RemindersComponent implements OnInit {
   }
 
   enableSaveButton(): boolean {
-    return this.form.valid;
+    return this.form.valid && !this.form.pristine;
   }
 
   enableDeleteButton(): boolean {
