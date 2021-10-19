@@ -6,6 +6,7 @@ import { Reminder } from '../shared/model/reminder';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { map } from 'rxjs/operators';
+import { Contact } from '../shared/model/contact';
 
 enum FREQUENCY {
   Once = "Once",
@@ -82,7 +83,7 @@ export class RemindersComponent implements OnInit {
 
   days =  [] as any;
 
-  contacts = [] as any;
+  contacts$!: Observable<Contact[]>;
 
   form!: FormGroup;
   id = new FormControl("");
@@ -127,16 +128,16 @@ export class RemindersComponent implements OnInit {
   ngOnInit(): void {
     this.remindersList$ = this.reminderService.getReminders();
 
-    this.contactService.getContacts()
-      .subscribe(contacts => {
-        contacts.forEach(contact => {
-          let newContact = {
-            value: contact.id.toString(),
-            viewValue: contact.firstName + " " + contact.lastName + " | " + contact.phoneNumber
-          }
-          this.contacts.push(newContact);
-        })
+    this.contacts$ = this.contactService.getContacts()
+    .pipe(
+       map(contacts => {
+         return contacts.map(contact =>
+            (
+             { ...contact, value: contact.id.toString(), viewValue: contact.firstName + " " + contact.lastName + " | " + contact.phoneNumber }
+            )
+          )
       })
+    )
 
     for (let i = 1; i < 32; i++) {
       let newDay = {

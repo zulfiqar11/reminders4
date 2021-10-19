@@ -84,7 +84,10 @@
             formControlName="contactsList"
             (change)="selectContact($event)"
           >
-            <option *ngFor="let contact of contacts" [value]="contact.value">
+            <option
+              *ngFor="let contact of contacts$ | async"
+              [value]="contact.value"
+            >
               {{ contact.viewValue }}
             </option>
           </select>
