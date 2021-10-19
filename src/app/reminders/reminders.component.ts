@@ -6,7 +6,7 @@ import { Reminder } from '../shared/model/reminder';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { map } from 'rxjs/operators';
-import { Contact } from '../shared/model/contact';
+import { ContactDisplay } from '../shared/model/contact';
 
 enum FREQUENCY {
   Once = "Once",
@@ -83,7 +83,7 @@ export class RemindersComponent implements OnInit {
 
   days =  [] as any;
 
-  contacts$!: Observable<Contact[]>;
+  contacts$!: Observable<ContactDisplay[]>;
 
   form!: FormGroup;
   id = new FormControl("");
@@ -133,7 +133,7 @@ export class RemindersComponent implements OnInit {
        map(contacts => {
          return contacts.map(contact =>
             (
-             { ...contact, value: contact.id.toString(), viewValue: contact.firstName + " " + contact.lastName + " | " + contact.phoneNumber }
+             { value: contact.id.toString(), viewValue: contact.firstName + " " + contact.lastName + " | " + contact.phoneNumber }
             )
           )
       })

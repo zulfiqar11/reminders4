@@ -4,6 +4,9 @@ export interface Contact {
     lastName: string;
     phoneNumber: string;
     emailAddress: string;
-    value?: string;
-    viewValue?:string;
+}
+
+export interface ContactDisplay {
+  value: string;
+  viewValue: string;
 }
