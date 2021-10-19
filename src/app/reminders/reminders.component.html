@@ -218,37 +218,49 @@
         </mat-form-field>
       </td>
     </tr>
-    <tr>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onSave()"
-        [disabled]="!form.valid"
-      >
-        Save
-      </button>
-      <mat-spinner *ngIf="spin"></mat-spinner>
-      <span style="display: inline-block; width: 2px"></span>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onDelete()"
-        [disabled]="!form.valid"
-      >
-        Delete
-      </button>
-      <span style="display: inline-block; width: 2px"></span>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onNew()"
-        [disabled]="!form.valid"
-      >
-        New
-      </button>
-    </tr>
   </table>
 </form>
+<button
+  mat-raised-button
+  color="primary"
+  type="submit"
+  (click)="onSave()"
+  [disabled]="!enableSaveButton()"
+>
+  Save
+</button>
+
+<mat-spinner *ngIf="spin"></mat-spinner>
+<span style="display: inline-block; width: 2px"></span>
+
+<button
+  mat-raised-button
+  color="primary"
+  type="submit"
+  (click)="onDelete()"
+  [disabled]="!enableDeleteButton()"
+>
+  Delete
+</button>
+<span style="display: inline-block; width: 2px"></span>
+<button
+  mat-raised-button
+  color="primary"
+  type="submit"
+  (click)="onNew()"
+  [disabled]="!enableNewButton()"
+>
+  New
+</button>
+
+<span style="display: inline-block; width: 2px"></span>
+
+<button
+  mat-raised-button
+  color="primary"
+  type="submit"
+  (click)="onCancel()"
+  [disabled]="!enableCancelButton()"
+>
+  Cancel
+</button>

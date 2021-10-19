@@ -105,6 +105,8 @@ export class RemindersComponent implements OnInit {
 
   reminderSelected = false;
   newState = false;
+  cancelState = false;
+  deleteState = false;
 
   constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe, private contactService: ContactService) {
     this.form = fb.group(
@@ -151,7 +153,13 @@ export class RemindersComponent implements OnInit {
   selectReminder(reminder: Reminder) {
     this.form.removeControl('contactsList');
     this.populateReminderControl(reminder);
+
     this.reminderSelected = true;
+    this.cancelState = false;
+    this.deleteState = true;
+    this.newState = true;
+
+    // TODO: IF ANY OF THE INPUT CONTROLS IN DIRTY STATE THEN ENABLE SAVE BUTTON OTHER WISE DISABLE SAVE BUTTON
   }
 
   populateReminderControl(reminder: Reminder) {
@@ -212,7 +220,7 @@ export class RemindersComponent implements OnInit {
       message: this.form.controls.message.value
     }
 
-    if (!this.reminderSelected ||this.newState) {
+    if (!this.reminderSelected) {
       reminder.id = 0;
     }
 
@@ -252,6 +260,8 @@ export class RemindersComponent implements OnInit {
       this.reminderService.update(reminder).subscribe(() => this.spin = false);
       this.remindersList$ = this.reminderService.getReminders();
     }
+
+    this.cancelState = false;
   }
 
   onDelete() {
@@ -265,7 +275,14 @@ export class RemindersComponent implements OnInit {
     this.form.addControl('contactsList', this.contactsList);
     this.emptyOutForm();
     this.removeControls();
+    this.reminderSelected = false;
     this.newState = true;
+    this.cancelState = true;
+  }
+
+  onCancel() {
+    this.emptyOutForm();
+    this.removeControls();
   }
 
   emptyOutForm() {
@@ -354,5 +371,20 @@ export class RemindersComponent implements OnInit {
     }
   }
 
+  enableSaveButton(): boolean {
+    return this.form.valid;
+  }
+
+  enableDeleteButton(): boolean {
+    return this.form.valid && this.deleteState;
+  }
+
+  enableNewButton(): boolean {
+    return this.form.valid && this.newState;
+  }
+
+  enableCancelButton(): boolean {
+    return this.form.valid && this.cancelState;
+  }
 
 }
