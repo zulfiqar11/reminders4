@@ -130,11 +130,7 @@
       <td>
         <mat-form-field appearance="fill">
           <mat-label>Frequency</mat-label>
-          <select
-            formControlName="frequency"
-            matNativeControl
-            (change)="selectFrequency($event)"
-          >
+          <select formControlName="frequency" matNativeControl>
             <option *ngFor="let freq of frequencies" [value]="freq.value">
               {{ freq.viewValue }}
             </option>

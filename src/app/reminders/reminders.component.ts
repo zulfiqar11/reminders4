@@ -34,7 +34,6 @@ enum WEEKDAY {
 
 export class RemindersComponent implements OnInit {
 
-  selectedFrequency: string = "";
   remindersList$!: Observable<Reminder[]>;
   spin = false;
 
@@ -148,6 +147,11 @@ export class RemindersComponent implements OnInit {
       };
       this.days.push(newDay);
     }
+
+    let freqControl = this.form.get('frequency');
+    freqControl?.valueChanges.subscribe(freq => {
+      this.selectFrequency(freq);
+    })
   }
 
   selectReminder(reminder: Reminder) {
@@ -159,7 +163,6 @@ export class RemindersComponent implements OnInit {
     this.deleteState = true;
     this.newState = true;
 
-    // TODO: IF ANY OF THE INPUT CONTROLS IN DIRTY STATE THEN ENABLE SAVE BUTTON OTHER WISE DISABLE SAVE BUTTON
   }
 
   populateReminderControl(reminder: Reminder) {
@@ -343,29 +346,28 @@ export class RemindersComponent implements OnInit {
     });
   }
 
-  selectFrequency(event: Event) {
-    this.selectedFrequency = (event.target as HTMLSelectElement).value;
+  selectFrequency(freqSelected: string) {
 
     this.removeControls();
 
-    if (this.selectedFrequency === FREQUENCY.Once) {
+    if (freqSelected=== FREQUENCY.Once) {
       this.form.addControl('date', this.date);
     }
 
-    if (this.selectedFrequency === FREQUENCY.Weekly) {
+    if (freqSelected=== FREQUENCY.Weekly) {
       this.form.addControl('weekday', this.weekday);
     }
 
-    if (this.selectedFrequency === FREQUENCY.Monthly) {
+    if (freqSelected=== FREQUENCY.Monthly) {
       this.form.addControl('day', this.day);
     }
 
-    if (this.selectedFrequency === FREQUENCY.MonthWeekly) {
+    if (freqSelected === FREQUENCY.MonthWeekly) {
       this.form.addControl('week', this.week);
       this.form.addControl('weekday', this.weekday);
     }
 
-    if (this.selectedFrequency === FREQUENCY.Yearly) {
+    if (freqSelected === FREQUENCY.Yearly) {
       this.form.addControl('month', this.month);
       this.form.addControl('day', this.day);
     }
