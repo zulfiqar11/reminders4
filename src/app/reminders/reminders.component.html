@@ -73,9 +73,9 @@
   ></tr>
 </table>
 
-<form [formGroup]="form" class="example-form">
+<form [formGroup]="remindersForm" class="example-form">
   <table class="example-full-width" cellspacing="0">
-    <tr *ngIf="form.get('contactsList')">
+    <tr *ngIf="remindersForm.get('contactsList')">
       <td>
         <mat-form-field appearance="fill">
           <mat-label>Contacts List</mat-label>
@@ -145,7 +145,7 @@
           <ngx-material-timepicker #default></ngx-material-timepicker>
         </mat-form-field>
       </td>
-      <td *ngIf="form.get('date')">
+      <td *ngIf="remindersForm.get('date')">
         <ng-container>
           <mat-form-field appearance="fill">
             <mat-label>Date</mat-label>
@@ -158,7 +158,7 @@
           </mat-form-field>
         </ng-container>
       </td>
-      <td *ngIf="form.get('week')">
+      <td *ngIf="remindersForm.get('week')">
         <mat-form-field appearance="fill">
           <mat-label>Week</mat-label>
           <select formControlName="week" matNativeControl>
@@ -168,7 +168,7 @@
           </select>
         </mat-form-field>
       </td>
-      <td *ngIf="form.get('weekday')">
+      <td *ngIf="remindersForm.get('weekday')">
         <mat-form-field appearance="fill">
           <mat-label>Weekday</mat-label>
           <select formControlName="weekday" matNativeControl>
@@ -181,7 +181,7 @@
           </select>
         </mat-form-field>
       </td>
-      <td *ngIf="form.get('month')">
+      <td *ngIf="remindersForm.get('month')">
         <mat-form-field appearance="fill">
           <mat-label>Month</mat-label>
           <select formControlName="month" matNativeControl>
@@ -191,7 +191,7 @@
           </select>
         </mat-form-field>
       </td>
-      <td *ngIf="form.get('day')">
+      <td *ngIf="remindersForm.get('day')">
         <mat-form-field appearance="fill">
           <mat-label>Day</mat-label>
           <select formControlName="day" matNativeControl>
