@@ -152,6 +152,11 @@ export class RemindersComponent implements OnInit {
     freqControl?.valueChanges.subscribe(freq => {
       this.selectFrequency(freq);
     })
+
+    let contactListControl = this.form.get('contactsList');
+    contactListControl?.valueChanges.subscribe((contactId: string) => {
+      this.selectContact(+contactId);
+    })
   }
 
   selectReminder(reminder: Reminder) {
@@ -332,8 +337,7 @@ export class RemindersComponent implements OnInit {
     this.form.removeControl('week');
   }
 
-  selectContact(event: Event) {
-    let contactId = +(event.target as HTMLSelectElement).value;
+  selectContact(contactId: number) {
     let contacts$ = this.contactService.getContacts().pipe(
       map(contacts => contacts.filter(contact => contact.id === contactId))
       ).subscribe(contacts => {

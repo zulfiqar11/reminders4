@@ -79,11 +79,7 @@
       <td>
         <mat-form-field appearance="fill">
           <mat-label>Contacts List</mat-label>
-          <select
-            matNativeControl
-            formControlName="contactsList"
-            (change)="selectContact($event)"
-          >
+          <select matNativeControl formControlName="contactsList">
             <option
               *ngFor="let contact of contacts$ | async"
               [value]="contact.value"
