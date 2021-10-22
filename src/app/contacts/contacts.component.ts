@@ -12,6 +12,10 @@ import { Contact } from '../shared/model/contact';
 })
 export class ContactsComponent implements OnInit {
 
+  // TODO: REFACTOR THE WHOLE CONTACTS SCREEN SIMILAR TO THE REMINDERS SCREEN.
+  // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
+  // TODO: FILE UPLOAD FOR CONTACTS IMAGE. DEFAULT IMAGE AS WELL.
+  // TODO: FIX THE CONTACTS SCREEN BUTTONS AND REFACTOR THEM.
   btnState: any = {
     Update: true,
     Delete: true,
@@ -69,6 +73,7 @@ export class ContactsComponent implements OnInit {
   }
 
   onAdd() {
+    // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
     this.spin = true;
     this.contactService.getContacts().subscribe(contacts => {
       let contact = this.populateContact();
