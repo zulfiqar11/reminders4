@@ -34,9 +34,12 @@ enum WEEKDAY {
 
 export class RemindersComponent implements OnInit {
 
-  // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
   // TODO: FILE UPLOAD TO SEND MESSAGE WITH AN IMAGE FILE.
   // TODO: MANAGE BUTTONS LIKE SAVE DELETE ETC BASED ON FORM VALID OR STATE CHANGES.
+  // TODO: table have rows selected by check boxes and be able to select some check boxes and delete them
+  // TODO: create campaigns and for some contacts upload file and send messages to all those contacts.
+  // TODO: Generic functionality for CRUD web service API.
+  // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
 
   remindersList$!: Observable<Reminder[]>;
   spin = false;
@@ -261,7 +264,7 @@ export class RemindersComponent implements OnInit {
   }
 
   onSave() {
-    // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
+
     let reminder = this.populateReminder();
 
     if (reminder.id === 0) {

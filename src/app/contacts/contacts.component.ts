@@ -16,6 +16,10 @@ export class ContactsComponent implements OnInit {
   // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
   // TODO: FILE UPLOAD FOR CONTACTS IMAGE. DEFAULT IMAGE AS WELL.
   // TODO: FIX THE CONTACTS SCREEN BUTTONS AND REFACTOR THEM.
+  // TODO: table have rows selected by check boxes and be able to select some check boxes and delete them
+  // TODO: upload file of contacts and add contacts from the file.
+  // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
+
   btnState: any = {
     Update: true,
     Delete: true,
@@ -73,7 +77,6 @@ export class ContactsComponent implements OnInit {
   }
 
   onAdd() {
-    // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
     this.spin = true;
     this.contactService.getContacts().subscribe(contacts => {
       let contact = this.populateContact();
