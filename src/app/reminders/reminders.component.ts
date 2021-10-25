@@ -1,6 +1,4 @@
 import { ContactNamesService } from './../shared/services/contactNames.service';
-import { ContactService } from './../shared/services/contact.service';
-import { ReminderService } from './../shared/services/reminder.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Reminder } from '../shared/model/reminder';
@@ -8,6 +6,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { DatePipe } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { ContactDisplay } from '../shared/model/contact';
+import { DataService } from '../shared/services/data.service';
 
 enum FREQUENCY {
   Once = "Once",
@@ -31,7 +30,6 @@ enum WEEKDAY {
   selector: 'app-reminders',
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.css'],
-  providers: [ReminderService, {provide: 'theComponentUrl', useValue: 'api/reminders'}]
 })
 
 export class RemindersComponent implements OnInit {
@@ -40,8 +38,8 @@ export class RemindersComponent implements OnInit {
   // TODO: MANAGE BUTTONS LIKE SAVE DELETE ETC BASED ON FORM VALID OR STATE CHANGES.
   // TODO: table have rows selected by check boxes and be able to select some check boxes and delete them
   // TODO: create campaigns and for some contacts upload file and send messages to all those contacts.
-  // TODO: Generic functionality for CRUD web service API.
   // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
+  // TODO: REMOVE REMINDERS SERVICE.
 
   remindersList$!: Observable<Reminder[]>;
   spin = false;
@@ -119,7 +117,8 @@ export class RemindersComponent implements OnInit {
   cancelState = false;
   deleteState = false;
 
-  constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe, private contactNamesService: ContactNamesService) {
+  constructor(fb: FormBuilder,private dataService: DataService<Reminder>, private datePipe: DatePipe, private contactNamesService: ContactNamesService) {
+    this.dataService.Url("api/reminders");
     this.remindersFormGroup = fb.group(
       {
         id: this.id,
@@ -136,7 +135,7 @@ export class RemindersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.remindersList$ = this.reminderService.get();
+    this.remindersList$ = this.dataService.get();
 
     this.contacts$ = this.contactNamesService.get()
     .pipe(
@@ -269,16 +268,16 @@ export class RemindersComponent implements OnInit {
 
     if (reminder.id === 0) {
       this.spin = true;
-      this.reminderService.get().subscribe(reminders => {
+      this.dataService.get().subscribe(reminders => {
         reminder.id = reminders[reminders.length - 1].id + 1;
-        this.reminderService.create(reminder).subscribe(() => this.spin = false);
-        this.remindersList$ = this.reminderService.get();
+        this.dataService.create(reminder).subscribe(() => this.spin = false);
+        this.remindersList$ = this.dataService.get();
       })
     }
     else {
       this.spin = true;
-      this.reminderService.update(reminder).subscribe(() => this.spin = false);
-      this.remindersList$ = this.reminderService.get();
+      this.dataService.update(reminder, reminder.id).subscribe(() => this.spin = false);
+      this.remindersList$ = this.dataService.get();
     }
 
     this.cancelState = false;
@@ -287,8 +286,8 @@ export class RemindersComponent implements OnInit {
   onDelete() {
     this.spin = true;
     let reminder = this.populateReminder();
-    this.reminderService.delete(reminder).subscribe(() => this.spin = false);
-    this.remindersList$ = this.reminderService.get();
+    this.dataService.delete(reminder, reminder.id).subscribe(() => this.spin = false);
+    this.remindersList$ = this.dataService.get();
   }
 
   onNew() {
