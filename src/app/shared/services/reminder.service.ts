@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Reminder } from '../model/reminder';
 
@@ -8,11 +8,13 @@ import { Reminder } from '../model/reminder';
 })
 export class ReminderService {
 
-  private url = 'api/reminders';
+  private url = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject('theComponentUrl') private theComponentUrl?: string) {
+    this.url = this.url + theComponentUrl;
+  }
 
-  getReminders(): Observable<Reminder[]> {
+  get(): Observable<Reminder[]> {
     return this.http.get<Reminder[]>(this.url);
   }
 

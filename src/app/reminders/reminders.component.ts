@@ -29,7 +29,8 @@ enum WEEKDAY {
 @Component({
   selector: 'app-reminders',
   templateUrl: './reminders.component.html',
-  styleUrls: ['./reminders.component.css']
+  styleUrls: ['./reminders.component.css'],
+  providers: [ReminderService, {provide: 'theComponentUrl', useValue: 'api/reminders'}]
 })
 
 export class RemindersComponent implements OnInit {
@@ -131,12 +132,10 @@ export class RemindersComponent implements OnInit {
         message: this.messageControl
       }
     )
-
-
   }
 
   ngOnInit(): void {
-    this.remindersList$ = this.reminderService.getReminders();
+    this.remindersList$ = this.reminderService.get();
 
     this.contacts$ = this.contactService.getContacts()
     .pipe(
@@ -269,16 +268,16 @@ export class RemindersComponent implements OnInit {
 
     if (reminder.id === 0) {
       this.spin = true;
-      this.reminderService.getReminders().subscribe(reminders => {
+      this.reminderService.get().subscribe(reminders => {
         reminder.id = reminders[reminders.length - 1].id + 1;
         this.reminderService.create(reminder).subscribe(() => this.spin = false);
-        this.remindersList$ = this.reminderService.getReminders();
+        this.remindersList$ = this.reminderService.get();
       })
     }
     else {
       this.spin = true;
       this.reminderService.update(reminder).subscribe(() => this.spin = false);
-      this.remindersList$ = this.reminderService.getReminders();
+      this.remindersList$ = this.reminderService.get();
     }
 
     this.cancelState = false;
@@ -288,7 +287,7 @@ export class RemindersComponent implements OnInit {
     this.spin = true;
     let reminder = this.populateReminder();
     this.reminderService.delete(reminder).subscribe(() => this.spin = false);
-    this.remindersList$ = this.reminderService.getReminders();
+    this.remindersList$ = this.reminderService.get();
   }
 
   onNew() {
