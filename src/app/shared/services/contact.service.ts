@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Contact } from '../model/contact';
 
@@ -9,11 +9,13 @@ import { Contact } from '../model/contact';
 })
 export class ContactService {
 
-  private url = 'api/contacts';
+  private url = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject('theComponentUrl') private theComponentUrl?: string) {
+    this.url = this.url + theComponentUrl;
+  }
 
-  getContacts(): Observable<Contact[]> {
+  get(): Observable<Contact[]> {
     return this.http.get<Contact[]>(this.url);
   }
 

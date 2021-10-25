@@ -8,7 +8,8 @@ import { Contact } from '../shared/model/contact';
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css']
+  styleUrls: ['./contacts.component.css'],
+  providers: [ContactService, {provide: 'theComponentUrl', useValue: 'api/contacts'}]
 })
 export class ContactsComponent implements OnInit {
 
@@ -52,7 +53,7 @@ export class ContactsComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.contactsList$ = this.contactService.getContacts();
+    this.contactsList$ = this.contactService.get();
 
     this.btnState.New = false;
     this.btnState.Add = true;
@@ -73,17 +74,17 @@ export class ContactsComponent implements OnInit {
     this.spin = true;
     let contact = this.populateContact();
     this.contactService.update(contact).subscribe(() => this.spin = false);
-    this.contactsList$ = this.contactService.getContacts();
+    this.contactsList$ = this.contactService.get();
   }
 
   onAdd() {
     this.spin = true;
-    this.contactService.getContacts().subscribe(contacts => {
+    this.contactService.get().subscribe(contacts => {
       let contact = this.populateContact();
       let maxId = contacts[contacts.length - 1].id + 1;
       contact.id = maxId;
       this.contactService.create(contact).subscribe(() => this.spin = false);
-      this.contactsList$ = this.contactService.getContacts();
+      this.contactsList$ = this.contactService.get();
     })
   }
 
@@ -93,7 +94,7 @@ export class ContactsComponent implements OnInit {
     this.contactService.delete(contact).subscribe(() => {
       this.spin = false;
     });
-    this.contactsList$ = this.contactService.getContacts();
+    this.contactsList$ = this.contactService.get();
 
     this.emptyOutForm();
     this.btnState.New = false;

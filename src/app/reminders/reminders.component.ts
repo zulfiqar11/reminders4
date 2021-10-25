@@ -1,3 +1,4 @@
+import { ContactNamesService } from './../shared/services/contactNames.service';
 import { ContactService } from './../shared/services/contact.service';
 import { ReminderService } from './../shared/services/reminder.service';
 import { Component, OnInit } from '@angular/core';
@@ -118,7 +119,7 @@ export class RemindersComponent implements OnInit {
   cancelState = false;
   deleteState = false;
 
-  constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe, private contactService: ContactService) {
+  constructor(fb: FormBuilder,private reminderService: ReminderService, private datePipe: DatePipe, private contactNamesService: ContactNamesService) {
     this.remindersFormGroup = fb.group(
       {
         id: this.id,
@@ -137,7 +138,7 @@ export class RemindersComponent implements OnInit {
   ngOnInit(): void {
     this.remindersList$ = this.reminderService.get();
 
-    this.contacts$ = this.contactService.getContacts()
+    this.contacts$ = this.contactNamesService.get()
     .pipe(
        map(contacts => {
          return contacts.map(contact =>
@@ -349,7 +350,7 @@ export class RemindersComponent implements OnInit {
   }
 
   selectContact(contactId: number) {
-    let contacts$ = this.contactService.getContacts().pipe(
+    let contacts$ = this.contactNamesService.get().pipe(
       map(contacts => contacts.filter(contact => contact.id === contactId))
       ).subscribe(contacts => {
         this.remindersFormGroup.patchValue({
