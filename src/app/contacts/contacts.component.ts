@@ -1,15 +1,14 @@
-import { ContactService } from './../shared/services/contact.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 import { Contact } from '../shared/model/contact';
+import { DataService } from '../shared/services/data.service';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css'],
-  providers: [ContactService, {provide: 'theComponentUrl', useValue: 'api/contacts'}]
+  styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
 
@@ -40,7 +39,8 @@ export class ContactsComponent implements OnInit {
   emailAddress = new FormControl("", Validators.required);
   phoneNumber = new FormControl("", Validators.required);
 
-  constructor(fb: FormBuilder, private contactService: ContactService) {
+  constructor(fb: FormBuilder, private dataService: DataService<Contact>) {
+    this.dataService.Url('api/contacts');
     this.form = fb.group(
       {
         "id": this.id,
@@ -53,7 +53,7 @@ export class ContactsComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.contactsList$ = this.contactService.get();
+    this.contactsList$ = this.dataService.get();
 
     this.btnState.New = false;
     this.btnState.Add = true;
@@ -73,28 +73,28 @@ export class ContactsComponent implements OnInit {
   onUpdate() {
     this.spin = true;
     let contact = this.populateContact();
-    this.contactService.update(contact).subscribe(() => this.spin = false);
-    this.contactsList$ = this.contactService.get();
+    this.dataService.update(contact, contact.id).subscribe(() => this.spin = false);
+    this.contactsList$ = this.dataService.get();
   }
 
   onAdd() {
     this.spin = true;
-    this.contactService.get().subscribe(contacts => {
+    this.dataService.get().subscribe(contacts => {
       let contact = this.populateContact();
       let maxId = contacts[contacts.length - 1].id + 1;
       contact.id = maxId;
-      this.contactService.create(contact).subscribe(() => this.spin = false);
-      this.contactsList$ = this.contactService.get();
+      this.dataService.create(contact).subscribe(() => this.spin = false);
+      this.contactsList$ = this.dataService.get();
     })
   }
 
   onDelete() {
     this.spin = true;
     let contact = this.populateContact();
-    this.contactService.delete(contact).subscribe(() => {
+    this.dataService.delete(contact, contact.id).subscribe(() => {
       this.spin = false;
     });
-    this.contactsList$ = this.contactService.get();
+    this.contactsList$ = this.dataService.get();
 
     this.emptyOutForm();
     this.btnState.New = false;
