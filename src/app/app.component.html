@@ -1,7 +1,7 @@
-<app-header (sideNavToggle)="sidenav.toggle()"></app-header>
+<!-- <app-header (sideNavToggle)="sidenav.toggle()"></app-header> -->
 <mat-sidenav-container>
-  <mat-sidenav #sidenav>
-    <app-sidenav-list (sideNavClose)="sidenav.close()"></app-sidenav-list>
+  <mat-sidenav #sidenav opened mode="side">
+    <app-sidenav-list></app-sidenav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
