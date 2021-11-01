@@ -3,6 +3,20 @@ import { InMemoryDbService } from 'angular-in-memory-web-api';
 export class InMemoryDataService implements InMemoryDbService {
   constructor() {}
   createDb() {
+    const contactsList = [
+      {
+        id: 1,
+        listName: 'My First List',
+        contactsCount: 20,
+        addedDate: '11/01/2021 04:55 AM'
+      },
+      {
+        id: 2,
+        listName: 'My Second List',
+        contactsCount: 10,
+        addedDate: '10/11/2021 05:30 PM'
+      }
+    ]
     const contacts = [
       {
         id: 1,
@@ -96,6 +110,6 @@ export class InMemoryDataService implements InMemoryDbService {
         message: "reminder message 5"
       }
     ];
-    return { contacts, reminders };
+    return { contacts, reminders, contactsList };
   }
 }

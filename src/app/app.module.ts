@@ -25,6 +25,7 @@ import { AngularFireModule } from '@angular/fire';
 import { PageNotFoundComponent } from './navigation/page-not-found/page-not-found.component';
 import { DatePipe } from '@angular/common';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { ContactsListComponent } from './contacts/contacts-list/contacts-list.component';
 
 
 
@@ -39,7 +40,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     SidenavListComponent,
     ContactsComponent,
     RemindersComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ContactsListComponent
   ],
   imports: [
     BrowserModule,

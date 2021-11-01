@@ -1,3 +1,4 @@
+import { ContactsListComponent } from './contacts/contacts-list/contacts-list.component';
 import { PageNotFoundComponent } from './navigation/page-not-found/page-not-found.component';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { RemindersComponent } from './reminders/reminders.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard]},
+  {path: 'contactsList', component: ContactsListComponent, canActivate: [AuthGuard]},
   {path: 'reminders', component: RemindersComponent, canActivate: [AuthGuard]},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}

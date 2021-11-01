@@ -10,3 +10,10 @@ export interface ContactDisplay {
   value: string;
   viewValue: string;
 }
+
+export interface ContactsList {
+  id: number;
+  listName: string;
+  contactsCount: number;
+  addedDate: string;
+}
