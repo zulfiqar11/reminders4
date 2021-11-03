@@ -7,14 +7,70 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 1,
         listName: 'My First List',
-        contactsCount: 20,
+        contactsCount: 3,
         addedDate: '11/01/2021 04:55 AM'
       },
       {
         id: 2,
         listName: 'My Second List',
-        contactsCount: 10,
+        contactsCount: 4,
         addedDate: '10/11/2021 05:30 PM'
+      },
+      {
+        id: 3,
+        listName: 'My Third List',
+        contactsCount: 2,
+        addedDate: '10/11/2021 05:30 PM'
+      }
+    ]
+    const contactsListDetails = [
+      {
+        id: 1,
+        contactsListId : 1,
+        firstName: 'cont1first1',
+        lastName: 'cont1last1',
+        phone: '7145551212',
+        email: 'cont1@mydomain.com'
+      },
+      {
+        id: 2,
+        contactsListId : 1,
+        firstName: 'cont2first1',
+        lastName: 'cont2last1',
+        phone: '7145551212',
+        email: 'cont2@mydomain.com'
+      },
+      {
+        id: 3,
+        contactsListId : 2,
+        firstName: 'cont3first1',
+        lastName: 'cont3last1',
+        phone: '7145551212',
+        email: 'cont3@mydomain.com'
+      },
+      {
+        id: 4,
+        contactsListId : 2,
+        firstName: 'cont4first1',
+        lastName: 'cont4last1',
+        phone: '7145551212',
+        email: 'cont4@mydomain.com'
+      },
+      {
+        id: 5,
+        contactsListId : 3,
+        firstName: 'cont5first1',
+        lastName: 'cont5last1',
+        phone: '7145551212',
+        email: 'cont5@mydomain.com'
+      },
+      {
+        id: 6,
+        contactsListId : 3,
+        firstName: 'cont6first1',
+        lastName: 'cont6last1',
+        phone: '7145551212',
+        email: 'cont6@mydomain.com'
       }
     ]
     const contacts = [
@@ -110,6 +166,6 @@ export class InMemoryDataService implements InMemoryDbService {
         message: "reminder message 5"
       }
     ];
-    return { contacts, reminders, contactsList };
+    return { contacts, reminders, contactsList, contactsListDetails };
   }
 }
