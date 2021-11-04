@@ -1,3 +1,4 @@
+// TODO: refactor and review these
 export interface Contact {
     id: number;
     firstName: string;
@@ -16,8 +17,11 @@ export interface ContactsList {
   listName: string;
   contactsCount: number;
   addedDate: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
 }
-
 
 export interface ContactsListNames{
   id: number;
