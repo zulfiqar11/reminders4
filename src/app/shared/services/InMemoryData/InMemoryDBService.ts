@@ -8,25 +8,7 @@ export class InMemoryDataService implements InMemoryDbService {
         id: 1,
         listName: 'My First List',
         contactsCount: 3,
-        addedDate: '11/01/2021 04:55 AM'
-      },
-      {
-        id: 2,
-        listName: 'My Second List',
-        contactsCount: 4,
-        addedDate: '10/11/2021 05:30 PM'
-      },
-      {
-        id: 3,
-        listName: 'My Third List',
-        contactsCount: 2,
-        addedDate: '10/11/2021 05:30 PM'
-      }
-    ]
-    const contactsListDetails = [
-      {
-        id: 1,
-        contactsListId : 1,
+        addedDate: '11/01/2021 04:55 AM',
         firstName: 'cont1first1',
         lastName: 'cont1last1',
         phone: '7145551212',
@@ -34,7 +16,9 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 2,
-        contactsListId : 1,
+        listName: 'My First List',
+        contactsCount: 3,
+        addedDate: '11/01/2021 04:55 AM',
         firstName: 'cont2first1',
         lastName: 'cont2last1',
         phone: '7145551212',
@@ -42,7 +26,9 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 3,
-        contactsListId : 2,
+        listName: 'My First List',
+        contactsCount: 3,
+        addedDate: '11/01/2021 04:55 AM',
         firstName: 'cont3first1',
         lastName: 'cont3last1',
         phone: '7145551212',
@@ -50,28 +36,37 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 4,
-        contactsListId : 2,
-        firstName: 'cont4first1',
-        lastName: 'cont4last1',
+        listName: 'My Second List',
+        contactsCount: 3,
+        addedDate: '10/01/2021 04:55 AM',
+        firstName: 'cont2first1',
+        lastName: 'cont2last1',
         phone: '7145551212',
         email: 'cont4@mydomain.com'
       },
       {
         id: 5,
-        contactsListId : 3,
-        firstName: 'cont5first1',
-        lastName: 'cont5last1',
+        listName: 'My Second List',
+        contactsCount: 3,
+        addedDate: '10/01/2021 04:55 AM',
+        firstName: 'cont2first2',
+        lastName: 'cont2last2',
         phone: '7145551212',
         email: 'cont5@mydomain.com'
       },
       {
         id: 6,
-        contactsListId : 3,
-        firstName: 'cont6first1',
-        lastName: 'cont6last1',
+        listName: 'My Second List',
+        contactsCount: 3,
+        addedDate: '10/01/2021 04:55 AM',
+        firstName: 'cont2first3',
+        lastName: 'cont2last3',
         phone: '7145551212',
         email: 'cont6@mydomain.com'
       }
+
+
+
     ]
     const contacts = [
       {
@@ -166,6 +161,6 @@ export class InMemoryDataService implements InMemoryDbService {
         message: "reminder message 5"
       }
     ];
-    return { contacts, reminders, contactsList, contactsListDetails };
+    return { contacts, reminders, contactsList };
   }
 }

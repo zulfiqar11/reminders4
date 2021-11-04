@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { distinct, map, tap } from 'rxjs/operators';
 import { ContactsList } from 'src/app/shared/model/contact';
 import { DataService } from 'src/app/shared/services/data.service';
 
@@ -10,8 +11,8 @@ import { DataService } from 'src/app/shared/services/data.service';
 })
 export class ContactsFileListComponent implements OnInit {
 
-  displayedColumnsContactsList: string[] = ['id', 'listName', 'contactsCount', 'addedDate'];
-  contactsFiles$!: Observable<ContactsList[]>;
+  displayedColumnsContactsList: string[] = ['listName', 'contactsCount', 'addedDate'];
+  contactsFiles$!: Observable<any[]>;
   fileLoaded = new EventEmitter<string[]>();
   mylines: string[] = [];
   contact: string[] = [];
@@ -24,11 +25,29 @@ export class ContactsFileListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.contactsFiles$ = this.dataService.get();
+    this.dataService.get().pipe(
+        map(contactsfiles => {
+            return contactsfiles.map(contactFile => {
+              return ({
+                listName: contactFile.listName,
+                contactsCount: contactFile.contactsCount,
+                addedDate: contactFile.addedDate
+              })
+            })
+           })
+      )
+      .subscribe(data => {
+                  data = data.filter((thing, index, self) =>
+                    index === self.findIndex((t) => (
+                      t.listName === thing.listName
+                          && t.contactsCount === thing.contactsCount
+                          && t.addedDate === thing.addedDate))
+                )
+          this.contactsFiles$! = of(data);
+      })
 
     this.fileLoaded.subscribe((lines: string[]) => {
       this.mylines = lines;
-//       console.log('2nd lines -> ', lines[2]);
       this.contact = lines[2].split('\t');
       this.fileRecordCount = lines.length;
 

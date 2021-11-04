@@ -1,4 +1,7 @@
+import { ContactsListNames } from './../../shared/model/contact';
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/shared/services/data.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-contacts-names-file-list',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactsNamesFileListComponent implements OnInit {
 
-  constructor() { }
+  contactsListNames$!: Observable<ContactsListNames[]>;
+
+  constructor(private dataService: DataService<ContactsListNames>) {
+  }
 
   ngOnInit(): void {
+    this.dataService.get().subscribe(data => console.log(data))
   }
 
 }

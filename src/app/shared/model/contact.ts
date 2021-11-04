@@ -17,3 +17,13 @@ export interface ContactsList {
   contactsCount: number;
   addedDate: string;
 }
+
+
+export interface ContactsListNames{
+  id: number;
+  contactsListId : number;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+}
