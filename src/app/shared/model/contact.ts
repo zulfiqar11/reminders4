@@ -23,6 +23,12 @@ export interface ContactsList {
   email: string;
 }
 
+export interface ContactsListDisplay {
+  listName: string;
+  contactsCount: number;
+  addedDate: string;
+}
+
 export interface ContactsListNames{
   id: number;
   contactsListId : number;

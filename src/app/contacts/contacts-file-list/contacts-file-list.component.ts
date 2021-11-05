@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { distinct, map, tap } from 'rxjs/operators';
-import { ContactsList } from 'src/app/shared/model/contact';
+import { ContactsList, ContactsListDisplay } from 'src/app/shared/model/contact';
 import { DataService } from 'src/app/shared/services/data.service';
 
 @Component({
@@ -15,14 +15,15 @@ export class ContactsFileListComponent implements OnInit {
   displayedColumnsContactNames: string[] = ['firstName', 'lastName', 'phone', 'email'];
 
   //TODO: refactor following to strong datatype
-  contactsFiles$!: Observable<any[]>;
+  contactsFiles$!: Observable<ContactsListDisplay[]>;
   contactNames$!: Observable<any[]>;
 
   fileLoaded = new EventEmitter<string[]>();
+
+  //TODO: refactor variable names and just review them.
   mylines: string[] = [];
   contact: string[] = [];
   fileName: string = '';
-  fileRecordCount: number = 0
 
   constructor(private dataService: DataService<ContactsList>) {
     this.dataService.Url('api/contactsList');
@@ -30,33 +31,12 @@ export class ContactsFileListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // TODO: refactor to better map operator
-    this.dataService.get().pipe(
-        map(contactsfiles => {
-            return contactsfiles.map(contactFile => {
-              return ({
-                listName: contactFile.listName,
-                contactsCount: contactFile.contactsCount,
-                addedDate: contactFile.addedDate
-              })
-            })
-           })
-      )
-      .subscribe(data => {
-                  data = data.filter((thing, index, self) =>
-                    index === self.findIndex((t) => (
-                      t.listName === thing.listName
-                          && t.contactsCount === thing.contactsCount
-                          && t.addedDate === thing.addedDate))
-                )
-          this.contactsFiles$! = of(data);
-      })
+    this.contactsFiles$! = this.getContactsDistinctListData();
 
     this.fileLoaded.subscribe((lines: string[]) => {
       this.mylines = lines;
       // TODO: refactor /r out of email address
       this.contact = lines[2].split('\t');
-      this.fileRecordCount = lines.length;
 
       console.log('filename ', this.fileName);
       console.log('lines count -> ', lines.length - 1);
@@ -80,6 +60,25 @@ export class ContactsFileListComponent implements OnInit {
     })
   }
 
+  getContactsDistinctListData(): Observable<ContactsListDisplay[]> {
+    return this.dataService.get().pipe(
+      map(contactsfiles => {
+          contactsfiles = contactsfiles.filter((thing, index, self) =>
+          index === self.findIndex((t) => (
+            t.listName === thing.listName
+                && t.contactsCount === thing.contactsCount
+                && t.addedDate === thing.addedDate))
+          )
+          return contactsfiles.map(contactFile => {
+            return ({
+              listName: contactFile.listName,
+              contactsCount: contactFile.contactsCount,
+              addedDate: contactFile.addedDate
+            })
+          })
+         })
+    )
+  }
   selectContactFile(selectedFile: {listName: string, recordCount: number, dateAdded: string}) {
 
     // TODO: refactor to better map operator
