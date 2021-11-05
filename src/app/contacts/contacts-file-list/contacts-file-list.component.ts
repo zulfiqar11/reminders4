@@ -26,6 +26,7 @@ export class ContactsFileListComponent implements OnInit {
 
   //TODO: refactor variable names and just review them.
   fileName: string = '';
+  fileId = 0;
 
   constructor(private dataService: DataService<ContactsList>, private http: HttpClient) {
     this.dataService.Url('api/contactsList');
@@ -35,20 +36,27 @@ export class ContactsFileListComponent implements OnInit {
 
     this.contactsFiles$! = this.getContactsDistinctListData();
 
+    this.dataService.get().subscribe(data => {
+      this.fileId = data.length + 1;
+    });
+
     this.fileLoaded.subscribe((lines: string[]) => {
 
-      // TODO: dont add the header line, manage the correct Id, when all done refresh the grid, the addedDate is hardcoded.
-      let theId = 7
+      // TODO: when another .csv file is uploaded it replaces the existing .csv file.
+      // TODO: remove header line from .csv file.
+      let theId = this.fileId
 
       lines.forEach(line => {
-        let contact = line.split('\t');
 
-        theId = theId + 1;
+        let contact = line.split('\t');
+        let currentDateTime = new Date().toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
+        currentDateTime = currentDateTime.replace(',', '');
+
         let contactList: ContactsList = {
             id: theId,
             listName : this.fileName,
             contactsCount: (lines.length - 1),
-            addedDate: '11/01/2021 04:55 AM',
+            addedDate: currentDateTime,
             firstName: contact[0],
             lastName: contact[1],
             phone: contact[2],
@@ -56,9 +64,11 @@ export class ContactsFileListComponent implements OnInit {
         };
         console.log('contact -> ', contactList);
         this.dataService.create(contactList).subscribe(data => data);
-
+        theId = theId + 1;
       })
+      this.contactsFiles$! = this.getContactsDistinctListData();
     })
+
   }
 
   getContactsDistinctListData(): Observable<ContactsListDisplay[]> {
