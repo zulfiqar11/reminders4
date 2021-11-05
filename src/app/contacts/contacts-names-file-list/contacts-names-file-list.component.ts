@@ -1,22 +1,24 @@
-import { ContactsListNames } from './../../shared/model/contact';
-import { Component, OnInit } from '@angular/core';
-import { DataService } from 'src/app/shared/services/data.service';
-import { Observable } from 'rxjs';
+// TODO: DELETE THIS LATER
 
-@Component({
-  selector: 'app-contacts-names-file-list',
-  templateUrl: './contacts-names-file-list.component.html',
-  styleUrls: ['./contacts-names-file-list.component.css']
-})
-export class ContactsNamesFileListComponent implements OnInit {
+// import { ContactsListNames } from './../../shared/model/contact';
+// import { Component, OnInit } from '@angular/core';
+// import { DataService } from 'src/app/shared/services/data.service';
+// import { Observable } from 'rxjs';
 
-  contactsListNames$!: Observable<ContactsListNames[]>;
+// @Component({
+//   selector: 'app-contacts-names-file-list',
+//   templateUrl: './contacts-names-file-list.component.html',
+//   styleUrls: ['./contacts-names-file-list.component.css']
+// })
+// export class ContactsNamesFileListComponent implements OnInit {
 
-  constructor(private dataService: DataService<ContactsListNames>) {
-  }
+//   contactsListNames$!: Observable<ContactsListNames[]>;
 
-  ngOnInit(): void {
-    this.dataService.get().subscribe(data => console.log(data))
-  }
+//   constructor(private dataService: DataService<ContactsListNames>) {
+//   }
 
-}
+//   ngOnInit(): void {
+//     this.dataService.get().subscribe(data => console.log(data))
+//   }
+
+// }

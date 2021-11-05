@@ -1,4 +1,6 @@
 // TODO: refactor and review these
+
+// TODO: Contact interface may not be needed.
 export interface Contact {
     id: number;
     firstName: string;
@@ -29,11 +31,3 @@ export interface ContactsListDisplay {
   addedDate: string;
 }
 
-export interface ContactsListNames{
-  id: number;
-  contactsListId : number;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: string;
-}

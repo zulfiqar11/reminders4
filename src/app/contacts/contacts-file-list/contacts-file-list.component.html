@@ -35,6 +35,12 @@
   />
 </div>
 
+<div>
+  <button mat-raised-button color="primary" (click)="onDelete()" type="submit">
+    Delete
+  </button>
+</div>
+
 <div *ngIf="contactNames$ | async">
   <table mat-table [dataSource]="contactNames$" class="mat-elevation-z8">
     <ng-container matColumnDef="firstName">

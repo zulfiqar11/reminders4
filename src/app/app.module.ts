@@ -27,7 +27,9 @@ import { DatePipe } from '@angular/common';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { ContactsListComponent } from './contacts/contacts-list/contacts-list.component';
 import { ContactsFileListComponent } from './contacts/contacts-file-list/contacts-file-list.component';
-import { ContactsNamesFileListComponent } from './contacts/contacts-names-file-list/contacts-names-file-list.component';
+
+// TODO:
+// import { ContactsNamesFileListComponent } from './contacts/contacts-names-file-list/contacts-names-file-list.component';
 
 
 
@@ -45,7 +47,7 @@ import { ContactsNamesFileListComponent } from './contacts/contacts-names-file-l
     PageNotFoundComponent,
     ContactsListComponent,
     ContactsFileListComponent,
-    ContactsNamesFileListComponent
+   //  ContactsNamesFileListComponent
   ],
   imports: [
     BrowserModule,

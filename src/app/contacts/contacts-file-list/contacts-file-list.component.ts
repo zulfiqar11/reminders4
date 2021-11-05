@@ -1,6 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { distinct, map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ContactsList, ContactsListDisplay } from 'src/app/shared/model/contact';
 import { DataService } from 'src/app/shared/services/data.service';
 
@@ -14,18 +15,19 @@ export class ContactsFileListComponent implements OnInit {
   displayedColumnsContactsList: string[] = ['listName', 'contactsCount', 'addedDate'];
   displayedColumnsContactNames: string[] = ['firstName', 'lastName', 'phone', 'email'];
 
+  selectedContactFile! : ContactsListDisplay;
+
   //TODO: refactor following to strong datatype
   contactsFiles$!: Observable<ContactsListDisplay[]>;
   contactNames$!: Observable<any[]>;
 
   fileLoaded = new EventEmitter<string[]>();
+  fileDelete = new EventEmitter<ContactsList>();
 
   //TODO: refactor variable names and just review them.
-  mylines: string[] = [];
-  contact: string[] = [];
   fileName: string = '';
 
-  constructor(private dataService: DataService<ContactsList>) {
+  constructor(private dataService: DataService<ContactsList>, private http: HttpClient) {
     this.dataService.Url('api/contactsList');
   }
 
@@ -34,29 +36,28 @@ export class ContactsFileListComponent implements OnInit {
     this.contactsFiles$! = this.getContactsDistinctListData();
 
     this.fileLoaded.subscribe((lines: string[]) => {
-      this.mylines = lines;
-      // TODO: refactor /r out of email address
-      this.contact = lines[2].split('\t');
 
-      console.log('filename ', this.fileName);
-      console.log('lines count -> ', lines.length - 1);
-      console.log('this.contact', this.contact);
-      let contactList: ContactsList = {
-        id: 11,
-        listName : this.fileName,
-        contactsCount: (lines.length - 1),
-        addedDate: '11/01/2021 04:55 AM',
-        firstName: this.contact[0],
-        lastName: this.contact[1],
-        phone: this.contact[2],
-        email: this.contact[3]
-      };
-      console.log('contactList', contactList);
-      this.dataService.get().subscribe(list => console.log('before', list));
-      this.dataService.create(contactList);
-      // this.dataService.get().subscribe(list => console.log(JSON.stringify(list)));
-      this.dataService.get().subscribe(list => console.log('after', list));
+      // TODO: dont add the header line, manage the correct Id, when all done refresh the grid, the addedDate is hardcoded.
+      let theId = 7
 
+      lines.forEach(line => {
+        let contact = line.split('\t');
+
+        theId = theId + 1;
+        let contactList: ContactsList = {
+            id: theId,
+            listName : this.fileName,
+            contactsCount: (lines.length - 1),
+            addedDate: '11/01/2021 04:55 AM',
+            firstName: contact[0],
+            lastName: contact[1],
+            phone: contact[2],
+            email: contact[3]
+        };
+        console.log('contact -> ', contactList);
+        this.dataService.create(contactList).subscribe(data => data);
+
+      })
     })
   }
 
@@ -79,7 +80,9 @@ export class ContactsFileListComponent implements OnInit {
          })
     )
   }
-  selectContactFile(selectedFile: {listName: string, recordCount: number, dateAdded: string}) {
+  selectContactFile(selectedFile: ContactsListDisplay) {
+
+    this.selectedContactFile = selectedFile;
 
     // TODO: refactor to better map operator
     this.dataService.get().pipe(
@@ -115,5 +118,17 @@ export class ContactsFileListComponent implements OnInit {
       this.fileLoaded.emit(lines);
     }
   }
-}
 
+  onDelete() {
+    this.dataService.get().subscribe(files => {
+      files.map(file => {
+          if (file.listName === this.selectedContactFile.listName) {
+            // TODO: add a spinner here.
+            this.dataService.delete(file, file.id).subscribe(data => console.log('deleted', data));
+          }
+      })
+      this.contactsFiles$! = this.getContactsDistinctListData();
+      this.selectContactFile({listName: '', contactsCount: 0, addedDate: ''})
+    });
+  }
+}
