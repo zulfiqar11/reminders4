@@ -17,6 +17,8 @@ export class ContactsFileListComponent implements OnInit {
 
   selectedContactFile! : ContactsListDisplay;
 
+  spin = false;
+
   //TODO: refactor following to strong datatype
   contactsFiles$!: Observable<ContactsListDisplay[]>;
   contactNames$!: Observable<any[]>;
@@ -24,7 +26,6 @@ export class ContactsFileListComponent implements OnInit {
   fileLoaded = new EventEmitter<string[]>();
   fileDelete = new EventEmitter<ContactsList>();
 
-  //TODO: refactor variable names and just review them.
   fileName: string = '';
   fileId = 0;
 
@@ -43,8 +44,9 @@ export class ContactsFileListComponent implements OnInit {
     this.fileLoaded.subscribe((lines: string[]) => {
 
       // TODO: when another .csv file is uploaded it replaces the existing .csv file.
-      // TODO: remove header line from .csv file.
       let theId = this.fileId
+
+      lines = lines.slice(1);
 
       lines.forEach(line => {
 
@@ -62,11 +64,11 @@ export class ContactsFileListComponent implements OnInit {
             phone: contact[2],
             email: contact[3]
         };
-        console.log('contact -> ', contactList);
         this.dataService.create(contactList).subscribe(data => data);
         theId = theId + 1;
       })
       this.contactsFiles$! = this.getContactsDistinctListData();
+      this.spin = false;
     })
 
   }
@@ -92,6 +94,7 @@ export class ContactsFileListComponent implements OnInit {
   }
   selectContactFile(selectedFile: ContactsListDisplay) {
 
+    this.spin = true;
     this.selectedContactFile = selectedFile;
 
     // TODO: refactor to better map operator
@@ -112,7 +115,10 @@ export class ContactsFileListComponent implements OnInit {
         )
       })
       // TODO: refactor to better map operator
-    ).subscribe(data => this.contactNames$ = of(data));
+    ).subscribe(data => {
+      this.contactNames$ = of(data);
+      this.spin = false;
+    });
   }
 
   public changeListener() {
@@ -123,6 +129,7 @@ export class ContactsFileListComponent implements OnInit {
     this.fileName = file!.name;
 
     reader.onload = (e) => {
+      this.spin = true;
       let csv: string = reader.result as string;
       lines = csv.split('\n');
       this.fileLoaded.emit(lines);
@@ -133,8 +140,8 @@ export class ContactsFileListComponent implements OnInit {
     this.dataService.get().subscribe(files => {
       files.map(file => {
           if (file.listName === this.selectedContactFile.listName) {
-            // TODO: add a spinner here.
-            this.dataService.delete(file, file.id).subscribe(data => console.log('deleted', data));
+            this.spin = true;
+            this.dataService.delete(file, file.id).subscribe(data => this.spin = false);
           }
       })
       this.contactsFiles$! = this.getContactsDistinctListData();
