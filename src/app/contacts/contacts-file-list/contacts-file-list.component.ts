@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ContactsList, ContactsListDisplay } from 'src/app/shared/model/contact';
+import { ContactsList, ContactsListDisplay, ContactsNameDisplay } from 'src/app/shared/model/contact';
 import { DataService } from 'src/app/shared/services/data.service';
 
 @Component({
@@ -109,28 +109,30 @@ export class ContactsFileListComponent implements OnInit {
     this.spin = true;
     this.selectedContactFile = selectedFile;
 
-    // TODO: refactor to better map operator
-    this.dataService.get().pipe(
-      map(contactFiles => {
-        return contactFiles.filter(file => file.listName === selectedFile.listName)
+    let filteredList = this.dataService.get().pipe(
+      map(contactsList => {
+        return contactsList.filter(file => file.listName === selectedFile.listName)
       })
-    ).pipe(
+    )
+
+    let contactsNameDisplay = filteredList.pipe(
       map(contacts => {
         return contacts.map(contact => {
-            return ({
-              firstName: contact.firstName,
-              lastName: contact.lastName,
-              phone: contact.phone,
-              email: contact.email
-            })
+          let theContact: ContactsNameDisplay = {
+            firstName: contact.firstName,
+            lastName: contact.lastName,
+            phone: contact.phone,
+            email: contact.email
           }
-        )
+          return theContact;
+        })
       })
-      // TODO: refactor to better map operator
-    ).subscribe(data => {
-      this.contactNameservice.activatedEmitter.next(data);
+    )
+
+    contactsNameDisplay.subscribe(contactNameDisplay => {
+      this.contactNameservice.activatedEmitter.next(contactNameDisplay);
       this.spin = false;
-    });
+    })
   }
 
   onDelete() {
