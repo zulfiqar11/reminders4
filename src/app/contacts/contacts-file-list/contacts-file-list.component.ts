@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ContactsList, ContactsListDisplay } from 'src/app/shared/model/contact';
+import { ContactsList, ContactsListDisplay, ContactsNameDisplay } from 'src/app/shared/model/contact';
 import { DataService } from 'src/app/shared/services/data.service';
 
 @Component({
@@ -22,9 +22,8 @@ export class ContactsFileListComponent implements OnInit {
 
   fileUploadControl = new FormControl("");
 
-  //TODO: refactor following to strong datatype
   contactsFiles$!: Observable<ContactsListDisplay[]>;
-  contactNames$!: Observable<any[]>;
+  contactNames$!: Observable<ContactsNameDisplay[]>;
 
   fileLoaded = new EventEmitter<string[]>();
   fileDelete = new EventEmitter<ContactsList>();

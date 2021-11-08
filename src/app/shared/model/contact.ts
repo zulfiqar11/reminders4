@@ -31,3 +31,9 @@ export interface ContactsListDisplay {
   addedDate: string;
 }
 
+export interface ContactsNameDisplay {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+}
