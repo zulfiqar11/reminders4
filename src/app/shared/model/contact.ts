@@ -26,6 +26,7 @@ export interface ContactsList {
 }
 
 export interface ContactsListDisplay {
+  id: number;
   listName: string;
   contactsCount: number;
   addedDate: string;

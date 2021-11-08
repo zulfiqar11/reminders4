@@ -13,7 +13,7 @@ import { DataService } from 'src/app/shared/services/data.service';
 })
 export class ContactsFileListComponent implements OnInit {
 
-  displayedColumnsContactsList: string[] = ['listName', 'contactsCount', 'addedDate'];
+  displayedColumnsContactsList: string[] = ['id','listName', 'contactsCount', 'addedDate'];
 
   selectedContactFile! : ContactsListDisplay;
 
@@ -57,9 +57,6 @@ export class ContactsFileListComponent implements OnInit {
 
     this.fileLoaded.subscribe((lines: string[]) => {
 
-      // TODO: when another .csv file is uploaded it replaces the existing .csv file.
-      let theId = this.fileId
-
       lines = lines.slice(1);
 
       lines.forEach(line => {
@@ -69,7 +66,7 @@ export class ContactsFileListComponent implements OnInit {
         currentDateTime = currentDateTime.replace(',', '');
 
         let contactList: ContactsList = {
-            id: theId,
+            id: this.fileId,
             listName : this.fileName,
             contactsCount: (lines.length - 1),
             addedDate: currentDateTime,
@@ -79,7 +76,7 @@ export class ContactsFileListComponent implements OnInit {
             email: contact[3]
         };
         this.dataService.create(contactList).subscribe(data => data);
-        theId = theId + 1;
+        this.fileId = this.fileId + 1;
       })
       this.contactsFiles$! = this.getContactsDistinctListData();
       this.spin = false;
@@ -98,6 +95,7 @@ export class ContactsFileListComponent implements OnInit {
           )
           return contactsfiles.map(contactFile => {
             return ({
+              id: contactFile.id,
               listName: contactFile.listName,
               contactsCount: contactFile.contactsCount,
               addedDate: contactFile.addedDate
@@ -144,7 +142,7 @@ export class ContactsFileListComponent implements OnInit {
           }
       })
       this.contactsFiles$! = this.getContactsDistinctListData();
-      this.selectContactFile({listName: '', contactsCount: 0, addedDate: ''})
+      this.selectContactFile({id: 0, listName: '', contactsCount: 0, addedDate: ''})
     });
   }
 }
