@@ -32,4 +32,10 @@ td {
   padding-right: 8px;
 }
 
+.file-upload {
+  padding-top: 2%;
+}
 
+.file-delete {
+  padding-top: 2%;
+}
