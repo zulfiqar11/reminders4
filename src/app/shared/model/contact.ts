@@ -1,6 +1,3 @@
-// TODO: refactor and review these
-
-// TODO: Contact interface may not be needed.
 export interface Contact {
     id: number;
     firstName: string;
