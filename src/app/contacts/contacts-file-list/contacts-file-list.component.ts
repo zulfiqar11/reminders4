@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ContactsList, ContactsListDisplay } from 'src/app/shared/model/contact';
@@ -19,6 +20,8 @@ export class ContactsFileListComponent implements OnInit {
 
   spin = false;
 
+  fileUploadControl = new FormControl("");
+
   //TODO: refactor following to strong datatype
   contactsFiles$!: Observable<ContactsListDisplay[]>;
   contactNames$!: Observable<any[]>;
@@ -36,6 +39,20 @@ export class ContactsFileListComponent implements OnInit {
   ngOnInit(): void {
 
     this.contactsFiles$! = this.getContactsDistinctListData();
+
+    this.fileUploadControl.valueChanges.subscribe(file => {
+      let reader: FileReader = new FileReader();
+      reader.readAsText(file!);
+      this.fileName = file!.name;
+
+      reader.onload = (e) => {
+        this.spin = true;
+        let csv: string = reader.result as string;
+        let lines: string[] = [];
+        lines = csv.split('\n');
+        this.fileLoaded.emit(lines);
+      }
+    })
 
     this.dataService.get().subscribe(data => {
       this.fileId = data.length + 1;
@@ -119,21 +136,6 @@ export class ContactsFileListComponent implements OnInit {
       this.contactNames$ = of(data);
       this.spin = false;
     });
-  }
-
-  public changeListener() {
-    let lines: string[] = [];
-    let file = (<HTMLInputElement>document.getElementById('fileUpload')).files![0];
-    let reader: FileReader = new FileReader();
-    reader.readAsText(file!);
-    this.fileName = file!.name;
-
-    reader.onload = (e) => {
-      this.spin = true;
-      let csv: string = reader.result as string;
-      lines = csv.split('\n');
-      this.fileLoaded.emit(lines);
-    }
   }
 
   onDelete() {

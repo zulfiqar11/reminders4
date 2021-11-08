@@ -27,12 +27,10 @@
 </div>
 
 <div>
-  <input
-    type="file"
-    class="upload"
-    id="fileUpload"
-    (change)="changeListener()"
-  />
+  <mat-form-field appearance="outline">
+    <ngx-mat-file-input [formControl]="fileUploadControl"> </ngx-mat-file-input>
+    <mat-hint>.csv file only with first name, last name, phone, email</mat-hint>
+  </mat-form-field>
 </div>
 
 <div>

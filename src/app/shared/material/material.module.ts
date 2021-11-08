@@ -15,6 +15,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSelectModule} from '@angular/material/select';
 
 import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    NgxMatFileInputModule,
     MatListModule,
 
   ],
@@ -49,6 +51,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatSelectModule,
+    NgxMatFileInputModule,
     MatTableModule
   ]
 
