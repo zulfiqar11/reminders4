@@ -1,24 +1,25 @@
-// TODO: DELETE THIS LATER
+import { ContactNamesService } from './../../shared/services/contactNames.service';
+import { Component, OnInit } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { ContactsNameDisplay } from 'src/app/shared/model/contact';
 
-// import { ContactsListNames } from './../../shared/model/contact';
-// import { Component, OnInit } from '@angular/core';
-// import { DataService } from 'src/app/shared/services/data.service';
-// import { Observable } from 'rxjs';
+@Component({
+  selector: 'app-contacts-names-file-list',
+  templateUrl: './contacts-names-file-list.component.html',
+  styleUrls: ['./contacts-names-file-list.component.css']
+})
+export class ContactsNamesFileListComponent implements OnInit {
 
-// @Component({
-//   selector: 'app-contacts-names-file-list',
-//   templateUrl: './contacts-names-file-list.component.html',
-//   styleUrls: ['./contacts-names-file-list.component.css']
-// })
-// export class ContactsNamesFileListComponent implements OnInit {
+  displayedColumnsContactNames: string[] = ['firstName', 'lastName', 'phone', 'email'];
+  contactNames$!: Observable<ContactsNameDisplay[]>;
 
-//   contactsListNames$!: Observable<ContactsListNames[]>;
+  constructor(private contactNameservice: ContactNamesService) {
+  }
 
-//   constructor(private dataService: DataService<ContactsListNames>) {
-//   }
+  ngOnInit(): void {
+    this.contactNameservice.activatedEmitter.subscribe(data => {
+      this.contactNames$ = of(data);
+    })
+  }
 
-//   ngOnInit(): void {
-//     this.dataService.get().subscribe(data => console.log(data))
-//   }
-
-// }
+}

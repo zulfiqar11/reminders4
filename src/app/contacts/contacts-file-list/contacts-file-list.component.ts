@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { ContactNamesService } from './../../shared/services/contactNames.service';
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ContactsList, ContactsListDisplay, ContactsNameDisplay } from 'src/app/shared/model/contact';
+import { ContactsList, ContactsListDisplay } from 'src/app/shared/model/contact';
 import { DataService } from 'src/app/shared/services/data.service';
 
 @Component({
@@ -14,7 +14,6 @@ import { DataService } from 'src/app/shared/services/data.service';
 export class ContactsFileListComponent implements OnInit {
 
   displayedColumnsContactsList: string[] = ['listName', 'contactsCount', 'addedDate'];
-  displayedColumnsContactNames: string[] = ['firstName', 'lastName', 'phone', 'email'];
 
   selectedContactFile! : ContactsListDisplay;
 
@@ -23,7 +22,6 @@ export class ContactsFileListComponent implements OnInit {
   fileUploadControl = new FormControl("");
 
   contactsFiles$!: Observable<ContactsListDisplay[]>;
-  contactNames$!: Observable<ContactsNameDisplay[]>;
 
   fileLoaded = new EventEmitter<string[]>();
   fileDelete = new EventEmitter<ContactsList>();
@@ -31,7 +29,7 @@ export class ContactsFileListComponent implements OnInit {
   fileName: string = '';
   fileId = 0;
 
-  constructor(private dataService: DataService<ContactsList>, private http: HttpClient) {
+  constructor(private dataService: DataService<ContactsList>, private contactNameservice: ContactNamesService) {
     this.dataService.Url('api/contactsList');
   }
 
@@ -132,7 +130,7 @@ export class ContactsFileListComponent implements OnInit {
       })
       // TODO: refactor to better map operator
     ).subscribe(data => {
-      this.contactNames$ = of(data);
+      this.contactNameservice.activatedEmitter.next(data);
       this.spin = false;
     });
   }

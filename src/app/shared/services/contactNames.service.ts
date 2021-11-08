@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Contact } from '../model/contact';
+import { Observable, Subject } from 'rxjs';
+import { Contact, ContactsNameDisplay } from '../model/contact';
 
 
 @Injectable({
@@ -10,6 +10,7 @@ import { Contact } from '../model/contact';
 export class ContactNamesService {
 
   private url = 'api/contacts';
+  activatedEmitter = new Subject<ContactsNameDisplay[]>()
 
   constructor(private http: HttpClient) {}
 
