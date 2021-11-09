@@ -91,6 +91,23 @@ export class InMemoryDataService implements InMemoryDbService {
         emailAddress: 'myemailLenah@mydomain.com'
       }
     ];
+    const campaigns = [
+      {
+        id: 1,
+        campaignName: 'Volunteers for hospital',
+        frequency: "Once",
+        date: "10/4/2021",
+        time: "9:10 AM",
+        message: "reminder message to visit hospitals."
+      },
+      {
+        id: 2,
+        campaignName: 'Beach cleaning',
+        frequency: "Daily",
+        time: "8:40 AM",
+        message: "reminder message to clean the beach"
+      }
+    ];
     const reminders = [
       {
         id: 1,
@@ -161,6 +178,6 @@ export class InMemoryDataService implements InMemoryDbService {
         message: "reminder message 5"
       }
     ];
-    return { contacts, reminders, contactsList };
+    return { contacts, reminders, contactsList, campaigns };
   }
 }
