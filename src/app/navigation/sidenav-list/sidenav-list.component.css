@@ -13,6 +13,6 @@ a:hover, a:active {
   padding-left: 3px;
 }
 
-.is-active {
-  background-color: lightgreen;
+.mat-nav-list .is-active {
+  background-color: lightgrey;
 }
