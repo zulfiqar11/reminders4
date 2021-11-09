@@ -6,19 +6,24 @@
       <td mat-cell *matCellDef="let element">{{ element.id }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="listName">
-      <th mat-header-cell *matHeaderCellDef>List Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.listName }}</td>
+    <ng-container matColumnDef="campaignName">
+      <th mat-header-cell *matHeaderCellDef>Campaign</th>
+      <td mat-cell *matCellDef="let element">{{ element.campaignName }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="contactsCount">
-      <th mat-header-cell *matHeaderCellDef>Contacts Count</th>
-      <td mat-cell *matCellDef="let element">{{ element.contactsCount }}</td>
+    <ng-container matColumnDef="frequency">
+      <th mat-header-cell *matHeaderCellDef>Frequency</th>
+      <td mat-cell *matCellDef="let element">{{ element.frequency }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="addedDate">
-      <th mat-header-cell *matHeaderCellDef>Added Date</th>
-      <td mat-cell *matCellDef="let element">{{ element.addedDate }}</td>
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef>Time</th>
+      <td mat-cell *matCellDef="let element">{{ element.time }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="message">
+      <th mat-header-cell *matHeaderCellDef>Message</th>
+      <td mat-cell *matCellDef="let element">{{ element.message }}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumnsCampaigns"></tr>

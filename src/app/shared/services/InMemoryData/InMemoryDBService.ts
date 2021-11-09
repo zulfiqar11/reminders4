@@ -95,8 +95,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 1,
         campaignName: 'Volunteers for hospital',
-        frequency: "Once",
-        date: "10/4/2021",
+        frequency: "Daily",
         time: "9:10 AM",
         message: "reminder message to visit hospitals."
       },
