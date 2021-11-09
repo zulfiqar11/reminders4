@@ -67,47 +67,47 @@
         <input matInput formControlName="phoneNumber" />
       </mat-form-field>
     </tr>
-    <tr>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onUpdate()"
-        [disabled]="!enableUpdateState()"
-      >
-        Update
-      </button>
-      <span style="display: inline-block; width: 2px"></span>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onDelete()"
-        [disabled]="!enableDeleteState()"
-      >
-        Delete
-      </button>
-      <span style="display: inline-block; width: 2px"></span>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onAdd()"
-        [disabled]="!enableAddState()"
-      >
-        Add
-      </button>
-      <span style="display: inline-block; width: 2px"></span>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        (click)="onNew()"
-        [disabled]="!enableNewState()"
-      >
-        New
-      </button>
-    </tr>
   </table>
+  <div>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="onUpdate()"
+      [disabled]="!enableUpdateState()"
+    >
+      Update
+    </button>
+    <span style="display: inline-block; width: 14px"></span>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="onDelete()"
+      [disabled]="!enableDeleteState()"
+    >
+      Delete
+    </button>
+    <span style="display: inline-block; width: 14px"></span>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="onAdd()"
+      [disabled]="!enableAddState()"
+    >
+      Add
+    </button>
+    <span style="display: inline-block; width: 14px"></span>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="onNew()"
+      [disabled]="!enableNewState()"
+    >
+      New
+    </button>
+  </div>
 </form>
 <mat-spinner *ngIf="spin"></mat-spinner>
