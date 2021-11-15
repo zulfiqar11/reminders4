@@ -14,12 +14,17 @@ export class ContactsComponent implements OnInit {
 
   // TODO: REFACTOR THE WHOLE CONTACTS SCREEN SIMILAR TO THE REMINDERS SCREEN.
   // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
-  // TODO: FILE UPLOAD FOR CONTACTS IMAGE. DEFAULT IMAGE AS WELL.
+
   // TODO: FIX THE CONTACTS SCREEN BUTTONS AND REFACTOR THEM.
   // TODO: table have rows selected by check boxes and be able to select some check boxes and delete them
   // TODO: upload file of contacts and add contacts from the file.
   // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
 
+
+  // TODO: FILE UPLOAD FOR CONTACTS IMAGE. DEFAULT IMAGE AS WELL.
+  // TODO: CONTACT IMAGE DISPLAY NEXT TO THE CONTACT IN CONTACT LIST.
+
+  imageURL = "";
   btnState: any = {
     Update: true,
     Delete: true,
@@ -30,7 +35,7 @@ export class ContactsComponent implements OnInit {
   contactsList$!: Observable<Contact[]>;
   spin = false;
 
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'emailAddress'];
+  displayedColumns: string[] = ['id', 'image', 'firstName', 'lastName', 'phoneNumber', 'emailAddress'];
 
   form!: FormGroup;
   id = new FormControl("");
@@ -38,6 +43,7 @@ export class ContactsComponent implements OnInit {
   lastName = new FormControl("", Validators.required);
   emailAddress = new FormControl("", Validators.required);
   phoneNumber = new FormControl("", Validators.required);
+  image = new FormControl("");
 
   constructor(fb: FormBuilder, private dataService: DataService<Contact>) {
     this.dataService.Url('api/contacts');
@@ -47,7 +53,8 @@ export class ContactsComponent implements OnInit {
         "firstName": this.firstName,
         "lastName": this.lastName,
         "phoneNumber": this.phoneNumber,
-        "emailAddress": this.emailAddress
+        "emailAddress": this.emailAddress,
+        "image": this.image
       }
     )
    }
@@ -127,6 +134,7 @@ export class ContactsComponent implements OnInit {
       lastName: this.form.controls.lastName.value,
       emailAddress: this.form.controls.emailAddress.value,
       phoneNumber: this.form.controls.phoneNumber.value,
+      image: '' // TODO: fix this.
     }
   }
 
@@ -137,7 +145,8 @@ export class ContactsComponent implements OnInit {
       firstName : contact.firstName,
       lastName : contact.lastName,
       emailAddress : contact.emailAddress,
-      phoneNumber : contact.phoneNumber
+      phoneNumber : contact.phoneNumber,
+      image: '' // TODO: fix this
     })
   }
 

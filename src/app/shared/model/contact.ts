@@ -4,6 +4,7 @@ export interface Contact {
     lastName: string;
     phoneNumber: string;
     emailAddress: string;
+    image: string;
 }
 
 export interface ContactDisplay {

@@ -3,12 +3,20 @@ table {
   width: 100%;
 }
 
+td {
+  padding-right: 8px;
+}
+
+/* img {
+  height: 50px;
+  width: 0px;
+} */
+
 .mat-row .mat-cell {
   border-bottom: 1px solid transparent;
   border-top: 1px solid transparent;
   cursor: pointer;
 }
-
 
 .mat-row:hover .mat-cell {
   border-color: currentColor;
@@ -28,8 +36,12 @@ table {
   width: 100%;
 }
 
-td {
-  padding-right: 8px;
+.image-load {
+  height: 200px;
+  width: 200px;
 }
 
-
+.image-list {
+  height: 40px;
+  width: 40px;
+}

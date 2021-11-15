@@ -74,21 +74,24 @@ export class InMemoryDataService implements InMemoryDbService {
         firstName: 'Zulfiqar',
         lastName: 'Syed1',
         phoneNumber: '714-555-1212',
-        emailAddress: 'myemailzulfiqar@mydomain.com'
+        emailAddress: 'myemailzulfiqar@mydomain.com',
+        image: '../assets/male.jpg'
       },
       {
         id: 2,
         firstName: 'Sobia',
         lastName: 'Syed2',
         phoneNumber: '714-555-1313',
-        emailAddress: 'myemailsobia@mydomain.com'
+        emailAddress: 'myemailsobia@mydomain.com',
+        image: '../assets/female.jpg'
       },
       {
         id: 3,
         firstName: 'Lenah',
         lastName: 'Syed3',
         phoneNumber: '714-555-1414',
-        emailAddress: 'myemailLenah@mydomain.com'
+        emailAddress: 'myemailLenah@mydomain.com',
+        image: '../assets/female.jpg'
       }
     ];
     const campaigns = [
