@@ -5,11 +5,10 @@
     <td mat-cell *matCellDef="let element">{{ element.id }}</td>
   </ng-container>
 
-  <ng-container matColumnDef="image">
-    <th mat-header-cell *matHeaderCellDef>image</th>
-    <!-- <td mat-cell *matCellDef="let element">{{ element.image }}</td> -->
+  <ng-container matColumnDef="photo">
+    <th mat-header-cell *matHeaderCellDef>Photo</th>
     <td mat-cell *matCellDef="let element">
-      <img class="image-list" [src]="element.image" />
+      <img class="image-list" [src]="element.photo" />
     </td>
   </ng-container>
 
@@ -42,40 +41,35 @@
 </table>
 
 <form [formGroup]="form" class="example-form">
-  <table class="example-full-width" cellspacing="0">
-    <tr>
-      <td hidden="true">
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>id</mat-label>
-          <input matInput formControlName="id" />
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>First name</mat-label>
-          <input matInput formControlName="firstName" />
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Last Name</mat-label>
-          <input matInput formControlName="lastName" />
-        </mat-form-field>
-      </td>
-    </tr>
-    <tr>
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="emailAddress" />
-      </mat-form-field>
-    </tr>
-    <tr>
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Phone</mat-label>
-        <input matInput formControlName="phoneNumber" />
-      </mat-form-field>
-    </tr>
-  </table>
+  <div class="contact-load" *ngIf="form.value.photo">
+    <mat-card class="example-card">
+      <mat-card-title-group>
+        <img
+          *ngIf="form.value.photo"
+          mat-card-xl-image
+          src="{{ form.value.photo }}"
+        />
+        <mat-card-subtitle>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>First name</mat-label>
+            <input matInput formControlName="firstName" />
+          </mat-form-field>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Last name</mat-label>
+            <input matInput formControlName="lastName" />
+          </mat-form-field>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="emailAddress" />
+          </mat-form-field>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phoneNumber" />
+          </mat-form-field>
+        </mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card>
+  </div>
 
   <div>
     <button

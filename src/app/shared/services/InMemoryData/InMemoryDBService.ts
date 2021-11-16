@@ -75,7 +75,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Syed1',
         phoneNumber: '714-555-1212',
         emailAddress: 'myemailzulfiqar@mydomain.com',
-        image: '../assets/male.jpg'
+        photo: '../assets/male.jpg'
       },
       {
         id: 2,
@@ -83,7 +83,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Syed2',
         phoneNumber: '714-555-1313',
         emailAddress: 'myemailsobia@mydomain.com',
-        image: '../assets/female.jpg'
+        photo: '../assets/female.jpg'
       },
       {
         id: 3,
@@ -91,7 +91,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Syed3',
         phoneNumber: '714-555-1414',
         emailAddress: 'myemailLenah@mydomain.com',
-        image: '../assets/female.jpg'
+        photo: '../assets/female.jpg'
       }
     ];
     const campaigns = [

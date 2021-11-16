@@ -24,7 +24,6 @@ export class ContactsComponent implements OnInit {
   // TODO: FILE UPLOAD FOR CONTACTS IMAGE. DEFAULT IMAGE AS WELL.
   // TODO: CONTACT IMAGE DISPLAY NEXT TO THE CONTACT IN CONTACT LIST.
 
-  imageURL = "";
   btnState: any = {
     Update: true,
     Delete: true,
@@ -35,7 +34,7 @@ export class ContactsComponent implements OnInit {
   contactsList$!: Observable<Contact[]>;
   spin = false;
 
-  displayedColumns: string[] = ['id', 'image', 'firstName', 'lastName', 'phoneNumber', 'emailAddress'];
+  displayedColumns: string[] = ['id', 'photo', 'firstName', 'lastName', 'phoneNumber', 'emailAddress'];
 
   form!: FormGroup;
   id = new FormControl("");
@@ -43,7 +42,7 @@ export class ContactsComponent implements OnInit {
   lastName = new FormControl("", Validators.required);
   emailAddress = new FormControl("", Validators.required);
   phoneNumber = new FormControl("", Validators.required);
-  image = new FormControl("");
+  photo = new FormControl("");
 
   constructor(fb: FormBuilder, private dataService: DataService<Contact>) {
     this.dataService.Url('api/contacts');
@@ -54,7 +53,7 @@ export class ContactsComponent implements OnInit {
         "lastName": this.lastName,
         "phoneNumber": this.phoneNumber,
         "emailAddress": this.emailAddress,
-        "image": this.image
+        "photo": this.photo
       }
     )
    }
@@ -134,7 +133,7 @@ export class ContactsComponent implements OnInit {
       lastName: this.form.controls.lastName.value,
       emailAddress: this.form.controls.emailAddress.value,
       phoneNumber: this.form.controls.phoneNumber.value,
-      image: '' // TODO: fix this.
+      photo: this.form.controls.photo.value
     }
   }
 
@@ -146,7 +145,7 @@ export class ContactsComponent implements OnInit {
       lastName : contact.lastName,
       emailAddress : contact.emailAddress,
       phoneNumber : contact.phoneNumber,
-      image: '' // TODO: fix this
+      photo: contact.photo
     })
   }
 
