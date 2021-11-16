@@ -43,35 +43,41 @@
 <form [formGroup]="form" class="example-form">
   <div class="contact-load" *ngIf="form.value.photo">
     <mat-card class="example-card">
-      <mat-card-title-group>
-        <img
-          *ngIf="form.value.photo"
-          mat-card-xl-image
-          src="{{ form.value.photo }}"
-        />
-        <mat-card-subtitle>
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>First name</mat-label>
-            <input matInput formControlName="firstName" />
-          </mat-form-field>
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Last name</mat-label>
-            <input matInput formControlName="lastName" />
-          </mat-form-field>
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="emailAddress" />
-          </mat-form-field>
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Phone</mat-label>
-            <input matInput formControlName="phoneNumber" />
-          </mat-form-field>
-        </mat-card-subtitle>
-      </mat-card-title-group>
+      <div class="row">
+        <div class="column">
+          <img
+            *ngIf="form.value.photo"
+            mat-card-xl-image
+            src="{{ form.value.photo }}"
+          />
+        </div>
+        <div class="column">
+          <mat-card-title-group>
+            <mat-card-subtitle>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>First name</mat-label>
+                <input matInput formControlName="firstName" />
+              </mat-form-field>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Last name</mat-label>
+                <input matInput formControlName="lastName" />
+              </mat-form-field>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="emailAddress" />
+              </mat-form-field>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phoneNumber" />
+              </mat-form-field>
+            </mat-card-subtitle>
+          </mat-card-title-group>
+        </div>
+      </div>
     </mat-card>
   </div>
 
-  <div>
+  <div class="buttons" *ngIf="contact$ | async">
     <button
       mat-raised-button
       color="primary"

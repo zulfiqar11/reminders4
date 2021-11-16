@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Contact } from '../shared/model/contact';
 import { DataService } from '../shared/services/data.service';
 
@@ -32,6 +32,7 @@ export class ContactsComponent implements OnInit {
   }
 
   contactsList$!: Observable<Contact[]>;
+  contact$!: Observable<Contact>;
   spin = false;
 
   displayedColumns: string[] = ['id', 'photo', 'firstName', 'lastName', 'phoneNumber', 'emailAddress'];
@@ -139,6 +140,7 @@ export class ContactsComponent implements OnInit {
 
 
   populateFormControl(contact: Contact) {
+    this.contact$ = of(contact);
     this.form.patchValue({
       id: contact.id,
       firstName : contact.firstName,
