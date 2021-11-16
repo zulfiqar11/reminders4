@@ -41,6 +41,11 @@ td {
   width: 40px;
 }
 
+.image-load {
+  height: 100%;
+  width: 100%;
+}
+
 .example-card {
   max-width: 400px;
 }
@@ -51,4 +56,12 @@ td {
 
 .buttons {
   padding-top: 20px;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 100%;
 }
