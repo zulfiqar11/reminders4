@@ -125,6 +125,7 @@ export class ContactsComponent implements OnInit {
     this.form.controls.lastName.setValue("");
     this.form.controls.emailAddress.setValue("");
     this.form.controls.phoneNumber.setValue("");
+    this.form.controls.photo.setValue("");
   }
 
   populateContact(): Contact {
