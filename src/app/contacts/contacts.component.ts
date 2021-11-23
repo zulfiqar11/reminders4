@@ -44,6 +44,7 @@ export class ContactsComponent implements OnInit {
   emailAddress = new FormControl("", Validators.required);
   phoneNumber = new FormControl("", Validators.required);
   photo = new FormControl("");
+  fileUploadControl = new FormControl("");
 
   constructor(fb: FormBuilder, private dataService: DataService<Contact>) {
     this.dataService.Url('api/contacts');
@@ -61,6 +62,10 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit(): void {
     this.contactsList$ = this.dataService.get();
+
+    this.fileUploadControl.valueChanges.subscribe(file => {
+      console.log(file);
+    });
 
     this.btnState.New = false;
     this.btnState.Add = true;

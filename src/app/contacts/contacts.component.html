@@ -69,6 +69,11 @@
             <input matInput formControlName="phoneNumber" />
           </mat-form-field>
         </mat-card-subtitle>
+        <mat-form-field appearance="outline">
+          <ngx-mat-file-input [formControl]="fileUploadControl">
+          </ngx-mat-file-input>
+          <mat-hint>.jpg image</mat-hint>
+        </mat-form-field>
       </div>
     </div>
   </div>
