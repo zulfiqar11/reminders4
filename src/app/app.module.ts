@@ -21,7 +21,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './shared/services/InMemoryData/InMemoryDBService';
 import { environment } from '../environments/environment';
-import { AngularFireModule } from '@angular/fire';
 import { PageNotFoundComponent } from './navigation/page-not-found/page-not-found.component';
 import { DatePipe } from '@angular/common';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -29,7 +28,8 @@ import { ContactsListComponent } from './contacts/contacts-list/contacts-list.co
 import { ContactsFileListComponent } from './contacts/contacts-file-list/contacts-file-list.component';
 import { ContactsNamesFileListComponent } from './contacts/contacts-names-file-list/contacts-names-file-list.component';
 import { CampaignsListComponent } from './campaigns/campaigns-list/campaigns-list.component';
-
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireModule } from '@angular/fire';
 
 
 @NgModule({
@@ -52,6 +52,7 @@ import { CampaignsListComponent } from './campaigns/campaigns-list/campaigns-lis
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     MaterialModule,
     AppRoutingModule,
     HttpClientModule,

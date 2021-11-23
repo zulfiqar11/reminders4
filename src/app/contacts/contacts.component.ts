@@ -5,6 +5,9 @@ import { Observable, of } from 'rxjs';
 import { Contact } from '../shared/model/contact';
 import { DataService } from '../shared/services/data.service';
 
+import { AngularFireStorage } from '@angular/fire/storage'
+import { finalize } from 'rxjs/operators';
+
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
@@ -32,7 +35,7 @@ export class ContactsComponent implements OnInit {
   }
 
   contactsList$!: Observable<Contact[]>;
-  contact$!: Observable<Contact>;
+  contact!: Contact;
   spin = false;
 
   displayedColumns: string[] = ['id', 'photo', 'firstName', 'lastName', 'phoneNumber', 'emailAddress'];
@@ -46,7 +49,7 @@ export class ContactsComponent implements OnInit {
   photo = new FormControl("");
   fileUploadControl = new FormControl("");
 
-  constructor(fb: FormBuilder, private dataService: DataService<Contact>) {
+  constructor(fb: FormBuilder, private dataService: DataService<Contact>, private fireStorage: AngularFireStorage) {
     this.dataService.Url('api/contacts');
     this.form = fb.group(
       {
@@ -64,8 +67,26 @@ export class ContactsComponent implements OnInit {
     this.contactsList$ = this.dataService.get();
 
     this.fileUploadControl.valueChanges.subscribe(file => {
-      console.log(file);
+      this.spin = true;
+      let filePath = "/files" + Math.random() + file
+      let fileRef = this.fireStorage.ref(filePath);
+      // TODO: read documentation on angular fire storage, fileRef, file Path etc.
+      this.fireStorage.upload(filePath, file )
+        .snapshotChanges()
+        .pipe(
+          finalize(() => {
+            fileRef.getDownloadURL().subscribe((url) => {
+              console.log('url', url);
+              this.contact.photo = url;
+              this.populateFormControl(this.contact);
+              this.spin = false;
+            })
+          })
+        )
+        .subscribe()
     });
+
+
 
     this.btnState.New = false;
     this.btnState.Add = true;
@@ -146,7 +167,7 @@ export class ContactsComponent implements OnInit {
 
 
   populateFormControl(contact: Contact) {
-    this.contact$ = of(contact);
+    this.contact = contact;
     this.form.patchValue({
       id: contact.id,
       firstName : contact.firstName,
