@@ -18,7 +18,7 @@ export class ContactsComponent implements OnInit {
   // TODO: REFACTOR THE WHOLE CONTACTS SCREEN SIMILAR TO THE REMINDERS SCREEN.
   // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
 
-  // TODO: FIX THE CONTACTS SCREEN BUTTONS AND REFACTOR THEM.
+  // TODO: FIX THE CONTACTS SCREEN BUTTONS AND REFACTOR THEM JUST LIKE REMINDERS SCREEN.
   // TODO: table have rows selected by check boxes and be able to select some check boxes and delete them
   // TODO: upload file of contacts and add contacts from the file.
   // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
@@ -75,6 +75,7 @@ export class ContactsComponent implements OnInit {
         .snapshotChanges()
         .pipe(
           finalize(() => {
+            // TODO: learn how this works.
             fileRef.getDownloadURL().subscribe((url) => {
               console.log('url', url);
               this.contact.photo = url;
