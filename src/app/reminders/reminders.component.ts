@@ -117,7 +117,7 @@ export class RemindersComponent implements OnInit {
   timeControl = new FormControl("", Validators.required);
   messageControl = new FormControl("", Validators.required);
 
-  contactsListControl = new FormControl("");
+  contactsListControl = new FormControl("", Validators.required);
 
   dateControl = new FormControl("");
   weekdayControl = new FormControl("");
@@ -323,13 +323,15 @@ export class RemindersComponent implements OnInit {
     this.emptyOutForm();
     this.removeControls();
     this.reminderSelected = false;
-    this.newState = true;
     this.cancelState = true;
+    this.deleteState = false;
+    this.newState = false;
   }
 
   onCancel() {
     this.emptyOutForm();
     this.removeControls();
+    this.cancelState = false;
   }
 
   emptyOutForm() {
@@ -426,15 +428,15 @@ export class RemindersComponent implements OnInit {
   }
 
   enableDeleteButton(): boolean {
-    return this.remindersFormGroup.valid && this.deleteState;
+    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && this.deleteState;
   }
 
   enableNewButton(): boolean {
-    return this.remindersFormGroup.valid && this.newState;
+    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && this.newState;
   }
 
   enableCancelButton(): boolean {
-    return this.remindersFormGroup.valid && this.cancelState;
+    return !this.remindersFormGroup.pristine && !this.remindersFormContactGroup.pristine && this.cancelState;
   }
 
 }
