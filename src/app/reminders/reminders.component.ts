@@ -316,6 +316,11 @@ export class RemindersComponent implements OnInit {
     this.dataService.delete(reminder, reminder.id).subscribe(() => this.spin = false);
     this.remindersList$ = this.dataService.get();
     this.emptyOutForm();
+    if (!this.remindersFormContactGroup.get('contactsList')) {
+      this.remindersFormContactGroup.addControl('contactsList', this.contactsListControl);
+      this.remindersFormContactGroup.controls.contactsList?.setValue("");
+    }
+
   }
 
   onNew() {
@@ -424,7 +429,7 @@ export class RemindersComponent implements OnInit {
   }
 
   enableSaveButton(): boolean {
-    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && !this.remindersFormGroup.pristine && !this.remindersFormContactGroup.pristine;
+    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && !this.remindersFormGroup.pristine;
   }
 
   enableDeleteButton(): boolean {
