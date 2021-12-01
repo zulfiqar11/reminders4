@@ -99,11 +99,14 @@ export class RemindersComponent implements OnInit {
 
   contacts$!: Observable<ContactDisplay[]>;
 
+  remindersFormContactGroupValueChanges: any;
+  remindersFormContactGroupStatusChanges: any;
   remindersFormGroupValueChanges: any;
   remindersFormGroupStatusChanges: any;
 
   remindersFormGroup!: FormGroup;
   remindersFormContactGroup!: FormGroup;
+
 
   id = new FormControl("");
   firstNameControl = new FormControl({value: null, disabled: true}, Validators.required);
@@ -181,7 +184,9 @@ export class RemindersComponent implements OnInit {
     })
 
     this.remindersFormGroup.valueChanges.subscribe(data => this.remindersFormGroupValueChanges = JSON.stringify(data));
+    this.remindersFormContactGroup.valueChanges.subscribe(data => this.remindersFormContactGroupValueChanges = JSON.stringify(data));
     this.remindersFormGroup.statusChanges.subscribe(data => this.remindersFormGroupStatusChanges =  JSON.stringify(data));
+    this.remindersFormContactGroup.statusChanges.subscribe(data => this.remindersFormContactGroupStatusChanges =  JSON.stringify(data));
   }
 
   selectReminder(reminder: Reminder) {
@@ -417,7 +422,7 @@ export class RemindersComponent implements OnInit {
   }
 
   enableSaveButton(): boolean {
-    return this.remindersFormGroup.valid && !this.remindersFormGroup.pristine;
+    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && !this.remindersFormGroup.pristine && !this.remindersFormContactGroup.pristine;
   }
 
   enableDeleteButton(): boolean {
