@@ -34,9 +34,8 @@ enum WEEKDAY {
 
 export class RemindersComponent implements OnInit {
 
-  // TODO: SEPARATE FORM GROUPS FOR CONTACTS AND NON CONTACTS RELATED CONTROLS.
+  // TODO: BUG - AFTER DELETE IS COMPLETED, NEW BUTTON SHOULD BE ENABLED.
   // TODO: BUG - AFTER SAVE EXISTING RECORD DIRTY FLAG AND TOUCHED FLAD SHOULD BE FALSE WHEN CLICKING ON EXISTING RECORDS.
-  // TODO: BUG - CONTACTS LIST AND CONTACT CONTROLS SHOULD BE READ-ONLY.
   // TODO: BUG - ONCE RECORD WITH ID 1 IS SELECTED THEN WHEN HIT NEW THE SAME DATE IS COPIED ON THE NEW RECORD.
   // TODO: BUG - WHEN FORM (DIRTY = TRUE) CANCEL BUTTON SHOULD BE ENABLED
   // TODO: BUG - CANCEL BUTTON (WHEN NEW RECORD CLEAR OUT EVERY THING) AND (WHEN EXISTING RECORD ONLY CLEAR OUT THE DIRTY FIELDS.)
@@ -104,11 +103,13 @@ export class RemindersComponent implements OnInit {
   remindersFormGroupStatusChanges: any;
 
   remindersFormGroup!: FormGroup;
+  remindersFormContactGroup!: FormGroup;
+
   id = new FormControl("");
-  firstNameControl = new FormControl("", Validators.required);
-  lastNameControl = new FormControl("", Validators.required);
-  emailAddressControl = new FormControl("", Validators.required);
-  phoneNumberControl = new FormControl("", Validators.required);
+  firstNameControl = new FormControl({value: null, disabled: true}, Validators.required);
+  lastNameControl = new FormControl({value: null, disabled: true}, Validators.required);
+  emailAddressControl = new FormControl({value: null, disabled: true}, Validators.required);
+  phoneNumberControl = new FormControl({value: null, disabled: true}, Validators.required);
   frequencyControl = new FormControl("", Validators.required);
   timeControl = new FormControl("", Validators.required);
   messageControl = new FormControl("", Validators.required);
@@ -128,15 +129,19 @@ export class RemindersComponent implements OnInit {
 
   constructor(fb: FormBuilder,private dataService: DataService<Reminder>, private datePipe: DatePipe, private contactNamesService: ContactNamesService) {
     this.dataService.Url("api/reminders");
-    this.remindersFormGroup = fb.group(
+    this.remindersFormContactGroup = fb.group(
       {
         id: this.id,
+        contactsList: this.contactsListControl,
         firstName: this.firstNameControl,
         lastName: this.lastNameControl,
         phoneNumber: this.phoneNumberControl,
         emailAddress: this.emailAddressControl,
+      }
+    )
+    this.remindersFormGroup = fb.group(
+      {
         frequency: this.frequencyControl,
-        contactsList: this.contactsListControl,
         time: this.timeControl,
         message: this.messageControl
       }
@@ -170,7 +175,7 @@ export class RemindersComponent implements OnInit {
       this.selectFrequency(freq);
     })
 
-    let contactListControl = this.remindersFormGroup.get('contactsList');
+    let contactListControl = this.remindersFormContactGroup.get('contactsList');
     contactListControl?.valueChanges.subscribe((contactId: string) => {
       this.selectContact(+contactId);
     })
@@ -180,7 +185,7 @@ export class RemindersComponent implements OnInit {
   }
 
   selectReminder(reminder: Reminder) {
-    this.remindersFormGroup.removeControl('contactsList');
+    this.remindersFormContactGroup.removeControl('contactsList');
     this.populateReminderControl(reminder);
 
     this.reminderSelected = true;
@@ -194,12 +199,15 @@ export class RemindersComponent implements OnInit {
 
     this.removeControls();
 
-    this.remindersFormGroup.patchValue({
+    this.remindersFormContactGroup.patchValue({
       id: reminder.id,
       firstName : reminder.firstName,
       lastName : reminder.lastName,
       emailAddress : reminder.emailAddress,
       phoneNumber : reminder.phoneNumber,
+    })
+
+    this.remindersFormGroup.patchValue({
       frequency: reminder.frequency,
       time: reminder.time,
       message: reminder.message
@@ -237,15 +245,20 @@ export class RemindersComponent implements OnInit {
   }
 
   populateReminder(): Reminder {
+    let formReminderFreqControls = this.remindersFormGroup.controls;
+    let formContactsGroupControls = this.remindersFormContactGroup.controls;
+
     let reminder: Reminder =  {
-      id: this.remindersFormGroup.controls.id.value,
-      firstName: this.remindersFormGroup.controls.firstName.value,
-      lastName: this.remindersFormGroup.controls.lastName.value,
-      emailAddress: this.remindersFormGroup.controls.emailAddress.value,
-      phoneNumber: this.remindersFormGroup.controls.phoneNumber.value,
-      frequency: this.remindersFormGroup.controls.frequency.value,
-      time: this.remindersFormGroup.controls.time.value,
-      message: this.remindersFormGroup.controls.message.value
+
+      id: formContactsGroupControls.id.value,
+      firstName: formContactsGroupControls.firstName.value,
+      lastName: formContactsGroupControls.lastName.value,
+      emailAddress: formContactsGroupControls.emailAddress.value,
+      phoneNumber: formContactsGroupControls.phoneNumber.value,
+
+      frequency: formReminderFreqControls.frequency.value,
+      time: formReminderFreqControls.time.value,
+      message: formReminderFreqControls.message.value
     }
 
     if (!this.reminderSelected) {
@@ -253,19 +266,19 @@ export class RemindersComponent implements OnInit {
     }
 
     if (reminder.frequency === FREQUENCY.Once) {
-      return {...reminder, date: this.datePipe.transform(this.remindersFormGroup.controls.date.value, 'MM/dd/yyyy')}
+      return {...reminder, date: this.datePipe.transform(formReminderFreqControls.date.value, 'MM/dd/yyyy')}
     }
     if (reminder.frequency === FREQUENCY.Weekly) {
-      return {...reminder, weekday: this.remindersFormGroup.controls.weekday.value}
+      return {...reminder, weekday: formReminderFreqControls.weekday.value}
     }
     if (reminder.frequency === FREQUENCY.Monthly) {
-      return {...reminder, day: this.remindersFormGroup.controls.day.value}
+      return {...reminder, day: formReminderFreqControls.day.value}
     }
     if (reminder.frequency === FREQUENCY.MonthWeekly) {
-      return {...reminder, week: this.remindersFormGroup.controls.week.value, weekday: this.remindersFormGroup.controls.weekday.value}
+      return {...reminder, week: formReminderFreqControls.week.value, weekday: formReminderFreqControls.weekday.value}
     }
     if (reminder.frequency === FREQUENCY.Yearly) {
-      return {...reminder, day: this.remindersFormGroup.controls.day.value, month: this.remindersFormGroup.controls.month.value}
+      return {...reminder, day: formReminderFreqControls.day.value, month: formReminderFreqControls.month.value}
     }
 
     return reminder;
@@ -297,10 +310,11 @@ export class RemindersComponent implements OnInit {
     let reminder = this.populateReminder();
     this.dataService.delete(reminder, reminder.id).subscribe(() => this.spin = false);
     this.remindersList$ = this.dataService.get();
+    this.emptyOutForm();
   }
 
   onNew() {
-    this.remindersFormGroup.addControl('contactsList', this.contactsListControl);
+    this.remindersFormContactGroup.addControl('contactsList', this.contactsListControl);
     this.emptyOutForm();
     this.removeControls();
     this.reminderSelected = false;
@@ -315,35 +329,37 @@ export class RemindersComponent implements OnInit {
 
   emptyOutForm() {
 
-    this.remindersFormGroup.controls.id.setValue("");
+    let formContactsGroupControls = this.remindersFormContactGroup.controls;
+    formContactsGroupControls.id.setValue("");
 
-    this.remindersFormGroup.controls.firstName.setValue("");
-    this.remindersFormGroup.controls.lastName.setValue("");
-    this.remindersFormGroup.controls.emailAddress.setValue("");
-    this.remindersFormGroup.controls.phoneNumber.setValue("");
+    formContactsGroupControls.firstName.setValue("");
+    formContactsGroupControls.lastName.setValue("");
+    formContactsGroupControls.emailAddress.setValue("");
+    formContactsGroupControls.phoneNumber.setValue("");
 
-    this.remindersFormGroup.controls.contactsList.setValue("");
+    formContactsGroupControls.contactsList?.setValue("");
 
-    this.remindersFormGroup.controls.frequency.setValue("");
-    this.remindersFormGroup.controls.time.setValue("");
-    this.remindersFormGroup.controls.message.setValue("");
+    let formReminderFreqControls = this.remindersFormGroup.controls;
+    formReminderFreqControls.frequency.setValue("");
+    formReminderFreqControls.time.setValue("");
+    formReminderFreqControls.message.setValue("");
 
-    if (this.remindersFormGroup.controls.frequency.value === FREQUENCY.Once) {
-      this.remindersFormGroup.controls.date.setValue("");
+    if (formReminderFreqControls.frequency.value === FREQUENCY.Once) {
+      formReminderFreqControls.date.setValue("");
     }
-    if (this.remindersFormGroup.controls.frequency.value === FREQUENCY.Weekly) {
-      this.remindersFormGroup.controls.weekday.setValue("");
+    if (formReminderFreqControls.frequency.value === FREQUENCY.Weekly) {
+      formReminderFreqControls.weekday.setValue("");
     }
-    if (this.remindersFormGroup.controls.frequency.value === FREQUENCY.Monthly) {
-      this.remindersFormGroup.controls.day.setValue("");
+    if (formReminderFreqControls.frequency.value === FREQUENCY.Monthly) {
+      formReminderFreqControls.day.setValue("");
     }
-    if (this.remindersFormGroup.controls.frequency.value === FREQUENCY.MonthWeekly) {
-      this.remindersFormGroup.controls.week.setValue("");
-      this.remindersFormGroup.controls.weekday.setValue("");
+    if (formReminderFreqControls.frequency.value === FREQUENCY.MonthWeekly) {
+      formReminderFreqControls.week.setValue("");
+      formReminderFreqControls.weekday.setValue("");
     }
-    if (this.remindersFormGroup.controls.frequency.value === FREQUENCY.Yearly) {
-      this.remindersFormGroup.controls.month.setValue("");
-      this.remindersFormGroup.controls.day.setValue("");
+    if (formReminderFreqControls.frequency.value === FREQUENCY.Yearly) {
+      formReminderFreqControls.month.setValue("");
+      formReminderFreqControls.day.setValue("");
     }
 
   }
@@ -358,15 +374,18 @@ export class RemindersComponent implements OnInit {
   }
 
   selectContact(contactId: number) {
-    let contacts$ = this.contactNamesService.get().pipe(
+    this.contactNamesService.get().pipe(
       map(contacts => contacts.filter(contact => contact.id === contactId))
       ).subscribe(contacts => {
-        this.remindersFormGroup.patchValue({
-          firstName : contacts[0].firstName,
-          lastName : contacts[0].lastName,
-          emailAddress : contacts[0].emailAddress,
-          phoneNumber : contacts[0].phoneNumber
-        });
+        if (contacts.length === 1) {
+          let contact = contacts[0];
+          this.remindersFormContactGroup.patchValue({
+            firstName : contact.firstName,
+            lastName : contact.lastName,
+            emailAddress : contact.emailAddress,
+            phoneNumber : contact.phoneNumber
+          });
+        }
     });
   }
 

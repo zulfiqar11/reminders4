@@ -73,9 +73,9 @@
   ></tr>
 </table>
 
-<form [formGroup]="remindersFormGroup" class="example-form">
+<form [formGroup]="remindersFormContactGroup" class="example-form">
   <table class="example-full-width" cellspacing="0">
-    <tr *ngIf="remindersFormGroup.get('contactsList')">
+    <tr *ngIf="remindersFormContactGroup.get('contactsList')">
       <td>
         <mat-form-field appearance="fill">
           <mat-label>Contacts List</mat-label>
@@ -90,6 +90,7 @@
         </mat-form-field>
       </td>
     </tr>
+
     <tr>
       <td hidden="true">
         <mat-form-field class="example-full-width" appearance="fill">
@@ -122,6 +123,11 @@
         </mat-form-field>
       </td>
     </tr>
+  </table>
+</form>
+
+<form [formGroup]="remindersFormGroup" class="example-form">
+  <table class="example-full-width" cellspacing="0">
     <tr>
       <td>
         <mat-form-field appearance="fill">
