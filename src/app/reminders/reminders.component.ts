@@ -36,14 +36,12 @@ export class RemindersComponent implements OnInit {
 
   // TODO: BUG - AFTER SAVE EXISTING RECORD DIRTY FLAG AND TOUCHED FLAD SHOULD BE FALSE WHEN CLICKING ON EXISTING RECORDS.
   // TODO: BUG - ONCE RECORD WITH ID 1 IS SELECTED THEN WHEN HIT NEW THE SAME DATE IS COPIED ON THE NEW RECORD.
-  // TODO: BUG - WHEN FORM (DIRTY = TRUE) CANCEL BUTTON SHOULD BE ENABLED
-  // TODO: BUG - CANCEL BUTTON (WHEN NEW RECORD CLEAR OUT EVERY THING) AND (WHEN EXISTING RECORD ONLY CLEAR OUT THE DIRTY FIELDS.)
+  // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK. ALL BUTTONS ARE ENABLED AND CONTROLS WORK NORMAL BUT SAVE SPINS FOR EVER.
 
   // TODO: FILE UPLOAD TO SEND MESSAGE WITH AN IMAGE FILE.
   // TODO: MANAGE BUTTONS LIKE SAVE DELETE ETC BASED ON FORM VALID OR STATE CHANGES.
   // TODO: table have rows selected by check boxes and be able to select some check boxes and delete them
   // TODO: create campaigns and for some contacts upload file and send messages to all those contacts.
-  // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
   // TODO: REMOVE REMINDERS SERVICE.
   // TODO: first set the date and then based on that set the frequency.
   // TODO: consolidate date frequency component and use it in reminders campaign as well.
