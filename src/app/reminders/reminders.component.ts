@@ -34,7 +34,6 @@ enum WEEKDAY {
 
 export class RemindersComponent implements OnInit {
 
-  // TODO: BUG - AFTER DELETE IS COMPLETED, NEW BUTTON SHOULD BE ENABLED.
   // TODO: BUG - AFTER SAVE EXISTING RECORD DIRTY FLAG AND TOUCHED FLAD SHOULD BE FALSE WHEN CLICKING ON EXISTING RECORDS.
   // TODO: BUG - ONCE RECORD WITH ID 1 IS SELECTED THEN WHEN HIT NEW THE SAME DATE IS COPIED ON THE NEW RECORD.
   // TODO: BUG - WHEN FORM (DIRTY = TRUE) CANCEL BUTTON SHOULD BE ENABLED
@@ -290,7 +289,6 @@ export class RemindersComponent implements OnInit {
   }
 
   onSave() {
-
     let reminder = this.populateReminder();
 
     if (reminder.id === 0) {
@@ -320,7 +318,7 @@ export class RemindersComponent implements OnInit {
       this.remindersFormContactGroup.addControl('contactsList', this.contactsListControl);
       this.remindersFormContactGroup.controls.contactsList?.setValue("");
     }
-
+    this.reminderSelected = false;
   }
 
   onNew() {
