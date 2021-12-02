@@ -51,6 +51,8 @@ export class RemindersComponent implements OnInit {
   remindersList$!: Observable<Reminder[]>;
   spin = false;
 
+  savedReminder!: Reminder;
+
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'emailAddress', 'frequency', 'month',  'day', 'week',  'weekday',  'time', 'date','message'];
 
   frequencies = [
@@ -191,6 +193,7 @@ export class RemindersComponent implements OnInit {
   selectReminder(reminder: Reminder) {
     this.remindersFormContactGroup.removeControl('contactsList');
     this.populateReminderControl(reminder);
+    this.savedReminder = reminder;
 
     this.reminderSelected = true;
     this.cancelState = false;
@@ -332,9 +335,15 @@ export class RemindersComponent implements OnInit {
   }
 
   onCancel() {
-    this.emptyOutForm();
-    this.removeControls();
-    this.cancelState = false;
+    if (this.reminderSelected) {
+      this.populateReminderControl(this.savedReminder);
+
+    }
+    else {
+      this.emptyOutForm();
+      this.removeControls();
+      this.cancelState = false;
+    }
   }
 
   emptyOutForm() {
@@ -439,7 +448,7 @@ export class RemindersComponent implements OnInit {
   }
 
   enableCancelButton(): boolean {
-    return !this.remindersFormGroup.pristine && !this.remindersFormContactGroup.pristine && this.cancelState;
+    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && !this.remindersFormGroup.pristine;
   }
 
 }
