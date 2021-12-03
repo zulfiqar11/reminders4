@@ -34,6 +34,7 @@ enum WEEKDAY {
 
 export class RemindersComponent implements OnInit {
 
+  // TODO: REFACTOR - SEPARATE OUT CONTACTS AND TIME CONTROLS IF THEY ARE IN THE SAME METHOD.
   // TODO: BUG - AFTER SAVE EXISTING RECORD DIRTY FLAG AND TOUCHED FLAD SHOULD BE FALSE WHEN CLICKING ON EXISTING RECORDS.
   // TODO: BUG - ONCE RECORD WITH ID 1 IS SELECTED THEN WHEN HIT NEW THE SAME DATE IS COPIED ON THE NEW RECORD.
   // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK. ALL BUTTONS ARE ENABLED AND CONTROLS WORK NORMAL BUT SAVE SPINS FOR EVER.
@@ -314,7 +315,8 @@ export class RemindersComponent implements OnInit {
     let reminder = this.populateReminder();
     this.dataService.delete(reminder, reminder.id).subscribe(() => this.spin = false);
     this.remindersList$ = this.dataService.get();
-    this.emptyOutForm();
+    this.emptyOutContactForm();
+    this.emptyOutTimeControls();
     if (!this.remindersFormContactGroup.get('contactsList')) {
       this.remindersFormContactGroup.addControl('contactsList', this.contactsListControl);
       this.remindersFormContactGroup.controls.contactsList?.setValue("");
@@ -324,7 +326,8 @@ export class RemindersComponent implements OnInit {
 
   onNew() {
     this.remindersFormContactGroup.addControl('contactsList', this.contactsListControl);
-    this.emptyOutForm();
+    this.emptyOutContactForm();
+    this.emptyOutTimeControls();
     this.removeControls();
     this.reminderSelected = false;
     this.cancelState = true;
@@ -338,13 +341,14 @@ export class RemindersComponent implements OnInit {
 
     }
     else {
-      this.emptyOutForm();
+      this.emptyOutContactForm();
+      this.emptyOutTimeControls();
       this.removeControls();
       this.cancelState = false;
     }
   }
 
-  emptyOutForm() {
+  emptyOutContactForm() {
 
     let formContactsGroupControls = this.remindersFormContactGroup.controls;
     formContactsGroupControls.id.setValue("");
@@ -355,8 +359,12 @@ export class RemindersComponent implements OnInit {
     formContactsGroupControls.phoneNumber.setValue("");
 
     formContactsGroupControls.contactsList?.setValue("");
+  }
+
+  emptyOutTimeControls() {
 
     let formReminderFreqControls = this.remindersFormGroup.controls;
+
     formReminderFreqControls.frequency.setValue("");
     formReminderFreqControls.time.setValue("");
     formReminderFreqControls.message.setValue("");
@@ -378,11 +386,15 @@ export class RemindersComponent implements OnInit {
       formReminderFreqControls.month.setValue("");
       formReminderFreqControls.day.setValue("");
     }
-
   }
 
   removeControls() {
 
+    this.remindersFormGroup.get('date')?.setValue("");
+    this.remindersFormGroup.get('weekday')?.setValue("");
+    this.remindersFormGroup.get('day')?.setValue("");
+    this.remindersFormGroup.get('month')?.setValue("");
+    this.remindersFormGroup.get('week')?.setValue("");
     this.remindersFormGroup.removeControl('date');
     this.remindersFormGroup.removeControl('weekday');
     this.remindersFormGroup.removeControl('day');
