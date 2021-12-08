@@ -35,6 +35,8 @@ enum WEEKDAY {
 export class RemindersComponent implements OnInit {
 
   // TODO: BUG - SELECT A REMINDER ITEM, UPDATE MESSAGE, HIT CANCEL BUTTON, SOME OF THE TIME CONTROLS BECOME EMPTY.
+  // TODO: BUG - SELECT A REMINDER ITEM, ONLY CHANGE THE CONTACT, HIT CANCEL BUTTON, DOES NOT REVERT BACK TO ORIGINAL.
+  // TODO: BUG - SELECT A REMINDER ITEM, DELETE ITEM, SELECT ANOTHER REMINDER.. ALL BUTTONS ARE DISABLED.
   // TODO: REFACTOR - REMOVE BUTTON MANAGE STATE FLAGS MODULAR LEVEL.
 
   // TODO: REFACTOR - SEPARATE OUT CONTACTS AND TIME CONTROLS IF THEY ARE IN THE SAME METHOD.
@@ -131,10 +133,8 @@ export class RemindersComponent implements OnInit {
   monthControl = new FormControl("");
   weekControl = new FormControl("");
 
+  // TODO: REFACTOR THIS IF POSSIBLE
   reminderSelected = false;
-  newState = false;
-  cancelState = false;
-  deleteState = false;
 
   constructor(fb: FormBuilder,private dataService: DataService<Reminder>, private datePipe: DatePipe, private contactNamesService: ContactNamesService) {
     this.dataService.Url("api/reminders");
@@ -214,11 +214,8 @@ export class RemindersComponent implements OnInit {
     this.savedReminder = reminder;
     this.remindersFormParentGroup.markAsPristine();
 
+    // TODO: REFACTOR THIS IF POSSIBLE
     this.reminderSelected = true;
-    this.cancelState = false;
-    this.deleteState = true;
-    this.newState = true;
-
   }
 
   populateReminderControl(reminder: Reminder) {
@@ -287,6 +284,7 @@ export class RemindersComponent implements OnInit {
       message: formReminderFreqControls.message.value
     }
 
+    // TODO: REFACTOR THIS IF POSSIBLE
     if (!this.reminderSelected) {
       reminder.id = 0;
     }
@@ -326,8 +324,6 @@ export class RemindersComponent implements OnInit {
       this.dataService.update(reminder, reminder.id).subscribe(() => this.spin = false);
       this.remindersList$ = this.dataService.get();
     }
-
-    this.cancelState = false;
   }
 
   onDelete() {
@@ -341,6 +337,8 @@ export class RemindersComponent implements OnInit {
       this.remindersFormContactGroup.addControl('contactsList', this.contactsListControl);
       this.remindersFormContactGroup.controls.contactsList?.setValue("");
     }
+
+    // TODO: REFACTOR THIS IF POSSIBLE
     this.reminderSelected = false;
   }
 
@@ -349,22 +347,19 @@ export class RemindersComponent implements OnInit {
     this.emptyOutContactForm();
     this.emptyOutTimeControls();
     this.removeControls();
+    // TODO: REFACTOR THIS IF POSSIBLE
     this.reminderSelected = false;
-    this.cancelState = true;
-    this.deleteState = false;
-    this.newState = false;
   }
 
   onCancel() {
+    // TODO: REFACTOR THIS IF POSSIBLE
     if (this.reminderSelected) {
       this.populateReminderControl(this.savedReminder);
-
     }
     else {
       this.emptyOutContactForm();
       this.emptyOutTimeControls();
       this.removeControls();
-      this.cancelState = false;
     }
   }
 
