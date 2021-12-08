@@ -34,6 +34,9 @@ enum WEEKDAY {
 
 export class RemindersComponent implements OnInit {
 
+  // TODO: BUG - SELECT A REMINDER ITEM, UPDATE MESSAGE, HIT CANCEL BUTTON, SOME OF THE TIME CONTROLS BECOME EMPTY.
+  // TODO: REFACTOR - REMOVE BUTTON MANAGE STATE FLAGS MODULAR LEVEL.
+
   // TODO: REFACTOR - SEPARATE OUT CONTACTS AND TIME CONTROLS IF THEY ARE IN THE SAME METHOD.
   // TODO: BUG - AFTER SAVE EXISTING RECORD DIRTY FLAG AND TOUCHED FLAD SHOULD BE FALSE WHEN CLICKING ON EXISTING RECORDS.
   // TODO: BUG - ONCE RECORD WITH ID 1 IS SELECTED THEN WHEN HIT NEW THE SAME DATE IS COPIED ON THE NEW RECORD.
@@ -100,12 +103,15 @@ export class RemindersComponent implements OnInit {
   contacts$!: Observable<ContactDisplay[]>;
 
   remindersFormContactGroupValueChanges: any;
+  remindersFormParentGroupValueChanges: any;
   remindersFormContactGroupStatusChanges: any;
+  remindersFormParentGroupStatusChanges: any;
   remindersFormGroupValueChanges: any;
   remindersFormGroupStatusChanges: any;
 
   remindersFormGroup!: FormGroup;
   remindersFormContactGroup!: FormGroup;
+  remindersFormParentGroup!: FormGroup;
 
 
   id = new FormControl("");
@@ -149,6 +155,12 @@ export class RemindersComponent implements OnInit {
         message: this.messageControl
       }
     )
+    this.remindersFormParentGroup = fb.group(
+      {
+        contactsGroup: this.remindersFormContactGroup,
+        remindersGroup: this.remindersFormGroup
+      }
+    )
   }
 
   ngOnInit(): void {
@@ -185,14 +197,22 @@ export class RemindersComponent implements OnInit {
 
     this.remindersFormGroup.valueChanges.subscribe(data => this.remindersFormGroupValueChanges = JSON.stringify(data));
     this.remindersFormContactGroup.valueChanges.subscribe(data => this.remindersFormContactGroupValueChanges = JSON.stringify(data));
+    this.remindersFormParentGroup.valueChanges.subscribe(data => this.remindersFormParentGroupValueChanges = JSON.stringify(data));
     this.remindersFormGroup.statusChanges.subscribe(data => this.remindersFormGroupStatusChanges =  JSON.stringify(data));
     this.remindersFormContactGroup.statusChanges.subscribe(data => this.remindersFormContactGroupStatusChanges =  JSON.stringify(data));
+    this.remindersFormParentGroup.statusChanges.subscribe(data => this.remindersFormParentGroupStatusChanges =  JSON.stringify(data));
   }
 
   selectReminder(reminder: Reminder) {
-    this.remindersFormContactGroup.removeControl('contactsList');
+
+    // TODO: REFACTOR THIS OR IMPROVE UPON THIS.
+    reminder.firstName == 'Zulfiqar'? this.contactsListControl.setValue(1): null;
+    reminder.firstName == 'Sobia'? this.contactsListControl.setValue(2): null;
+    reminder.firstName == 'Lenah'? this.contactsListControl.setValue(3): null;
+
     this.populateReminderControl(reminder);
     this.savedReminder = reminder;
+    this.remindersFormParentGroup.markAsPristine();
 
     this.reminderSelected = true;
     this.cancelState = false;
@@ -446,19 +466,19 @@ export class RemindersComponent implements OnInit {
   }
 
   enableSaveButton(): boolean {
-    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && !this.remindersFormGroup.pristine;
+    return this.remindersFormParentGroup.valid && !this.remindersFormParentGroup.pristine;
   }
 
   enableDeleteButton(): boolean {
-    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && this.deleteState;
+    return this.remindersFormParentGroup.valid && this.remindersFormParentGroup.pristine;
   }
 
   enableNewButton(): boolean {
-    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && this.newState;
+    return this.enableDeleteButton();
   }
 
   enableCancelButton(): boolean {
-    return this.remindersFormGroup.valid && this.remindersFormContactGroup.valid && !this.remindersFormGroup.pristine;
+    return this.enableSaveButton();
   }
 
 }
