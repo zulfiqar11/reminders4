@@ -201,7 +201,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Day</mat-label>
           <select formControlName="day" matNativeControl>
-            <option *ngFor="let theDay of days" [value]="theDay.value">
+            <option *ngFor="let theDay of theDays" [value]="theDay.value">
               {{ theDay.viewValue }}
             </option>
           </select>

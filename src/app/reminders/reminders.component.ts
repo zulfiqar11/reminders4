@@ -1,15 +1,15 @@
-import { constFrequencies, constWeeks, constWeekdays, constMonths } from './../shared/constants';
-import { ContactNamesService } from './../shared/services/contactNames.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Reminder } from '../shared/model/reminder';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { map } from 'rxjs/operators';
+
 import { ContactDisplay } from '../shared/model/contact';
 import { DataService } from '../shared/services/data.service';
 import { FREQUENCY } from '../shared/constants';
-
+import { constFrequencies, constWeeks, constWeekdays, constMonths, constDays } from './../shared/constants';
+import { ContactNamesService } from './../shared/services/contactNames.service';
+import { Reminder } from '../shared/model/reminder';
 
 @Component({
   selector: 'app-reminders',
@@ -48,11 +48,11 @@ export class RemindersComponent implements OnInit {
   theWeeks = constWeeks;
   theWeekdays = constWeekdays;
   theMonths = constMonths;
-
-  days =  [] as any;
+  theDays = constDays;
 
   contacts$!: Observable<ContactDisplay[]>;
 
+  // TODO: CLEAN THIS UP LATER WHEN YOU DO NOT NEED FORM DEBUGGING.
   remindersFormContactGroupValueChanges: any;
   remindersFormParentGroupValueChanges: any;
   remindersFormContactGroupStatusChanges: any;
@@ -125,14 +125,6 @@ export class RemindersComponent implements OnInit {
           )
       })
     )
-
-    for (let i = 1; i < 32; i++) {
-      let newDay = {
-         value: i.toString(),
-         viewValue: i.toString()
-      };
-      this.days.push(newDay);
-    }
 
     let freqControl = this.remindersFormGroup.get('frequency');
     freqControl?.valueChanges.subscribe(freq => {
