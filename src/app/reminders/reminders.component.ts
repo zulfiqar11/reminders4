@@ -1,3 +1,4 @@
+import { constFrequencies, constWeeks, constWeekdays, constMonths } from './../shared/constants';
 import { ContactNamesService } from './../shared/services/contactNames.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -8,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { ContactDisplay } from '../shared/model/contact';
 import { DataService } from '../shared/services/data.service';
 import { FREQUENCY } from '../shared/constants';
+
 
 @Component({
   selector: 'app-reminders',
@@ -42,46 +44,10 @@ export class RemindersComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'emailAddress', 'frequency', 'month',  'day', 'week',  'weekday',  'time', 'date','message'];
 
-  frequencies = [
-    {value: 'Once', viewValue: 'Once'},
-    {value: 'Daily', viewValue: 'Daily'},
-    {value: 'Weekly', viewValue: 'Weekly'},
-    {value: 'Monthly', viewValue: 'Monthly'},
-    {value: 'MonthWeekly', viewValue: 'MonthWeekly'},
-    {value: 'Yearly', viewValue: 'Yearly'}
-  ];
-
-  weeks = [
-    {value: 'First', viewValue: 'First'},
-    {value: 'Second', viewValue: 'Second'},
-    {value: 'Third', viewValue: 'Third'},
-    {value: 'Fourth', viewValue: 'Fourth'}
-  ];
-
-  weekdays = [
-    {value: 'Monday', viewValue: 'Monday'},
-    {value: 'Tuesday', viewValue: 'Tuesday'},
-    {value: 'Wednesday', viewValue: 'Wednesday'},
-    {value: 'Thursday', viewValue: 'Thursday'},
-    {value: 'Friday', viewValue: 'Friday'},
-    {value: 'Saturday', viewValue: 'Saturday'},
-    {value: 'Sunday', viewValue: 'Sunday'}
-  ];
-
-  months = [
-    {value: 'January', viewValue: 'January'},
-    {value: 'February', viewValue: 'February'},
-    {value: 'March', viewValue: 'March'},
-    {value: 'April', viewValue: 'April'},
-    {value: 'May', viewValue: 'May'},
-    {value: 'June', viewValue: 'June'},
-    {value: 'July', viewValue: 'July'},
-    {value: 'August', viewValue: 'August'},
-    {value: 'September', viewValue: 'September'},
-    {value: 'October', viewValue: 'October'},
-    {value: 'November', viewValue: 'November'},
-    {value: 'December', viewValue: 'December'}
-  ];
+  theFrequencies = constFrequencies;
+  theWeeks = constWeeks;
+  theWeekdays = constWeekdays;
+  theMonths = constMonths;
 
   days =  [] as any;
 

@@ -133,7 +133,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Frequency</mat-label>
           <select formControlName="frequency" matNativeControl>
-            <option *ngFor="let freq of frequencies" [value]="freq.value">
+            <option *ngFor="let freq of theFrequencies" [value]="freq.value">
               {{ freq.viewValue }}
             </option>
           </select>
@@ -168,7 +168,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Week</mat-label>
           <select formControlName="week" matNativeControl>
-            <option *ngFor="let theWeek of weeks" [value]="theWeek.value">
+            <option *ngFor="let theWeek of theWeeks" [value]="theWeek.value">
               {{ theWeek.viewValue }}
             </option>
           </select>
@@ -179,7 +179,7 @@
           <mat-label>Weekday</mat-label>
           <select formControlName="weekday" matNativeControl>
             <option
-              *ngFor="let theWeekday of weekdays"
+              *ngFor="let theWeekday of theWeekdays"
               [value]="theWeekday.value"
             >
               {{ theWeekday.viewValue }}
@@ -191,7 +191,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Month</mat-label>
           <select formControlName="month" matNativeControl>
-            <option *ngFor="let theMonth of months" [value]="theMonth.value">
+            <option *ngFor="let theMonth of theMonths" [value]="theMonth.value">
               {{ theMonth.viewValue }}
             </option>
           </select>
