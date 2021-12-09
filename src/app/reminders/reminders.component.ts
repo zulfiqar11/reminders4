@@ -7,24 +7,7 @@ import { DatePipe } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { ContactDisplay } from '../shared/model/contact';
 import { DataService } from '../shared/services/data.service';
-
-enum FREQUENCY {
-  Once = "Once",
-  Weekly = "Weekly",
-  Monthly = "Monthly",
-  MonthWeekly = "MonthWeekly",
-  Yearly = "Yearly"
-};
-
-enum WEEKDAY {
-  Monday = "Monday",
-  Tuesday = "Tuesday",
-  Wednesday = "Wednesday",
-  Thursday = "Thursday",
-  Friday = "Friday",
-  Saturday = "Saturday",
-  Sunday = "Sunday"
-};
+import { FREQUENCY } from '../shared/constants';
 
 @Component({
   selector: 'app-reminders',
