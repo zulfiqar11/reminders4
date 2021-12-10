@@ -1,3 +1,4 @@
+import { ContactuiService } from './../../shared/services/contactui.service';
 import { DataService } from 'src/app/shared/services/data.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -26,25 +27,25 @@ export class ContactsUiComponent implements OnInit {
 
   savedContactId = 0;
 
-  constructor(fb: FormBuilder, private contactNamesService: ContactNamesService, private dataService: DataService<Reminder>) {
+  constructor(fb: FormBuilder, private contactNamesService: ContactNamesService, private contactuiservice: ContactuiService) {
     this.CreateFormContactGroup(fb);
   }
 
   ngOnInit(): void {
-    this.dataService.contactValue.subscribe(contactId => {
+    this.contactuiservice.contactValue.subscribe(contactId => {
       this.contactsListControl.setValue(contactId);
       this.savedContactId = contactId;
     })
 
-    this.dataService.emptyOutContact.subscribe(data => {
+    this.contactuiservice.emptyOutContact.subscribe(data => {
       this.emptyOutContactForm();
     })
 
-    this.dataService.emptyOutContactList.subscribe(data => {
+    this.contactuiservice.emptyOutContactList.subscribe(data => {
       this.emptyOutContactListControl();
     })
 
-    this.dataService.populateContactGroup.subscribe(reminder => {
+    this.contactuiservice.populateContactGroup.subscribe(reminder => {
       this.populateContactFormGroup(reminder);
     })
     this.manageSelectContact();
@@ -93,7 +94,7 @@ export class ContactsUiComponent implements OnInit {
             emailAddress : contact.emailAddress,
             phoneNumber : contact.phoneNumber
           });
-          this.dataService.selectedContactSubject.next(this.remindersFormContactGroup);
+          this.contactuiservice.selectedContactSubject.next(this.remindersFormContactGroup);
         }
     });
   }
@@ -129,7 +130,7 @@ export class ContactsUiComponent implements OnInit {
       phoneNumber : reminder.phoneNumber,
     })
 
-    this.dataService.selectedContactSubject.next(this.remindersFormContactGroup);
+    this.contactuiservice.selectedContactSubject.next(this.remindersFormContactGroup);
   }
 
 }

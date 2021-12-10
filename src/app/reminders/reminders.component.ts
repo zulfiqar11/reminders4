@@ -1,3 +1,4 @@
+import { ContactuiService } from './../shared/services/contactui.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -21,7 +22,6 @@ export class RemindersComponent implements OnInit {
   // TODO: BUG - SELECT A REMINDER ITEM, ONLY CHANGE THE CONTACT, HIT CANCEL BUTTON, DOES NOT REVERT BACK TO ORIGINAL.
   // TODO: BUG - SELECT A REMINDER ITEM, DELETE ITEM, SELECT ANOTHER REMINDER.. ALL BUTTONS ARE DISABLED.
   // TODO: REFACTOR - REMOVE BUTTON MANAGE STATE FLAGS MODULAR LEVEL.
-  // TODO: REFACTOR - PUT DATASERVICE COMPONENT SUBJECT CODE INTO A NEW SERVICE.
 
   // TODO: BUG - AFTER SAVE EXISTING RECORD DIRTY FLAG AND TOUCHED FLAD SHOULD BE FALSE WHEN CLICKING ON EXISTING RECORDS.
   // TODO: BUG - ONCE RECORD WITH ID 1 IS SELECTED THEN WHEN HIT NEW THE SAME DATE IS COPIED ON THE NEW RECORD.
@@ -74,7 +74,7 @@ export class RemindersComponent implements OnInit {
   // TODO: REFACTOR THIS IF POSSIBLE
   reminderSelected = false;
 
-  constructor(fb: FormBuilder,private dataService: DataService<Reminder>, private datePipe: DatePipe) {
+  constructor(fb: FormBuilder,private dataService: DataService<Reminder>, private datePipe: DatePipe, private contactuiservice: ContactuiService) {
     this.dataService.Url("api/reminders");
 
     this.remindersFormGroup = fb.group(
@@ -100,7 +100,7 @@ export class RemindersComponent implements OnInit {
       this.selectFrequency(freq);
     })
 
-    this.dataService.selectedContact.subscribe(data => {
+    this.contactuiservice.selectedContact.subscribe(data => {
       this.remindersFormContactGroup = data;
     })
 
@@ -114,9 +114,9 @@ export class RemindersComponent implements OnInit {
   selectReminder(reminder: Reminder) {
 
     // TODO: REFACTOR THIS OR IMPROVE UPON THIS.
-    reminder.firstName == 'Zulfiqar'? this.dataService.contactValueSubject.next(1): null;
-    reminder.firstName == 'Sobia'? this.dataService.contactValueSubject.next(2): null;
-    reminder.firstName == 'Lenah'? this.dataService.contactValueSubject.next(3): null;
+    reminder.firstName == 'Zulfiqar'? this.contactuiservice.contactValueSubject.next(1): null;
+    reminder.firstName == 'Sobia'? this.contactuiservice.contactValueSubject.next(2): null;
+    reminder.firstName == 'Lenah'? this.contactuiservice.contactValueSubject.next(3): null;
 
     this.populateReminderControl(reminder);
     this.savedReminder = reminder;
@@ -130,7 +130,7 @@ export class RemindersComponent implements OnInit {
 
     this.removeControls();
 
-    this.dataService.populateContactGroupSubject.next(reminder);
+    this.contactuiservice.populateContactGroupSubject.next(reminder);
 
     this.remindersFormGroup.patchValue({
       frequency: reminder.frequency,
@@ -235,8 +235,8 @@ export class RemindersComponent implements OnInit {
     this.remindersList$ = this.dataService.get();
     this.emptyOutTimeControls();
 
-    this.dataService.emptyOutContactListSubject.next(true);
-    this.dataService.emptyOutContactSubject.next(true);
+    this.contactuiservice.emptyOutContactListSubject.next(true);
+    this.contactuiservice.emptyOutContactSubject.next(true);
 
     // TODO: REFACTOR THIS IF POSSIBLE
     this.reminderSelected = false;
@@ -245,7 +245,7 @@ export class RemindersComponent implements OnInit {
 
 
   onNew() {
-    this.dataService.emptyOutContactSubject.next(true);
+    this.contactuiservice.emptyOutContactSubject.next(true);
 
     this.emptyOutTimeControls();
     this.removeControls();
@@ -259,7 +259,7 @@ export class RemindersComponent implements OnInit {
       this.populateReminderControl(this.savedReminder);
     }
     else {
-      this.dataService.emptyOutContactSubject.next(true);
+      this.contactuiservice.emptyOutContactSubject.next(true);
       this.emptyOutTimeControls();
       this.removeControls();
     }
