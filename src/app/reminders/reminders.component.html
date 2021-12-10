@@ -73,58 +73,7 @@
   ></tr>
 </table>
 
-<form [formGroup]="remindersFormContactGroup" class="example-form">
-  <table class="example-full-width" cellspacing="0">
-    <tr *ngIf="remindersFormContactGroup.get('contactsList')">
-      <td>
-        <mat-form-field appearance="fill">
-          <mat-label>Contacts List</mat-label>
-          <select matNativeControl formControlName="contactsList">
-            <option
-              *ngFor="let contact of contacts$ | async"
-              [value]="contact.value"
-            >
-              {{ contact.viewValue }}
-            </option>
-          </select>
-        </mat-form-field>
-      </td>
-    </tr>
-
-    <tr>
-      <td hidden="true">
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>id</mat-label>
-          <input matInput formControlName="id" />
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>First name</mat-label>
-          <input matInput formControlName="firstName" />
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Last Name</mat-label>
-          <input matInput formControlName="lastName" />
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="emailAddress" />
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Phone</mat-label>
-          <input matInput formControlName="phoneNumber" />
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
-</form>
+<app-contacts-ui></app-contacts-ui>
 
 <form [formGroup]="remindersFormGroup" class="example-form">
   <table class="example-full-width" cellspacing="0">

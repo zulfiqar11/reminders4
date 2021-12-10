@@ -30,6 +30,7 @@ import { ContactsNamesFileListComponent } from './contacts/contacts-names-file-l
 import { CampaignsListComponent } from './campaigns/campaigns-list/campaigns-list.component';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
+import { ContactsUiComponent } from './contacts/contacts-ui/contacts-ui.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { AngularFireModule } from '@angular/fire';
     ContactsListComponent,
     ContactsFileListComponent,
     ContactsNamesFileListComponent,
-    CampaignsListComponent
+    CampaignsListComponent,
+    ContactsUiComponent
   ],
   imports: [
     BrowserModule,

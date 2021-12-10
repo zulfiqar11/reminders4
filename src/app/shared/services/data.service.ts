@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { FormGroup } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+import { Reminder } from '../model/reminder';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +10,22 @@ import { Observable } from 'rxjs';
 export class DataService<T> {
 
   private url = '';
+
+  contactValueSubject = new Subject<number>();
+  contactValue = this.contactValueSubject.asObservable();
+
+  selectedContactSubject = new Subject<FormGroup>();
+  selectedContact = this.selectedContactSubject.asObservable();
+
+  emptyOutContactSubject = new Subject();
+  emptyOutContact = this.emptyOutContactSubject.asObservable();
+
+  emptyOutContactListSubject = new Subject();
+  emptyOutContactList = this.emptyOutContactListSubject.asObservable();
+
+  populateContactGroupSubject = new Subject<Reminder>();
+  populateContactGroup = this.populateContactGroupSubject.asObservable();
+
 
   constructor(private http: HttpClient) {}
 
