@@ -87,16 +87,8 @@ export class RemindersComponent implements OnInit {
 
   constructor(fb: FormBuilder,private dataService: DataService<Reminder>, private datePipe: DatePipe, private contactNamesService: ContactNamesService) {
     this.dataService.Url("api/reminders");
-    this.remindersFormContactGroup = fb.group(
-      {
-        id: this.id,
-        contactsList: this.contactsListControl,
-        firstName: this.firstNameControl,
-        lastName: this.lastNameControl,
-        phoneNumber: this.phoneNumberControl,
-        emailAddress: this.emailAddressControl,
-      }
-    )
+
+    this.CreateFormContactGroup(fb);
     this.remindersFormGroup = fb.group(
       {
         frequency: this.frequencyControl,
@@ -108,6 +100,19 @@ export class RemindersComponent implements OnInit {
       {
         contactsGroup: this.remindersFormContactGroup,
         remindersGroup: this.remindersFormGroup
+      }
+    )
+  }
+
+  CreateFormContactGroup(fb: FormBuilder) {
+    this.remindersFormContactGroup = fb.group(
+      {
+        id: this.id,
+        contactsList: this.contactsListControl,
+        firstName: this.firstNameControl,
+        lastName: this.lastNameControl,
+        phoneNumber: this.phoneNumberControl,
+        emailAddress: this.emailAddressControl,
       }
     )
   }
@@ -131,17 +136,26 @@ export class RemindersComponent implements OnInit {
       this.selectFrequency(freq);
     })
 
+    this.manageSelectContact();
+
+    this.remindersFormGroup.valueChanges.subscribe(data => this.remindersFormGroupValueChanges = JSON.stringify(data));
+    this.remindersFormParentGroup.valueChanges.subscribe(data => this.remindersFormParentGroupValueChanges = JSON.stringify(data));
+    this.remindersFormGroup.statusChanges.subscribe(data => this.remindersFormGroupStatusChanges =  JSON.stringify(data));
+    this.remindersFormParentGroup.statusChanges.subscribe(data => this.remindersFormParentGroupStatusChanges =  JSON.stringify(data));
+
+    this.manageContactStatusValueChanges();
+  }
+
+  manageContactStatusValueChanges() {
+    this.remindersFormContactGroup.valueChanges.subscribe(data => this.remindersFormContactGroupValueChanges = JSON.stringify(data));
+    this.remindersFormContactGroup.statusChanges.subscribe(data => this.remindersFormContactGroupStatusChanges =  JSON.stringify(data));
+  }
+
+  manageSelectContact() {
     let contactListControl = this.remindersFormContactGroup.get('contactsList');
     contactListControl?.valueChanges.subscribe((contactId: string) => {
       this.selectContact(+contactId);
     })
-
-    this.remindersFormGroup.valueChanges.subscribe(data => this.remindersFormGroupValueChanges = JSON.stringify(data));
-    this.remindersFormContactGroup.valueChanges.subscribe(data => this.remindersFormContactGroupValueChanges = JSON.stringify(data));
-    this.remindersFormParentGroup.valueChanges.subscribe(data => this.remindersFormParentGroupValueChanges = JSON.stringify(data));
-    this.remindersFormGroup.statusChanges.subscribe(data => this.remindersFormGroupStatusChanges =  JSON.stringify(data));
-    this.remindersFormContactGroup.statusChanges.subscribe(data => this.remindersFormContactGroupStatusChanges =  JSON.stringify(data));
-    this.remindersFormParentGroup.statusChanges.subscribe(data => this.remindersFormParentGroupStatusChanges =  JSON.stringify(data));
   }
 
   selectReminder(reminder: Reminder) {
@@ -159,10 +173,7 @@ export class RemindersComponent implements OnInit {
     this.reminderSelected = true;
   }
 
-  populateReminderControl(reminder: Reminder) {
-
-    this.removeControls();
-
+  populateContactFormGroup(reminder: Reminder) {
     this.remindersFormContactGroup.patchValue({
       id: reminder.id,
       firstName : reminder.firstName,
@@ -170,6 +181,12 @@ export class RemindersComponent implements OnInit {
       emailAddress : reminder.emailAddress,
       phoneNumber : reminder.phoneNumber,
     })
+  }
+  populateReminderControl(reminder: Reminder) {
+
+    this.removeControls();
+
+    this.populateContactFormGroup(reminder);
 
     this.remindersFormGroup.patchValue({
       frequency: reminder.frequency,
@@ -274,13 +291,17 @@ export class RemindersComponent implements OnInit {
     this.remindersList$ = this.dataService.get();
     this.emptyOutContactForm();
     this.emptyOutTimeControls();
+    this.emptyOutContactListControl();
+
+    // TODO: REFACTOR THIS IF POSSIBLE
+    this.reminderSelected = false;
+  }
+
+  emptyOutContactListControl() {
     if (!this.remindersFormContactGroup.get('contactsList')) {
       this.remindersFormContactGroup.addControl('contactsList', this.contactsListControl);
       this.remindersFormContactGroup.controls.contactsList?.setValue("");
     }
-
-    // TODO: REFACTOR THIS IF POSSIBLE
-    this.reminderSelected = false;
   }
 
   onNew() {
