@@ -27,15 +27,9 @@ export class ContactsComponent implements OnInit {
   // TODO: FILE UPLOAD FOR CONTACTS IMAGE. DEFAULT IMAGE AS WELL.
   // TODO: CONTACT IMAGE DISPLAY NEXT TO THE CONTACT IN CONTACT LIST.
 
-  btnState: any = {
-    Update: true,
-    Delete: true,
-    Add: true,
-    New: true
-  }
-
   contactsList$!: Observable<Contact[]>;
   contact!: Contact;
+  savedContact!: Contact;
   spin = false;
 
   displayedColumns: string[] = ['id', 'photo', 'firstName', 'lastName', 'phoneNumber', 'emailAddress'];
@@ -86,40 +80,38 @@ export class ContactsComponent implements OnInit {
         )
         .subscribe()
     });
-
-
-
-    this.btnState.New = false;
-    this.btnState.Add = true;
-    this.btnState.Update = false;
-    this.btnState.Delete = false;
   }
 
   selectContact(contact: Contact) {
+    this.savedContact = contact;
     this.populateFormControl(contact);
-
-    this.btnState.New = true;
-    this.btnState.Add = false;
-    this.btnState.Update = true;
-    this.btnState.Delete = true;
+    this.form.markAsPristine();
   }
 
-  onUpdate() {
+  onSave() {
     this.spin = true;
-    let contact = this.populateContact();
-    this.dataService.update(contact, contact.id).subscribe(() => this.spin = false);
-    this.contactsList$ = this.dataService.get();
-  }
-
-  onAdd() {
-    this.spin = true;
-    this.dataService.get().subscribe(contacts => {
+    if (this.contact.id === 0) {
+      this.dataService.get().subscribe(contacts => {
+        let contact = this.populateContact();
+        let maxId = contacts[contacts.length - 1].id + 1;
+        contact.id = maxId;
+        this.dataService.create(contact).subscribe(() => this.spin = false);
+        this.contactsList$ = this.dataService.get();
+      })
+    } else {
       let contact = this.populateContact();
-      let maxId = contacts[contacts.length - 1].id + 1;
-      contact.id = maxId;
-      this.dataService.create(contact).subscribe(() => this.spin = false);
+      this.dataService.update(contact, contact.id).subscribe(() => this.spin = false);
       this.contactsList$ = this.dataService.get();
-    })
+    }
+  }
+
+  onCancel() {
+    if (this.contact.id === 0) {
+      this.emptyOutForm();
+    } else {
+      this.populateFormControl(this.savedContact);
+    }
+    this.form.markAsPristine();
   }
 
   onDelete() {
@@ -131,19 +123,11 @@ export class ContactsComponent implements OnInit {
     this.contactsList$ = this.dataService.get();
 
     this.emptyOutForm();
-    this.btnState.New = false;
-    this.btnState.Add = true;
-    this.btnState.Update = false;
-    this.btnState.Delete = false;
   }
 
   onNew() {
+    this.contact.id = 0;
     this.emptyOutForm();
-
-    this.btnState.New = false;
-    this.btnState.Add = true;
-    this.btnState.Update = false;
-    this.btnState.Delete = false;
   }
 
   emptyOutForm() {
@@ -179,20 +163,20 @@ export class ContactsComponent implements OnInit {
     })
   }
 
-  enableUpdateState(): boolean {
-    return this.form.valid && this.btnState.Update;
+  enableSaveState(): boolean {
+    return this.form.valid && !this.form.pristine;
   }
 
   enableNewState(): boolean {
-    return this.form.valid && this.btnState.New;
+    return this.form.valid && this.form.pristine;
   }
 
   enableDeleteState(): boolean {
-    return this.form.valid && this.btnState.Delete;
+    return this.enableNewState();
   }
 
-  enableAddState(): boolean {
-    return this.form.valid && this.btnState.Add;
+  enableCancelState(): boolean {
+    return this.enableSaveState();
   }
 
 }

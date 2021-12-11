@@ -83,10 +83,10 @@
       mat-raised-button
       color="primary"
       type="submit"
-      (click)="onUpdate()"
-      [disabled]="!enableUpdateState()"
+      (click)="onSave()"
+      [disabled]="!enableSaveState()"
     >
-      Update
+      Save
     </button>
     <span style="display: inline-block; width: 14px"></span>
     <button
@@ -103,10 +103,10 @@
       mat-raised-button
       color="primary"
       type="submit"
-      (click)="onAdd()"
-      [disabled]="!enableAddState()"
+      (click)="onCancel()"
+      [disabled]="!enableCancelState()"
     >
-      Add
+      Cancel
     </button>
     <span style="display: inline-block; width: 14px"></span>
     <button
