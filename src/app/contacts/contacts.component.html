@@ -77,47 +77,6 @@
       </div>
     </div>
   </div>
-
-  <div class="buttons">
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      (click)="onSave()"
-      [disabled]="!enableSaveState()"
-    >
-      Save
-    </button>
-    <span style="display: inline-block; width: 14px"></span>
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      (click)="onDelete()"
-      [disabled]="!enableDeleteState()"
-    >
-      Delete
-    </button>
-    <span style="display: inline-block; width: 14px"></span>
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      (click)="onCancel()"
-      [disabled]="!enableCancelState()"
-    >
-      Cancel
-    </button>
-    <span style="display: inline-block; width: 14px"></span>
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      (click)="onNew()"
-      [disabled]="!enableNewState()"
-    >
-      New
-    </button>
-  </div>
+  <app-buttons></app-buttons>
 </form>
 <mat-spinner *ngIf="spin"></mat-spinner>

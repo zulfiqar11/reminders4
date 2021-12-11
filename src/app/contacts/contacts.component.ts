@@ -1,3 +1,4 @@
+import { ButtonuiService } from './../shared/services/buttonui.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -43,7 +44,7 @@ export class ContactsComponent implements OnInit {
   photo = new FormControl("");
   fileUploadControl = new FormControl("");
 
-  constructor(fb: FormBuilder, private dataService: DataService<Contact>, private fireStorage: AngularFireStorage) {
+  constructor(fb: FormBuilder, private dataService: DataService<Contact>, private fireStorage: AngularFireStorage, private buttonsuiservice: ButtonuiService) {
     this.dataService.Url('api/contacts');
     this.form = fb.group(
       {
@@ -59,6 +60,30 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit(): void {
     this.contactsList$ = this.dataService.get();
+
+    this.buttonsuiservice.onSave.subscribe(data => {
+      this.onSave();
+    });
+
+    this.buttonsuiservice.onDelete.subscribe(data => {
+      this.onDelete();
+    });
+
+    this.buttonsuiservice.onCancel.subscribe(data => {
+      this.onCancel();
+    });
+
+    this.buttonsuiservice.onNew.subscribe(data => {
+      this.onNew();
+    });
+
+    this.form.statusChanges.subscribe(data => {
+      this.buttonsuiservice.updateFormStatusSubject.next(this.form);
+    })
+
+    this.form.valueChanges.subscribe(data => {
+      this.buttonsuiservice.updateFormValuesSubject.next(this.form);
+    })
 
     this.fileUploadControl.valueChanges.subscribe(file => {
       this.spin = true;
@@ -85,7 +110,7 @@ export class ContactsComponent implements OnInit {
   selectContact(contact: Contact) {
     this.savedContact = contact;
     this.populateFormControl(contact);
-    this.form.markAsPristine();
+    this.buttonsuiservice.markFormPristineSubject.next();
   }
 
   onSave() {
@@ -103,6 +128,7 @@ export class ContactsComponent implements OnInit {
       this.dataService.update(contact, contact.id).subscribe(() => this.spin = false);
       this.contactsList$ = this.dataService.get();
     }
+    this.buttonsuiservice.markFormPristineSubject.next();
   }
 
   onCancel() {
@@ -111,7 +137,7 @@ export class ContactsComponent implements OnInit {
     } else {
       this.populateFormControl(this.savedContact);
     }
-    this.form.markAsPristine();
+    this.buttonsuiservice.markFormPristineSubject.next();
   }
 
   onDelete() {
@@ -162,21 +188,4 @@ export class ContactsComponent implements OnInit {
       photo: contact.photo
     })
   }
-
-  enableSaveState(): boolean {
-    return this.form.valid && !this.form.pristine;
-  }
-
-  enableNewState(): boolean {
-    return this.form.valid && this.form.pristine;
-  }
-
-  enableDeleteState(): boolean {
-    return this.enableNewState();
-  }
-
-  enableCancelState(): boolean {
-    return this.enableSaveState();
-  }
-
 }
