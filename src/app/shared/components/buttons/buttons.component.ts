@@ -28,6 +28,7 @@ export class ButtonsComponent implements OnInit {
 
   onSave() {
     this.buttonuiservice.onSaveSubject.next();
+    this.buttonuiservice.markFormPristineSubject.next();
   }
 
   onCancel() {

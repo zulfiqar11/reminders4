@@ -61,6 +61,10 @@ export class ContactsComponent implements OnInit {
   ngOnInit(): void {
     this.contactsList$ = this.dataService.get();
 
+    this.buttonsuiservice.markFormPristine.subscribe(data => {
+      this.form.markAsPristine();
+    })
+
     this.buttonsuiservice.onSave.subscribe(data => {
       this.onSave();
     });
@@ -163,6 +167,7 @@ export class ContactsComponent implements OnInit {
     this.form.controls.emailAddress.setValue("");
     this.form.controls.phoneNumber.setValue("");
     this.form.controls.photo.setValue("");
+    this.form.controls.fileUploadControl.setValue("");
   }
 
   populateContact(): Contact {
