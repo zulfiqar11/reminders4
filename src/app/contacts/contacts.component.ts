@@ -16,6 +16,10 @@ import { finalize } from 'rxjs/operators';
 })
 export class ContactsComponent implements OnInit {
 
+  // TODO: BUG - FORM SHOULD NOT BE VALID UNTIL PICTURE IS UPLOADED AND THEN SAVE SHOULD BE ENABLED.
+  // TODO: BUG - START FRESH - DO NOT SELECT CONTACT - CLICK NEW - FILL OUT FORM - HIT SAVE - DOES NOT SAVE.
+  // TODO: BUG - START FRESH - SELECT CONTACT - LOAD PICTURE - SAVE BUTTONN IS NOT ENABLED.
+  // TODO: BUG - START FRESH - SELECT CONTACT - NEW BUTTON - FILL FORM - SAVE - HIT NEW AGAIN - FORM DOES NOT CLEAR.
   // TODO: REFACTOR THE WHOLE CONTACTS SCREEN SIMILAR TO THE REMINDERS SCREEN.
   // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
 
@@ -26,7 +30,6 @@ export class ContactsComponent implements OnInit {
 
 
   // TODO: FILE UPLOAD FOR CONTACTS IMAGE. DEFAULT IMAGE AS WELL.
-  // TODO: CONTACT IMAGE DISPLAY NEXT TO THE CONTACT IN CONTACT LIST.
 
   contactsList$!: Observable<Contact[]>;
   contact!: Contact;
@@ -41,7 +44,7 @@ export class ContactsComponent implements OnInit {
   lastName = new FormControl("", Validators.required);
   emailAddress = new FormControl("", Validators.required);
   phoneNumber = new FormControl("", Validators.required);
-  photo = new FormControl("");
+  photo = new FormControl("", Validators.required);
   fileUploadControl = new FormControl("");
 
   constructor(fb: FormBuilder, private dataService: DataService<Contact>, private fireStorage: AngularFireStorage, private buttonsuiservice: ButtonuiService) {
@@ -153,6 +156,7 @@ export class ContactsComponent implements OnInit {
     this.contactsList$ = this.dataService.get();
 
     this.emptyOutForm();
+
   }
 
   onNew() {
@@ -167,7 +171,7 @@ export class ContactsComponent implements OnInit {
     this.form.controls.emailAddress.setValue("");
     this.form.controls.phoneNumber.setValue("");
     this.form.controls.photo.setValue("");
-    this.form.controls.fileUploadControl.setValue("");
+    this.form.controls.fileUploadControl?.setValue("");
   }
 
   populateContact(): Contact {

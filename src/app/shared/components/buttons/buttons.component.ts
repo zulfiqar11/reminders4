@@ -23,7 +23,6 @@ export class ButtonsComponent implements OnInit {
     this.buttonuiservice.updateFormStatus.subscribe(data => {
       this.form = data;
     })
-
   }
 
   onSave() {
@@ -44,11 +43,11 @@ export class ButtonsComponent implements OnInit {
   }
 
   enableSaveState(): boolean {
-    return this.form.valid && !this.form.pristine;
+    return this.form?.valid && !this.form?.pristine;
   }
 
   enableNewState(): boolean {
-    return this.form.valid && this.form.pristine;
+    return this.form?.valid && this.form?.pristine;
   }
 
   enableDeleteState(): boolean {
