@@ -23,19 +23,19 @@
     mat-raised-button
     color="primary"
     type="submit"
-    (click)="onCancel()"
-    [disabled]="!enableCancelState()"
+    (click)="onNew()"
+    [disabled]="!enableNewState()"
   >
-    Cancel
+    New
   </button>
   <span style="display: inline-block; width: 14px"></span>
   <button
     mat-raised-button
     color="primary"
     type="submit"
-    (click)="onNew()"
-    [disabled]="!enableNewState()"
+    (click)="onCancel()"
+    [disabled]="!enableCancelState()"
   >
-    New
+    Cancel
   </button>
 </div>

@@ -17,9 +17,7 @@ import { finalize } from 'rxjs/operators';
 export class ContactsComponent implements OnInit {
 
   // TODO: BUG - FORM SHOULD NOT BE VALID UNTIL PICTURE IS UPLOADED AND THEN SAVE SHOULD BE ENABLED.
-  // TODO: BUG - START FRESH - DO NOT SELECT CONTACT - CLICK NEW - FILL OUT FORM - HIT SAVE - DOES NOT SAVE.
   // TODO: BUG - START FRESH - SELECT CONTACT - LOAD PICTURE - SAVE BUTTONN IS NOT ENABLED.
-  // TODO: BUG - START FRESH - SELECT CONTACT - NEW BUTTON - FILL FORM - LOAD PICTURE - SAVE - FILLS IT WITH EXISTING WRONG CONTACT INFORMATION.
   // TODO: REFACTOR THE WHOLE CONTACTS SCREEN SIMILAR TO THE REMINDERS SCREEN.
   // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
 
@@ -124,7 +122,7 @@ export class ContactsComponent implements OnInit {
 
   onSave() {
     this.spin = true;
-    if (this.contact.id === 0) {
+    if (this.contact?.id === 0) {
       this.dataService.get().subscribe(contacts => {
         let contact = this.populateContact();
         let maxId = contacts[contacts.length - 1].id + 1;
