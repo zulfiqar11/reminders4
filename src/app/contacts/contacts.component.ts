@@ -19,7 +19,7 @@ export class ContactsComponent implements OnInit {
   // TODO: BUG - FORM SHOULD NOT BE VALID UNTIL PICTURE IS UPLOADED AND THEN SAVE SHOULD BE ENABLED.
   // TODO: BUG - START FRESH - DO NOT SELECT CONTACT - CLICK NEW - FILL OUT FORM - HIT SAVE - DOES NOT SAVE.
   // TODO: BUG - START FRESH - SELECT CONTACT - LOAD PICTURE - SAVE BUTTONN IS NOT ENABLED.
-  // TODO: BUG - START FRESH - SELECT CONTACT - NEW BUTTON - FILL FORM - SAVE - HIT NEW AGAIN - FORM DOES NOT CLEAR.
+  // TODO: BUG - START FRESH - SELECT CONTACT - NEW BUTTON - FILL FORM - LOAD PICTURE - SAVE - FILLS IT WITH EXISTING WRONG CONTACT INFORMATION.
   // TODO: REFACTOR THE WHOLE CONTACTS SCREEN SIMILAR TO THE REMINDERS SCREEN.
   // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
 
@@ -105,7 +105,9 @@ export class ContactsComponent implements OnInit {
             fileRef.getDownloadURL().subscribe((url) => {
               console.log('url', url);
               this.contact.photo = url;
-              this.populateFormControl(this.contact);
+              this.form.patchValue({
+                photo: url
+              })
               this.spin = false;
             })
           })
