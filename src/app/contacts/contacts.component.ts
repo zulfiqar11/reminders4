@@ -17,12 +17,10 @@ import { finalize } from 'rxjs/operators';
 })
 export class ContactsComponent implements OnInit {
 
-  // TODO: BUG - FORM SHOULD NOT BE VALID UNTIL PICTURE IS UPLOADED AND THEN SAVE SHOULD BE ENABLED.
   // TODO: BUG - START FRESH - SELECT CONTACT - LOAD PICTURE - SAVE BUTTONN IS NOT ENABLED.
   // TODO: REFACTOR THE WHOLE CONTACTS SCREEN SIMILAR TO THE REMINDERS SCREEN.
   // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
 
-  // TODO: FIX THE CONTACTS SCREEN BUTTONS AND REFACTOR THEM JUST LIKE REMINDERS SCREEN.
   // TODO: table have rows selected by check boxes and be able to select some check boxes and delete them
   // TODO: upload file of contacts and add contacts from the file.
   // TODO: WHEN ALL RECORDS ARE DELETED , SAVE NEW RECORD DOES NOT WORK
@@ -46,7 +44,7 @@ export class ContactsComponent implements OnInit {
   photo = new FormControl("", Validators.required);
   fileUploadControl = new FormControl("");
 
-  constructor(fb: FormBuilder, private contactsService: ContactsService, private dataService: DataService<Contact>, private fireStorage: AngularFireStorage, private buttonsuiservice: ButtonuiService) {
+  constructor(fb: FormBuilder, private contactsService: ContactsService, private dataService: DataService<Contact[]>, private fireStorage: AngularFireStorage, private buttonsuiservice: ButtonuiService) {
     this.dataService.Url('api/contacts');
     this.form = fb.group(
       {
@@ -123,19 +121,15 @@ export class ContactsComponent implements OnInit {
 
   onSave() {
     this.spin = true;
-    if (this.contact?.id === 0) {
-      this.dataService.get().subscribe(contacts => {
-        let contact = this.populateContact();
-        let maxId = contacts[contacts.length - 1].id + 1;
-        contact.id = maxId;
-        this.dataService.create(contact).subscribe(() => this.spin = false);
-        this.contactsList$ = this.contactsService.getContactList();
-      })
-    } else {
-      let contact = this.populateContact();
-      this.dataService.update(contact, contact.id).subscribe(() => this.spin = false);
-      this.contactsList$ = this.contactsService.getContactList();
+    let contact = this.populateContact();
+    if (!(contact.id >= 1)) {
+      contact.id = 0;
     }
+    this.contactsService.Save(contact);
+    this.contactsService.onSave.subscribe(() => {
+      this.spin = false;
+      this.contactsList$ = this.contactsService.getContactList();
+    });
     this.buttonsuiservice.markFormPristineSubject.next();
   }
 
