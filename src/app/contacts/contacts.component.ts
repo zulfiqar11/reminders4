@@ -1,3 +1,4 @@
+import { ContactsService } from './../shared/services/contacts.service';
 import { ButtonuiService } from './../shared/services/buttonui.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -45,7 +46,7 @@ export class ContactsComponent implements OnInit {
   photo = new FormControl("", Validators.required);
   fileUploadControl = new FormControl("");
 
-  constructor(fb: FormBuilder, private dataService: DataService<Contact>, private fireStorage: AngularFireStorage, private buttonsuiservice: ButtonuiService) {
+  constructor(fb: FormBuilder, private contactsService: ContactsService, private dataService: DataService<Contact>, private fireStorage: AngularFireStorage, private buttonsuiservice: ButtonuiService) {
     this.dataService.Url('api/contacts');
     this.form = fb.group(
       {
@@ -60,7 +61,7 @@ export class ContactsComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.contactsList$ = this.dataService.get();
+    this.contactsList$ = this.contactsService.getContactList();
 
     this.buttonsuiservice.markFormPristine.subscribe(data => {
       this.form.markAsPristine();
@@ -128,12 +129,12 @@ export class ContactsComponent implements OnInit {
         let maxId = contacts[contacts.length - 1].id + 1;
         contact.id = maxId;
         this.dataService.create(contact).subscribe(() => this.spin = false);
-        this.contactsList$ = this.dataService.get();
+        this.contactsList$ = this.contactsService.getContactList();
       })
     } else {
       let contact = this.populateContact();
       this.dataService.update(contact, contact.id).subscribe(() => this.spin = false);
-      this.contactsList$ = this.dataService.get();
+      this.contactsList$ = this.contactsService.getContactList();
     }
     this.buttonsuiservice.markFormPristineSubject.next();
   }
@@ -150,10 +151,10 @@ export class ContactsComponent implements OnInit {
   onDelete() {
     this.spin = true;
     let contact = this.populateContact();
-    this.dataService.delete(contact, contact.id).subscribe(() => {
+    this.contactsService.Delete(contact).subscribe(() => {
       this.spin = false;
     });
-    this.contactsList$ = this.dataService.get();
+    this.contactsList$ = this.contactsService.getContactList();
 
     this.emptyOutForm();
 
