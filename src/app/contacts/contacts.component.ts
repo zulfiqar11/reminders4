@@ -117,6 +117,7 @@ export class ContactsComponent implements OnInit {
   selectContact(contact: Contact) {
     this.savedContact = contact;
     this.populateFormControl(contact);
+    this.contact = this.savedContact; // TODO: WHY ARE WE DOING THIS AGAIN?
     this.buttonsuiservice.markFormPristineSubject.next();
   }
 
@@ -138,7 +139,8 @@ export class ContactsComponent implements OnInit {
     if (this.contact.id === 0) {
       this.emptyOutForm();
     } else {
-      this.populateFormControl(this.savedContact);
+      this.contact = this.savedContact;
+      this.populateFormControl(this.contact);
     }
     this.buttonsuiservice.markFormPristineSubject.next();
   }
@@ -183,7 +185,6 @@ export class ContactsComponent implements OnInit {
 
 
   populateFormControl(contact: Contact) {
-    this.contact = contact;
     this.form.patchValue({
       id: contact.id,
       firstName : contact.firstName,
