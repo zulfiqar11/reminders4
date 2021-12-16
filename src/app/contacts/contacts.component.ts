@@ -20,6 +20,7 @@ export class ContactsComponent implements OnInit {
   // TODO: BUG - START FRESH - SELECT CONTACT - LOAD PICTURE - SAVE BUTTONN IS NOT ENABLED.
   // TODO: REFACTOR THE WHOLE CONTACTS SCREEN SIMILAR TO THE REMINDERS SCREEN.
   // TODO: REFACOR THE CONTROL NAME AND FORM NAME IN TERMS OF VARIABLES NAMES.
+  // TODO: REFACTOR - WHY DO WE STILL NEED THE DATASERVICE IN THIS COMPONENT AND INTITIALIZE IN CONSTRUCTOR?
 
   // TODO: table have rows selected by check boxes and be able to select some check boxes and delete them
   // TODO: upload file of contacts and add contacts from the file.
