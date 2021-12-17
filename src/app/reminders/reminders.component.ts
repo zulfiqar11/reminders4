@@ -8,6 +8,7 @@ import { DataService } from '../shared/services/data.service';
 import { FREQUENCY } from '../shared/constants';
 import { constFrequencies, constWeeks, constWeekdays, constMonths, constDays } from './../shared/constants';
 import { Reminder } from '../shared/model/reminder';
+import { ButtonuiService } from './../shared/services/buttonui.service';
 
 @Component({
   selector: 'app-reminders',
@@ -74,7 +75,7 @@ export class RemindersComponent implements OnInit {
   // TODO: REFACTOR THIS IF POSSIBLE
   reminderSelected = false;
 
-  constructor(fb: FormBuilder,private dataService: DataService<Reminder>, private datePipe: DatePipe, private contactuiservice: ContactuiService) {
+  constructor(fb: FormBuilder , private buttonsuiservice: ButtonuiService , private dataService: DataService<Reminder>, private datePipe: DatePipe, private contactuiservice: ContactuiService) {
     this.dataService.Url("api/reminders");
 
     this.remindersFormGroup = fb.group(
@@ -94,6 +95,34 @@ export class RemindersComponent implements OnInit {
 
   ngOnInit(): void {
     this.remindersList$ = this.dataService.get();
+
+    this.buttonsuiservice.markFormPristine.subscribe(data => {
+      this.remindersFormParentGroup.markAsPristine();
+    })
+
+    this.buttonsuiservice.onSave.subscribe(data => {
+      this.onSave();
+    });
+
+    this.buttonsuiservice.onDelete.subscribe(data => {
+      this.onDelete();
+    });
+
+    this.buttonsuiservice.onCancel.subscribe(data => {
+      this.onCancel();
+    });
+
+    this.buttonsuiservice.onNew.subscribe(data => {
+      this.onNew();
+    });
+
+    this.remindersFormParentGroup.statusChanges.subscribe(data => {
+      this.buttonsuiservice.updateFormStatusSubject.next(this.remindersFormParentGroup);
+    })
+
+    this.remindersFormParentGroup.valueChanges.subscribe(data => {
+      this.buttonsuiservice.updateFormValuesSubject.next(this.remindersFormParentGroup);
+    })
 
     let freqControl = this.remindersFormGroup.get('frequency');
     freqControl?.valueChanges.subscribe(freq => {
@@ -120,7 +149,7 @@ export class RemindersComponent implements OnInit {
 
     this.populateReminderControl(reminder);
     this.savedReminder = reminder;
-    this.remindersFormParentGroup.markAsPristine();
+    this.buttonsuiservice.markFormPristineSubject.next();
 
     // TODO: REFACTOR THIS IF POSSIBLE
     this.reminderSelected = true;
@@ -226,6 +255,7 @@ export class RemindersComponent implements OnInit {
       this.dataService.update(reminder, reminder.id).subscribe(() => this.spin = false);
       this.remindersList$ = this.dataService.get();
     }
+    this.buttonsuiservice.markFormPristineSubject.next();
   }
 
   onDelete() {
@@ -263,6 +293,7 @@ export class RemindersComponent implements OnInit {
       this.emptyOutTimeControls();
       this.removeControls();
     }
+    this.buttonsuiservice.markFormPristineSubject.next();
   }
 
   emptyOutTimeControls() {
@@ -331,22 +362,6 @@ export class RemindersComponent implements OnInit {
       this.remindersFormGroup.addControl('month', this.monthControl);
       this.remindersFormGroup.addControl('day', this.dayControl);
     }
-  }
-
-  enableSaveButton(): boolean {
-    return this.remindersFormParentGroup.valid && !this.remindersFormParentGroup.pristine;
-  }
-
-  enableDeleteButton(): boolean {
-    return this.remindersFormParentGroup.valid && this.remindersFormParentGroup.pristine;
-  }
-
-  enableNewButton(): boolean {
-    return this.enableDeleteButton();
-  }
-
-  enableCancelButton(): boolean {
-    return this.enableSaveButton();
   }
 
 }

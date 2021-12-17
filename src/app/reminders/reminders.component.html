@@ -167,52 +167,9 @@
     </tr>
   </table>
 </form>
-<div>
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    (click)="onSave()"
-    [disabled]="!enableSaveButton()"
-  >
-    Save
-  </button>
 
-  <mat-spinner *ngIf="spin"></mat-spinner>
-  <span style="display: inline-block; width: 10px"></span>
+<app-buttons></app-buttons>
 
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    (click)="onDelete()"
-    [disabled]="!enableDeleteButton()"
-  >
-    Delete
-  </button>
-  <span style="display: inline-block; width: 10px"></span>
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    (click)="onNew()"
-    [disabled]="!enableNewButton()"
-  >
-    New
-  </button>
-
-  <span style="display: inline-block; width: 10px"></span>
-
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    (click)="onCancel()"
-    [disabled]="!enableCancelButton()"
-  >
-    Cancel
-  </button>
-</div>
 <br />
 <br />
 <div>contact controls {{ remindersFormContactGroupValueChanges }}</div>
