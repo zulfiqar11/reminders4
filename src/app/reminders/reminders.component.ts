@@ -147,8 +147,10 @@ export class RemindersComponent implements OnInit {
     reminder.firstName == 'Sobia'? this.contactuiservice.contactValueSubject.next(2): null;
     reminder.firstName == 'Lenah'? this.contactuiservice.contactValueSubject.next(3): null;
 
-    this.populateReminderControl(reminder);
-    this.savedReminder = reminder;
+    if (!(this.savedReminder === reminder)) {
+      this.populateReminderControl(reminder);
+      this.savedReminder = reminder;
+    }
     this.buttonsuiservice.markFormPristineSubject.next();
 
     // TODO: REFACTOR THIS IF POSSIBLE
