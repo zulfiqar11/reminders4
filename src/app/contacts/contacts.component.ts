@@ -1,6 +1,6 @@
 import { ContactsService } from './../shared/services/contacts.service';
 import { ButtonuiService } from './../shared/services/buttonui.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Observable, of } from 'rxjs';
@@ -9,13 +9,14 @@ import { DataService } from '../shared/services/data.service';
 
 import { AngularFireStorage } from '@angular/fire/storage'
 import { finalize } from 'rxjs/operators';
+import { SubscriptionsContainer } from '../shared/SubscriptionsContainer';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.css']
 })
-export class ContactsComponent implements OnInit {
+export class ContactsComponent implements OnInit, OnDestroy {
 
   // TODO: BUG - START FRESH - SELECT CONTACT - LOAD PICTURE - SAVE BUTTONN IS NOT ENABLED.
   // TODO: REFACTOR THE WHOLE CONTACTS SCREEN SIMILAR TO THE REMINDERS SCREEN.
@@ -45,6 +46,8 @@ export class ContactsComponent implements OnInit {
   photo = new FormControl("", Validators.required);
   fileUploadControl = new FormControl("");
 
+  subs = new SubscriptionsContainer();
+
   constructor(fb: FormBuilder, private contactsService: ContactsService, private dataService: DataService<Contact[]>, private fireStorage: AngularFireStorage, private buttonsuiservice: ButtonuiService) {
     this.dataService.Url('api/contacts');
     this.form = fb.group(
@@ -57,40 +60,44 @@ export class ContactsComponent implements OnInit {
         "photo": this.photo
       }
     )
-   }
+  }
+
+  ngOnDestroy(): void {
+    this.subs.dispose();
+  }
 
   ngOnInit(): void {
     this.contactsList$ = this.contactsService.getContactList();
 
-    this.buttonsuiservice.markFormPristine.subscribe(data => {
+    this.subs.add = this.buttonsuiservice.markFormPristine.subscribe(data => {
       this.form.markAsPristine();
     })
 
-    this.buttonsuiservice.onSave.subscribe(data => {
+    this.subs.add = this.buttonsuiservice.onSave.subscribe(data => {
       this.onSave();
     });
 
-    this.buttonsuiservice.onDelete.subscribe(data => {
+    this.subs.add = this.buttonsuiservice.onDelete.subscribe(data => {
       this.onDelete();
     });
 
-    this.buttonsuiservice.onCancel.subscribe(data => {
+    this.subs.add = this.buttonsuiservice.onCancel.subscribe(data => {
       this.onCancel();
     });
 
-    this.buttonsuiservice.onNew.subscribe(data => {
+    this.subs.add = this.buttonsuiservice.onNew.subscribe(data => {
       this.onNew();
     });
 
-    this.form.statusChanges.subscribe(data => {
+    this.subs.add = this.form.statusChanges.subscribe(data => {
       this.buttonsuiservice.updateFormStatusSubject.next(this.form);
     })
 
-    this.form.valueChanges.subscribe(data => {
+    this.subs.add = this.form.valueChanges.subscribe(data => {
       this.buttonsuiservice.updateFormValuesSubject.next(this.form);
     })
 
-    this.fileUploadControl.valueChanges.subscribe(file => {
+    this.subs.add = this.fileUploadControl.valueChanges.subscribe(file => {
       this.spin = true;
       let filePath = "/files" + Math.random() + file
       let fileRef = this.fireStorage.ref(filePath);
@@ -128,7 +135,7 @@ export class ContactsComponent implements OnInit {
       contact.id = 0;
     }
     this.contactsService.Save(contact);
-    this.contactsService.onSave.subscribe(() => {
+    this.subs.add = this.contactsService.onSave.subscribe(() => {
       this.spin = false;
       this.contactsList$ = this.contactsService.getContactList();
     });
@@ -148,7 +155,7 @@ export class ContactsComponent implements OnInit {
   onDelete() {
     this.spin = true;
     let contact = this.populateContact();
-    this.contactsService.Delete(contact).subscribe(() => {
+    this.subs.add = this.contactsService.Delete(contact).subscribe(() => {
       this.spin = false;
     });
     this.contactsList$ = this.contactsService.getContactList();
