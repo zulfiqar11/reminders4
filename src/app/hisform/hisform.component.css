@@ -1,0 +1,18 @@
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+td {
+  padding-right: 22px;
+}
+
+.example-button-row {
+  display: table-cell;
+  width: 290px;
+}

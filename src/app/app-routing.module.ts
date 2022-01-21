@@ -1,3 +1,4 @@
+import { HisformComponent } from './hisform/hisform.component';
 import { CampaignsListComponent } from './campaigns/campaigns-list/campaigns-list.component';
 import { ContactsListComponent } from './contacts/contacts-list/contacts-list.component';
 import { PageNotFoundComponent } from './navigation/page-not-found/page-not-found.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'hisform', component: HisformComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard]},
   {path: 'contactsList', component: ContactsListComponent, canActivate: [AuthGuard]},

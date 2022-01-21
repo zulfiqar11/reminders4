@@ -12,6 +12,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 
 import { MatNativeDateModule } from '@angular/material/core';
@@ -34,6 +35,7 @@ import { NgxMatFileInputModule } from '@angular-material-components/file-input';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatCheckboxModule,
     NgxMatFileInputModule,
     MatListModule,
 
@@ -52,6 +54,7 @@ import { NgxMatFileInputModule } from '@angular-material-components/file-input';
     MatDatepickerModule,
     MatSelectModule,
     NgxMatFileInputModule,
+    MatCheckboxModule,
     MatTableModule
   ]
 

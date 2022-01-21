@@ -32,6 +32,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { ContactsUiComponent } from './contacts/contacts-ui/contacts-ui.component';
 import { ButtonsComponent } from './shared/components/buttons/buttons.component';
+import { HisformComponent } from './hisform/hisform.component';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { ButtonsComponent } from './shared/components/buttons/buttons.component'
     ContactsNamesFileListComponent,
     CampaignsListComponent,
     ContactsUiComponent,
-    ButtonsComponent
+    ButtonsComponent,
+    HisformComponent
   ],
   imports: [
     BrowserModule,
